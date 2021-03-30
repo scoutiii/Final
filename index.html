@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Game Template</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <meta charset="UTF-8">
+</head>
+
+<!-- The overall body -->
+
+<body id="body" onload="MyGame.screenManager.initialize(MyGame.constants.screens.mainMenu);">
+    <!-- holds each individual screen -->
+    <div id="game">
+        <!-- main menu screen -->
+        <div id="mainMenu" class="screen">
+            <div class="contentWrap">
+                <header>Game Title</header>
+                <ul>
+                    <li><button id="gamePlayButton">New Game</button></li>
+                    <li><button id="highScoresButton">High Scores</button></li>
+                    <li><button id="controlMenuButton">Controls</button></li>
+                    <li><button id="creditsButton">Credits</button></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- game play screen -->
+        <div id="gamePlay" class="screen">
+            <canvas id="gamePlayCanvas" width="500" height="500"></canvas>
+        </div>
+
+        <div id="pauseMenu" class="screen">
+            <div class="contentWrap">
+                <ul>
+                    <li><button id="quitButton">QUIT</button></li>
+                    <li><button id="resumeButton">RESUME</button></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- high scores screen -->
+        <div id="highScores" class="screen">
+            <div class="contentWrap">
+                High Scores
+            </div>
+            <footer><button id="highScoresBackButton" class="backButton">BACK</button></footer>
+        </div>
+
+        <!-- controls screen -->
+        <div id="controlMenu" class="screen">
+            <div class="contentWrap">
+                Control Menu
+            </div>
+            <footer><button id="controlMenuBackButton" class="backButton">BACK</button></footer>
+        </div>
+
+        <!-- credits screen -->
+        <div id="credits" class="screen">
+            <div class="contentWrap">
+                Credits
+            </div>
+            <footer><button id="creditsBackButton" class="backButton">BACK</button></footer>
+        </div>
+
+    </div>
+</body>
+
+<script>
+    let MyGame = {
+        screens: {},
+        objects: {},
+        systems: {
+            render: {},
+            input: {},
+            particles: {}
+        },
+        constants: {},
+        misc: {
+            newGame: true,
+        }
+    };
+</script>
+
+<!-- Load Systems -->
+<script src="scripts/systems/constants.js"></script>
+<script src="scripts/systems/random.js"></script>
+
+<script src="scripts/systems/audio/audio.js"></script>
+
+<script src="scripts/systems/input/keyboardInput.js"></script>
+<script src="scripts/systems/input/mouseInput.js"></script>
+
+<script src="scripts/systems/particle/particleSystem.js"></script>
+
+<!-- Load objects -->
+<script src="scripts/objects/gameModel.js"></script>
+<script src="scripts/objects/fps.js"></script>
+<script src="scripts/objects/gameModel.js"></script>
+
+<!-- Load renderers -->
+<script src="scripts/systems/render/core.js"></script>
+<script src="scripts/systems/render/particleSystem.js"></script>
+<script src="scripts/systems/render/fps.js"></script>
+<script src="scripts/systems/render/gameModel.js"></script>
+
+<!-- Load screens -->
+<script src="scripts/screens/screenManager.js"></script>
+<script src="scripts/screens/mainMenu.js"></script>
+<script src="scripts/screens/controlMenu.js"></script>
+<script src="scripts/screens/credits.js"></script>
+<script src="scripts/screens/gamePlay.js"></script>
+<script src="scripts/screens/highScores.js"></script>
+<script src="scripts/screens/pauseMenu.js"></script>
+
+
+
+
+</html>

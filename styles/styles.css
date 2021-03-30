@@ -1,0 +1,53 @@
+/* general styling */
+
+:root {
+    --footerHeight: 5vh;
+    --screenDimension: 90vh;
+}
+
+body {
+    margin: 0;
+    background-color: black;
+}
+
+
+/* For getting the back button to stay at the bottom */
+
+.contentWrap {
+    padding-bottom: var(--footerHeight);
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: var(--footerHeight);
+}
+
+
+/* styling for game screens */
+
+#game {
+    margin: 0 auto;
+    width: var(--screenDimension);
+    height: var(--screenDimension);
+    background-color: white;
+    font-size: 4vh;
+}
+
+#game .screen {
+    width: 100%;
+    height: 100%;
+    display: none;
+    position: relative;
+}
+
+#game .screen.active {
+    display: block;
+}
+
+
+/* styling main menu */
+
+
+/* styling high scores */
