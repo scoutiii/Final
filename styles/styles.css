@@ -2,7 +2,6 @@
 
 :root {
     --footerHeight: 5vh;
-    --screenDimension: 90vh;
 }
 
 body {
@@ -29,8 +28,8 @@ footer {
 
 #game {
     margin: 0 auto;
-    width: var(--screenDimension);
-    height: var(--screenDimension);
+    width: 135vh;
+    height: 90vh;
     background-color: white;
     font-size: 4vh;
 }
@@ -44,6 +43,17 @@ footer {
 
 #game .screen.active {
     display: block;
+}
+
+
+/* styling for gamePlay screens */
+
+#gamePlay {
+    background-color: black;
+}
+
+#gamePlay canvas {
+    float: left;
 }
 
 

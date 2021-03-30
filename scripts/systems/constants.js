@@ -12,6 +12,14 @@ MyGame.constants.screens = Object.freeze({
 // and the game global size
 MyGame.constants.canvasScaleFactor = .9;
 MyGame.constants.globalSize = 1000;
+MyGame.constants.canvasMenuScaleFactor = {
+    width: MyGame.constants.canvasScaleFactor / 2,
+    height: MyGame.constants.canvasScaleFactor
+};
+MyGame.constants.menuGlobalSize = {
+    width: MyGame.constants.globalSize / 2,
+    height: MyGame.constants.globalSize
+};
 
 // Options for draw text
 MyGame.constants.textOptions = Object.freeze({
