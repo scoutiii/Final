@@ -11,14 +11,14 @@ MyGame.constants.screens = Object.freeze({
 // size of the canvas scaling (should be like the vh in the css file)
 // and the game global size
 MyGame.constants.canvasScaleFactor = .9;
-MyGame.constants.globalSize = 1000;
-MyGame.constants.canvasMenuScaleFactor = {
-    width: MyGame.constants.canvasScaleFactor / 2,
-    height: MyGame.constants.canvasScaleFactor
+MyGame.constants.globalSize = {
+    width: 1000,
+    height: 1000
 };
-MyGame.constants.menuGlobalSize = {
-    width: MyGame.constants.globalSize / 2,
-    height: MyGame.constants.globalSize
+MyGame.constants.gridDim = 19;
+MyGame.constants.gridSize = {
+    width: MyGame.constants.globalSize.width / MyGame.constants.gridDim,
+    height: MyGame.constants.globalSize.height / MyGame.constants.gridDim
 };
 
 // Options for draw text

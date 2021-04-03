@@ -3,10 +3,15 @@ MyGame.systems.render.gameModel = (function(graphics, constants, renderer) {
     function render(spec) {
 
         graphics.drawTexture(
-            spec.gameGrid.background, { x: constants.globalSize / 2, y: constants.globalSize / 2 },
-            0, { width: constants.globalSize, height: constants.globalSize }
+            spec.gameGrid.background, { x: constants.globalSize.width / 2, y: constants.globalSize.height / 2 },
+            0, constants.globalSize
         );
         renderer.gameGrid.render(spec.gameGrid.grid);
+        let creeps = spec.creeps;
+        for (let i = 0; i < creeps.length; i++) {
+            renderer.creep.render(creeps[i]);
+        }
+
     }
 
     return {

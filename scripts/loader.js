@@ -8,7 +8,7 @@ MyGame = {
     },
     constants: {},
     misc: {
-        newGame: true,
+        newGame: true
     },
     assets: {}
 };
@@ -24,7 +24,7 @@ MyGame = {
 MyGame.loader = (function() {
     'use strict';
     let scriptOrder = [{
-        scripts: ['systems/constants'],
+        scripts: ['systems/constants'], // Systems
         message: 'Constants loaded',
         onComplete: null
     }, {
@@ -48,7 +48,7 @@ MyGame.loader = (function() {
         message: 'particle system loaded',
         onComplete: null
     }, {
-        scripts: ['objects/gameModel'],
+        scripts: ['objects/gameModel'], // Objects
         message: 'gameModel loaded',
         onComplete: null
     }, {
@@ -60,7 +60,15 @@ MyGame.loader = (function() {
         message: 'gameGrid loaded',
         onComplete: null
     }, {
-        scripts: ['systems/render/core'],
+        scripts: ['objects/border'],
+        message: 'border loaded',
+        onComplete: null
+    }, {
+        scripts: ['objects/creep'],
+        message: 'creep loaded',
+        onComplete: null
+    }, {
+        scripts: ['systems/render/core'], // Renderers
         message: 'core renderer loaded',
         onComplete: null
     }, {
@@ -80,7 +88,15 @@ MyGame.loader = (function() {
         message: 'gameGrid renderer loaded',
         onComplete: null
     }, {
-        scripts: ['screens/screenManager'],
+        scripts: ['systems/render/border'],
+        message: 'border Loaded',
+        onComplete: null
+    }, {
+        scripts: ['systems/render/creep'],
+        message: 'creep renderer loaded',
+        onComplete: null
+    }, {
+        scripts: ['screens/screenManager'], // Screens
         message: 'screenManager loaded',
         onComplete: null
     }, {
@@ -110,30 +126,51 @@ MyGame.loader = (function() {
     }];
 
     let assetOrder = [{
-            key: 'bkgd-horiz',
-            source: '/assets/images/backgroundImages/horizontal.png'
-        }, {
-            key: 'bkgd-corner',
-            source: '/assets/images/backgroundImages/left-bottom.png'
-        },
-        //  {
-        //     key: 'bkgd-left-top',
-        //     source: '/assets/images/backgroundImages/left-top.png'
-        // }, {
-        //     key: 'bkgd-right-bottom',
-        //     source: '/assets/images/backgroundImages/right-bottom.png'
-        // }, {
-        //     key: 'bkgd-right-top',
-        //     source: '/assets/images/backgroundImages/right-top.png'
-        // }, {
-        //     key: 'bkgd-vertical',
-        //     source: '/assets/images/backgroundImages/vertical.png'
-        // },
-        {
-            key: 'bkgd-stars',
-            source: '/assets/images/backgroundImages/stars.png'
-        }
-    ];
+        key: 'bkgd-horiz',
+        source: '/assets/images/backgroundImages/horizontal.png'
+    }, {
+        key: 'bkgd-corner',
+        source: '/assets/images/backgroundImages/left-bottom.png'
+    }, {
+        key: 'bkgd-stars',
+        source: '/assets/images/backgroundImages/stars.png'
+    }, {
+        key: 'creep-blue-1',
+        source: '/assets/images/animated/1blue.png'
+    }, {
+        key: 'creep-green-1',
+        source: 'assets/images/animated/1green.png'
+    }, {
+        key: 'creep-red-1',
+        source: 'assets/images/animated/1red.png'
+    }, {
+        key: 'creep-yellow-1',
+        source: 'assets/images/animated/1yellow.png'
+    }, {
+        key: 'creep-blue-2',
+        source: '/assets/images/animated/2blue.png'
+    }, {
+        key: 'creep-green-2',
+        source: 'assets/images/animated/2green.png'
+    }, {
+        key: 'creep-red-2',
+        source: 'assets/images/animated/2red.png'
+    }, {
+        key: 'creep-yellow-2',
+        source: 'assets/images/animated/2yellow.png'
+    }, {
+        key: 'creep-blue-3',
+        source: '/assets/images/animated/3blue.png'
+    }, {
+        key: 'creep-green-3',
+        source: 'assets/images/animated/3green.png'
+    }, {
+        key: 'creep-red-3',
+        source: 'assets/images/animated/3red.png'
+    }, {
+        key: 'creep-yellow-3',
+        source: 'assets/images/animated/3yellow.png'
+    }];
 
     //------------------------------------------------------------------
     //

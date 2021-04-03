@@ -10,7 +10,7 @@ MyGame.systems.graphics = (function(constants) {
     context.canvas.height = constants.canvasScaleFactor * window.innerHeight;
 
     // scale factor from game coords to canvas coords
-    let SF = canvas.height / constants.globalSize;
+    let SF = canvas.height / constants.globalSize.height;
 
     // Update the canvas size automatically
     window.addEventListener(
@@ -18,7 +18,7 @@ MyGame.systems.graphics = (function(constants) {
         function() {
             context.canvas.width = constants.canvasScaleFactor * window.innerHeight;
             context.canvas.height = constants.canvasScaleFactor * window.innerHeight;
-            SF = canvas.height / constants.globalSize;
+            SF = canvas.height / constants.globalSize.height;
         });
 
 
@@ -43,6 +43,27 @@ MyGame.systems.graphics = (function(constants) {
             y = SF * (center.y - size.height / 2),
             SF * size.width, SF * size.height
         );
+
+        context.restore();
+    }
+
+    // Draws a subtexture for animations
+    function drawSubTexture(image, index, subTextureWidth, center, rotation, size) {
+        context.save();
+
+        context.translate(SF * center.x, SF * center.y);
+        context.rotate(rotation * SFDegToRad);
+        context.translate(-(SF * center.x), -(SF * center.y));
+
+        //
+        // Pick the selected sprite from the sprite sheet to render
+        context.drawImage(
+            image,
+            subTextureWidth * index, 0, // Which sub-texture to pick out
+            subTextureWidth, image.height, // The size of the sub-texture
+            SF * (center.x - size.width / 2), // Where to draw the sub-texture
+            SF * (center.y - size.height / 2),
+            SF * size.width, SF * size.height);
 
         context.restore();
     }
@@ -133,6 +154,7 @@ MyGame.systems.graphics = (function(constants) {
         get canvas() { return canvas; },
         clear,
         drawTexture,
+        drawSubTexture,
         drawLines,
         drawText,
         drawCircle,

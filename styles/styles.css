@@ -47,6 +47,24 @@ footer {
 }
 
 
+/* Syling for loading screen */
+
+#loadingScreen {
+    height: 100%;
+    font-size: 20vh;
+    position: relative;
+}
+
+#loadingScreen .center {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+
 /* styling for gamePlay screens */
 
 #gamePlay {
