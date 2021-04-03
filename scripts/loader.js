@@ -68,6 +68,10 @@ MyGame.loader = (function() {
         message: 'creep loaded',
         onComplete: null
     }, {
+        scripts: ['objects/inGameMenu'],
+        message: 'inGameMenu loaded',
+        onComplete: null
+    }, {
         scripts: ['systems/render/core'], // Renderers
         message: 'core renderer loaded',
         onComplete: null

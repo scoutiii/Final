@@ -1,6 +1,10 @@
 MyGame.objects.gameModel = function(spec) {
-    // Sets up the grid
     let objects = MyGame.objects;
+    // Manages the in game menu
+    let menu = objects.inGameMenu({
+
+    });
+    // Sets up the grid
     let time = 0;
     let border = {
         "1,1": { x: 1, y: 1, object: objects.border({ image: MyGame.assets['bkgd-corner'], rotation: 90 }) }, // Points for top left
@@ -53,7 +57,11 @@ MyGame.objects.gameModel = function(spec) {
         dimension: MyGame.constants.gridDim,
         gridSize: MyGame.constants.gridSize,
         border: border,
-        background: MyGame.assets['bkgd-stars']
+        background: MyGame.assets['bkgd-stars'],
+        internalSpec: {
+            start: { x: 2, y: 2 },
+            dimension: 15
+        }
     });
 
     // Track enemies

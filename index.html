@@ -35,7 +35,20 @@
         <div id="gamePlay" class="screen">
             <canvas id="gamePlayCanvas" width="500" height="500"></canvas>
             <div class="inGameMenu">
-                Test
+                <div class="item1" id="level">Level:</div>
+                <div class="item2" id="wave">Wave:</div>
+                <div class="item3" id="time">Time:</div>
+                <div class="item4" id="score">Score:</div>
+                <div class="item5" id="gold">Gold:</div>
+                <div class="item6" id="lives">Lives:</div>
+                <div class="item7" id="ground"></div>
+                <div class="item8" id="bomb"></div>
+                <div class="item9" id="air"></div>
+                <div class="item10" id="mixed"></div>
+                <div class="item11" id="dialog"></div>
+                <div class="item12" id="nextWave"><button id="nextWaveButton">Next Wave</div>
+                <div class="item13" id="song">Mute Song</div>
+                <div class="item14" id="sounds">Mute Sounds</div>
             </div>
         </div>
 
@@ -45,35 +58,35 @@
                 <ul>
                     <li><button id="quitButton">QUIT</button></li>
                     <li><button id="resumeButton">RESUME</button></li>
-                </ul>
+                    </ul>
+                </div>
             </div>
-        </div>
 
-        <!-- high scores screen -->
-        <div id="highScores" class="screen">
-            <div class="contentWrap">
-                High Scores
+            <!-- high scores screen -->
+            <div id="highScores" class="screen">
+                <div class="contentWrap">
+                    High Scores
+                </div>
+                <footer><button id="highScoresBackButton" class="backButton">BACK</button></footer>
             </div>
-            <footer><button id="highScoresBackButton" class="backButton">BACK</button></footer>
-        </div>
 
-        <!-- controls screen -->
-        <div id="controlMenu" class="screen">
-            <div class="contentWrap">
-                Control Menu
+            <!-- controls screen -->
+            <div id="controlMenu" class="screen">
+                <div class="contentWrap">
+                    Control Menu
+                </div>
+                <footer><button id="controlMenuBackButton" class="backButton">BACK</button></footer>
             </div>
-            <footer><button id="controlMenuBackButton" class="backButton">BACK</button></footer>
-        </div>
 
-        <!-- credits screen -->
-        <div id="credits" class="screen">
-            <div class="contentWrap">
-                Credits
+            <!-- credits screen -->
+            <div id="credits" class="screen">
+                <div class="contentWrap">
+                    Credits
+                </div>
+                <footer><button id="creditsBackButton" class="backButton">BACK</button></footer>
             </div>
-            <footer><button id="creditsBackButton" class="backButton">BACK</button></footer>
-        </div>
 
-    </div>
+        </div>
 </body>
 
 <script data-main="scripts/loader" src="scripts/require.js"></script>
