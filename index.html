@@ -9,7 +9,7 @@
 
 <!-- The overall body -->
 
-<body id="body" onload="MyGame.screenManager.initialize(MyGame.constants.screens.mainMenu);">
+<body id="body">
     <!-- holds each individual screen -->
     <div id="game">
         <!-- main menu screen -->
@@ -28,7 +28,9 @@
         <!-- game play screen -->
         <div id="gamePlay" class="screen">
             <canvas id="gamePlayCanvas" width="500" height="500"></canvas>
-            <canvas id="gameMenuCanvas" width="250" height="500"></canvas>
+            <div class="inGameMenu">
+                Test
+            </div>
         </div>
 
         <div id="pauseMenu" class="screen">
@@ -68,7 +70,9 @@
     </div>
 </body>
 
-<script>
+<script data-main="scripts/loader" src="scripts/require.js"></script>
+
+<!-- <script>
     let MyGame = {
         screens: {},
         objects: {},
@@ -80,12 +84,13 @@
         constants: {},
         misc: {
             newGame: true,
-        }
+        },
+        assets
     };
-</script>
+</script> -->
 
 <!-- Load Systems -->
-<script src="scripts/systems/constants.js"></script>
+<!-- <script src="scripts/systems/constants.js"></script>
 <script src="scripts/systems/random.js"></script>
 
 <script src="scripts/systems/audio/audio.js"></script>
@@ -93,27 +98,28 @@
 <script src="scripts/systems/input/keyboardInput.js"></script>
 <script src="scripts/systems/input/mouseInput.js"></script>
 
-<script src="scripts/systems/particle/particleSystem.js"></script>
+<script src="scripts/systems/particle/particleSystem.js"></script> -->
 
 <!-- Load objects -->
-<script src="scripts/objects/gameModel.js"></script>
+<!-- <script src="scripts/objects/gameModel.js"></script>
 <script src="scripts/objects/fps.js"></script>
-<script src="scripts/objects/gameModel.js"></script>
+<script src="scripts/objects/gameGrid.js"></script> -->
 
 <!-- Load renderers -->
-<script src="scripts/systems/render/core.js"></script>
+<!-- <script src="scripts/systems/render/core.js"></script>
 <script src="scripts/systems/render/particleSystem.js"></script>
 <script src="scripts/systems/render/fps.js"></script>
 <script src="scripts/systems/render/gameModel.js"></script>
+<script src="scripts/systems/render/gameGrid.js"></script> -->
 
 <!-- Load screens -->
-<script src="scripts/screens/screenManager.js"></script>
+<!-- <script src="scripts/screens/screenManager.js"></script>
 <script src="scripts/screens/mainMenu.js"></script>
 <script src="scripts/screens/controlMenu.js"></script>
 <script src="scripts/screens/credits.js"></script>
 <script src="scripts/screens/gamePlay.js"></script>
 <script src="scripts/screens/highScores.js"></script>
-<script src="scripts/screens/pauseMenu.js"></script>
+<script src="scripts/screens/pauseMenu.js"></script> -->
 
 
 

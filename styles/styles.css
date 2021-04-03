@@ -32,6 +32,7 @@ footer {
     height: 90vh;
     background-color: white;
     font-size: 4vh;
+    margin-top: 1vh;
 }
 
 #game .screen {
@@ -54,6 +55,15 @@ footer {
 
 #gamePlay canvas {
     float: left;
+}
+
+.inGameMenu {
+    float: left;
+    background-color: black;
+    height: 90vh;
+    width: 45vh;
+    color: white;
+    font-size: 3vh;
 }
 
 
