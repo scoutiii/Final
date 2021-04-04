@@ -174,6 +174,42 @@ MyGame.loader = (function() {
     }, {
         key: 'creep-yellow-3',
         source: 'assets/images/animated/3yellow.png'
+    }, {
+        key: 'tower-ground-1',
+        source: 'assets/images/towers/ground1.png'
+    }, {
+        key: 'tower-ground-2',
+        source: 'assets/images/towers/ground2.png'
+    }, {
+        key: 'tower-ground-3',
+        source: 'assets/images/towers/ground3.png'
+    }, {
+        key: 'tower-air-1',
+        source: 'assets/images/towers/air1.png'
+    }, {
+        key: 'tower-air-2',
+        source: 'assets/images/towers/air2.png'
+    }, {
+        key: 'tower-air-3',
+        source: 'assets/images/towers/air3.png'
+    }, {
+        key: 'tower-bomb-1',
+        source: 'assets/images/towers/bomb1.png'
+    }, {
+        key: 'tower-bomb-2',
+        source: 'assets/images/towers/bomb2.png'
+    }, {
+        key: 'tower-bomb-3',
+        source: 'assets/images/towers/bomb3.png'
+    }, {
+        key: 'tower-mixed-1',
+        source: 'assets/images/towers/mixed1.png'
+    }, {
+        key: 'tower-mixed-2',
+        source: 'assets/images/towers/mixed2.png'
+    }, {
+        key: 'tower-mixed-3',
+        source: 'assets/images/towers/mixed3.png'
     }];
 
     //------------------------------------------------------------------

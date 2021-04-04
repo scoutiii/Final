@@ -36,9 +36,13 @@ MyGame.constants.textOptions = Object.freeze({
 });
 
 // Define properties of the tower types
-MyGame.constants.towers = Object.freeze({
+let groundName = "Ground Cannon",
+    bombName = "Bomb Launcher",
+    airName = "Surface to Air Missle",
+    mixedName = "Weapon of Mass Destruction";
+MyGame.constants.towers = {
     ground: {
-        name: "Ground Cannon",
+        name: groundName,
         cost: 20,
         type: "Ground only",
         dps: 20,
@@ -46,7 +50,7 @@ MyGame.constants.towers = Object.freeze({
         notes: "This is the standard ground cannon. Deal damage to only ground targets."
     },
     bomb: {
-        name: "Bomb Launcher",
+        name: bombName,
         cost: 75,
         type: "Ground only",
         dps: 50,
@@ -54,7 +58,7 @@ MyGame.constants.towers = Object.freeze({
         notes: "Does splash damage to ground targets."
     },
     air: {
-        name: "Surface to Air Missle",
+        name: airName,
         cost: 100,
         type: "Air only",
         dps: 30,
@@ -62,11 +66,32 @@ MyGame.constants.towers = Object.freeze({
         notes: "This is an anti air weapon. Only fires at air targets."
     },
     mixed: {
-        name: "Weapon of Mass Destruction",
+        name: mixedName,
         cost: 150,
         type: "Ground and Air",
         dps: 75,
         range: 175,
         notes: "A truly deadly weapon. Can destory any target."
-    }
-})
+    },
+    assets: {}
+}
+MyGame.constants.towers.assets[groundName] = [
+    MyGame.assets['tower-ground-1'],
+    MyGame.assets['tower-ground-2'],
+    MyGame.assets['tower-ground-3']
+];
+MyGame.constants.towers.assets[bombName] = [
+    MyGame.assets['tower-bomb-1'],
+    MyGame.assets['tower-bomb-2'],
+    MyGame.assets['tower-bomb-3']
+];
+MyGame.constants.towers.assets[airName] = [
+    MyGame.assets['tower-air-1'],
+    MyGame.assets['tower-air-2'],
+    MyGame.assets['tower-air-3']
+];
+MyGame.constants.towers.assets[mixedName] = [
+    MyGame.assets['tower-mixed-1'],
+    MyGame.assets['tower-mixed-2'],
+    MyGame.assets['tower-mixed-3']
+];

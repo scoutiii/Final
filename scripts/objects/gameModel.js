@@ -1,11 +1,6 @@
 MyGame.objects.gameModel = function(spec) {
     let objects = MyGame.objects;
-    // Manages the in game menu
-    let menu = objects.inGameMenu({
-
-    });
-    // Sets up the grid
-    let time = 0;
+    let internalUpdate = null;
     let border = {
         "1,1": { x: 1, y: 1, object: objects.border({ image: MyGame.assets['bkgd-corner'], rotation: 90 }) }, // Points for top left
         "1,2": { x: 2, y: 1, object: objects.border({ image: MyGame.assets['bkgd-horiz'] }) },
@@ -64,101 +59,64 @@ MyGame.objects.gameModel = function(spec) {
         }
     });
 
-    // Track enemies
+    // Track enemies and towers
     let creeps = [];
     let towers = [];
 
-    creeps.push(objects.creep({
-            type: 'creep-blue-1',
-            center: { x: 500, y: 500 },
-            rotation: 0,
-            health: 100
-        }),
-        objects.creep({
-            type: 'creep-green-1',
-            center: { x: 400, y: 500 },
-            rotation: 0,
-            health: 100
-        }),
-        objects.creep({
-            type: 'creep-red-1',
-            center: { x: 300, y: 500 },
-            rotation: 0,
-            health: 100
-        }),
-        objects.creep({
-            type: 'creep-yellow-1',
-            center: { x: 200, y: 500 },
-            rotation: 0,
-            health: 100
-        }),
-        objects.creep({
-            type: 'creep-blue-2',
-            center: { x: 500, y: 400 },
-            rotation: 0,
-            health: 100
-        }),
-        objects.creep({
-            type: 'creep-green-2',
-            center: { x: 400, y: 400 },
-            rotation: 0,
-            health: 100
-        }),
-        objects.creep({
-            type: 'creep-red-2',
-            center: { x: 300, y: 400 },
-            rotation: 0,
-            health: 100
-        }),
-        objects.creep({
-            type: 'creep-yellow-2',
-            center: { x: 200, y: 400 },
-            rotation: 0,
-            health: 100
-        }),
-        objects.creep({
-            type: 'creep-blue-3',
-            center: { x: 500, y: 300 },
-            rotation: 0,
-            health: 100
-        }),
-        objects.creep({
-            type: 'creep-green-3',
-            center: { x: 400, y: 300 },
-            rotation: 0,
-            health: 100
-        }),
-        objects.creep({
-            type: 'creep-red-3',
-            center: { x: 300, y: 300 },
-            rotation: 0,
-            health: 100
-        }),
-        objects.creep({
-            type: 'creep-yellow-3',
-            center: { x: 200, y: 300 },
-            rotation: 0,
-            health: 100
-        }));
+    let startNextWave = true;
+    // Manages the in game menu
+    let menu = objects.inGameMenu({
+        level: 1,
+        wave: 0,
+        time: 0,
+        gold: 100,
+        lives: 100,
+        onNextWave: function() {
+            if (startNextWave) {
+                internalUpdate = waveStageUpdate;
+                startNextWave = false;
+                menu.setDialog("Incoming!!!");
+            } else {
+                menu.setDialog("We haven't finished this round yet!");
+            }
+        }
+    });
+    // Sets up the grid
 
-    function update(elapsedTime) {
-        time += elapsedTime;
+
+    function prepStageUpdate(elapsedTime) {
+
+    }
+
+    function waveStageUpdate(elapsedTime) {
+        menu.time = elapsedTime;
+        menu.updateStatus();
 
         for (let i = 0; i < creeps.length; i++) {
             creeps[i].update(elapsedTime);
         }
+        creeps.length = 1;
+
+        // Goes back to preparation stage
+        if (creeps.length == 0) {
+            internalUpdate = prepStageUpdate;
+            startNextWave = true;
+            menu.setDialog("That was intense...");
+        }
+        creeps.length = 0;
     }
 
-    // Got this from https://stackoverflow.com/questions/21294302/converting-milliseconds-to-minutes-and-seconds-with-javascript
-    function millisToMinutesAndSeconds(millis) {
-        let minutes = Math.floor(millis / 60000);
-        let seconds = ((millis % 60000) / 1000).toFixed(0);
-        return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+
+
+    internalUpdate = prepStageUpdate;
+    menu.setDialog("Preparation stage.");
+
+    function update(elapsedTime) {
+        internalUpdate(elapsedTime);
     }
 
     return {
         update,
-        get time() { return millisToMinutesAndSeconds(time); },
         get gameGrid() { return gameGrid; },
         get creeps() { return creeps; }
     }

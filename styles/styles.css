@@ -94,6 +94,7 @@ footer {
     background-repeat: no-repeat;
     background-color: black;
     text-align: left;
+    padding: 1.5vh;
 }
 
 .item1 {
@@ -134,32 +135,31 @@ footer {
 
 .item7 {
     grid-area: ground1;
-    background-image: url("/assets/images/towers/ground/ground1.png"), url("/assets/images/menu/menuTile.png");
+    background-image: url("/assets/images/towers/ground1.png"), url("/assets/images/menu/menuTile.png");
     background-size: contain, cover;
 }
 
 .item8 {
     grid-area: ground2;
-    background-image: url("/assets/images/towers/bomb/bomb1.png"), url("/assets/images/menu/menuTile.png");
+    background-image: url("/assets/images/towers/bomb1.png"), url("/assets/images/menu/menuTile.png");
     background-size: contain, cover;
 }
 
 .item9 {
     grid-area: air;
-    background-image: url("/assets/images/towers/air/air1.png"), url("/assets/images/menu/menuTile.png");
+    background-image: url("/assets/images/towers/air1.png"), url("/assets/images/menu/menuTile.png");
     background-size: contain, cover;
 }
 
 .item10 {
     grid-area: mixed;
-    background-image: url("/assets/images/towers/mixed/mixed1.png"), url("/assets/images/menu/menuTile.png");
+    background-image: url("/assets/images/towers/mixed1.png"), url("/assets/images/menu/menuTile.png");
     background-size: contain, cover;
 }
 
 .item11 {
     grid-area: dialog;
     background-color: black;
-    padding: 1.5vh;
     font-size: 2vh;
     border: 1px solid greenyellow;
     word-wrap: break-word;
