@@ -72,6 +72,10 @@ MyGame.loader = (function() {
         message: 'inGameMenu loaded',
         onComplete: null
     }, {
+        scripts: ['objects/tower'],
+        message: 'tower loaded',
+        onComplete: null
+    }, {
         scripts: ['systems/render/core'], // Renderers
         message: 'core renderer loaded',
         onComplete: null
@@ -98,6 +102,10 @@ MyGame.loader = (function() {
     }, {
         scripts: ['systems/render/creep'],
         message: 'creep renderer loaded',
+        onComplete: null
+    }, {
+        scripts: ['systems/render/tower'],
+        message: 'tower renderer loaded',
         onComplete: null
     }, {
         scripts: ['screens/screenManager'], // Screens
@@ -210,6 +218,9 @@ MyGame.loader = (function() {
     }, {
         key: 'tower-mixed-3',
         source: 'assets/images/towers/mixed3.png'
+    }, {
+        key: 'tower-base',
+        source: 'assets/images/towers/base.png'
     }];
 
     //------------------------------------------------------------------

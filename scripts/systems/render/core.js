@@ -125,6 +125,7 @@ MyGame.systems.graphics = (function(constants) {
         context.fillStyle = fillStyle;
         context.strokeStyle = strokeStyle;
         context.stroke();
+        context.fill();
 
         context.restore();
     }

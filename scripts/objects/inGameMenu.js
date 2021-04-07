@@ -8,12 +8,13 @@ MyGame.objects.inGameMenu = function(spec) {
     that.score = 0;
     let dialog = document.getElementById("dialog");
     let towers = MyGame.constants.towers;
+    let towerIds = ["ground", "bomb", "air", "mixed"];
 
     function onTowerHover(spec) {
         let message = "";
-        message += "Tower: " + spec.name;
+        message += "Tower: " + spec.type;
         message += "<br>Cost: " + spec.cost;
-        message += "<br>Type: " + spec.type;
+        message += "<br>Targets: " + spec.targets;
         message += "<br>DPS: " + spec.dps;
         message += "<br>Range: " + spec.range;
         message += "<br>Notes: " + spec.notes;
@@ -46,6 +47,13 @@ MyGame.objects.inGameMenu = function(spec) {
         document.getElementById("score").innerHTML = "score: " + that.score;
         document.getElementById("gold").innerHTML = "gold: " + that.gold;
         document.getElementById("lives").innerHTML = "lives: " + that.lives;
+        // Grays out towers if they are too expensive
+        for (let i = 0; i < towerIds.length; i++) {
+            if (towers[towerIds[i]].cost > that.gold) {
+                document.getElementById(towerIds[i]).style.filter = "grayscale(100%)";
+            }
+        }
+
     }
     updateStatus();
 

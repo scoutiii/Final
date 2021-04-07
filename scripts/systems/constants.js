@@ -40,40 +40,10 @@ let groundName = "Ground Cannon",
     bombName = "Bomb Launcher",
     airName = "Surface to Air Missle",
     mixedName = "Weapon of Mass Destruction";
+
 MyGame.constants.towers = {
-    ground: {
-        name: groundName,
-        cost: 20,
-        type: "Ground only",
-        dps: 20,
-        range: 100,
-        notes: "This is the standard ground cannon. Deal damage to only ground targets."
-    },
-    bomb: {
-        name: bombName,
-        cost: 75,
-        type: "Ground only",
-        dps: 50,
-        range: 150,
-        notes: "Does splash damage to ground targets."
-    },
-    air: {
-        name: airName,
-        cost: 100,
-        type: "Air only",
-        dps: 30,
-        range: 200,
-        notes: "This is an anti air weapon. Only fires at air targets."
-    },
-    mixed: {
-        name: mixedName,
-        cost: 150,
-        type: "Ground and Air",
-        dps: 75,
-        range: 175,
-        notes: "A truly deadly weapon. Can destory any target."
-    },
-    assets: {}
+    assets: {},
+    stats: {}
 }
 MyGame.constants.towers.assets[groundName] = [
     MyGame.assets['tower-ground-1'],
@@ -95,3 +65,58 @@ MyGame.constants.towers.assets[mixedName] = [
     MyGame.assets['tower-mixed-2'],
     MyGame.assets['tower-mixed-3']
 ];
+
+MyGame.constants.towers.stats[groundName] = [
+    { range: 200, damage: 20, cost: 20 },
+    { range: 110, damage: 25, cost: 15 },
+    { range: 125, damage: 35, cost: 20 }
+];
+MyGame.constants.towers.stats[bombName] = [
+    { range: 75, damage: 50, cost: 75 },
+    { range: 85, damage: 60, cost: 20 },
+    { range: 100, damage: 75, cost: 25 }
+];
+MyGame.constants.towers.stats[airName] = [
+    { range: 100, damage: 30, cost: 90 },
+    { range: 125, damage: 40, cost: 30 },
+    { range: 150, damage: 50, cost: 35 }
+];
+MyGame.constants.towers.stats[mixedName] = [
+    { range: 175, damage: 75, cost: 150 },
+    { range: 190, damage: 85, cost: 50 },
+    { range: 220, damage: 100, cost: 75 }
+];
+
+MyGame.constants.towers.ground = {
+    type: groundName,
+    cost: MyGame.constants.towers.stats[groundName][0].cost,
+    targets: "Ground only",
+    dps: MyGame.constants.towers.stats[groundName][0].damage,
+    range: MyGame.constants.towers.stats[groundName][0].range,
+    notes: "This is the standard ground cannon. Deal damage to only ground targets."
+}
+
+MyGame.constants.towers.bomb = {
+    type: bombName,
+    cost: MyGame.constants.towers.stats[bombName][0].cost,
+    targets: "Ground only",
+    dps: MyGame.constants.towers.stats[bombName][0].damage,
+    range: MyGame.constants.towers.stats[bombName][0].range,
+    notes: "Does splash damage to ground targets."
+}
+MyGame.constants.towers.air = {
+    type: airName,
+    cost: MyGame.constants.towers.stats[airName][0].cost,
+    targets: "Air only",
+    dps: MyGame.constants.towers.stats[airName][0].damage,
+    range: MyGame.constants.towers.stats[airName][0].range,
+    notes: "This is an anti air weapon. Only fires at air targets."
+}
+MyGame.constants.towers.mixed = {
+    type: mixedName,
+    cost: MyGame.constants.towers.stats[mixedName][0].cost,
+    targets: "Ground and Air",
+    dps: MyGame.constants.towers.stats[mixedName][0].damage,
+    range: MyGame.constants.towers.stats[mixedName][0].range,
+    notes: "A truly deadly weapon. Can destory any target."
+}

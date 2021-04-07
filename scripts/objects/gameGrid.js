@@ -32,15 +32,32 @@ MyGame.objects.gameGrid = function(spec) {
     }
 
     // Updates the spec at the given coordinate
-    function updateGridCell(x, y, spec, elapsedTime) {
+    function updateGridCell(x, y, spec) {
         for (item in spec) {
             grid[y][x][item] = spec[item];
         }
     }
 
+    function gridAtXY(pos) {
+        return {
+            x: Math.round(pos.x / spec.gridSize.width),
+            y: Math.round(pos.y / spec.gridSize.height)
+        }
+    }
+
+    function XYAtGrid(cord) {
+        return {
+            x: spec.gridSize.width * (cord.col + .5),
+            y: spec.gridSize.height * (cord.row + .5)
+        }
+
+    }
+
     return {
         get grid() { return grid; },
         get background() { return spec.background; },
-        updateGridCell
+        updateGridCell,
+        gridAtXY,
+        XYAtGrid
     }
 }

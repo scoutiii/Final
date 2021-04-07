@@ -1,5 +1,7 @@
 MyGame.objects.gameModel = function(spec) {
     let objects = MyGame.objects;
+    let constants = MyGame.constants;
+    let towerVals = MyGame.constants.towers;
     let internalUpdate = null;
     let border = {
         "1,1": { x: 1, y: 1, object: objects.border({ image: MyGame.assets['bkgd-corner'], rotation: 90 }) }, // Points for top left
@@ -62,6 +64,13 @@ MyGame.objects.gameModel = function(spec) {
     // Track enemies and towers
     let creeps = [];
     let towers = [];
+    towers.push(objects.tower({
+        level: 0,
+        type: towerVals.ground.type,
+        position: gameGrid.XYAtGrid({ col: 5, row: 5 }),
+
+    }));
+    gameGrid.updateGridCell(5, 5, { object: towers[0] });
 
     let startNextWave = true;
     // Manages the in game menu
@@ -81,7 +90,6 @@ MyGame.objects.gameModel = function(spec) {
             }
         }
     });
-    // Sets up the grid
 
 
     function prepStageUpdate(elapsedTime) {
@@ -107,7 +115,7 @@ MyGame.objects.gameModel = function(spec) {
     }
 
 
-
+    // Sets up the initial stage
     internalUpdate = prepStageUpdate;
     menu.setDialog("Preparation stage.");
 
