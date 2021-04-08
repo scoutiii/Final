@@ -1,40 +1,37 @@
 // Spec needs 
-// 1. type: name of asset (1blue)
+// 1. type: name of asset (creep-blue-1)
 // 2. center: {x: , y: } game coords
 // 3. rotation: degrees,
 // 4. health: what ever
 MyGame.objects.creep = function(spec) {
     // Defines stuff for animated sprite
-    let image = MyGame.assets[spec.type];
-    let subTextureWidth = 0;
-    let spriteTime = [];
-    let spriteCount = 0;
-    let animationTime = 0;
-    let subImageIndex = 0;
-    if (spec.type[spec.type.length - 1] == "1") {
-        spriteCount = 6;
-        spriteTime = [1000, 200, 100, 1000, 100, 200];
-    } else if (spec.type[spec.type.length - 1] == "2") {
-        spriteCount = 4;
-        spriteTime = [200, 1000, 200, 600];
-    } else if (spec.type[spec.type.length - 1] == "3") {
-        spriteCount = 4;
-        spriteTime = [1000, 200, 200, 200];
-    }
-    subTextureWidth = image.width / spriteCount;
+    let that = {};
+    that.type = spec.type;
+    that.image = MyGame.assets[that.type];
+    that.subTextureWidth = 0;
+    that.spriteTime = [];
+    that.spriteCount = 0;
+    that.animationTime = 0;
+    that.subImageIndex = 0;
+    that.spriteCount = MyGame.constants.creeps.animation[spec.type].spriteCount;
+    that.spriteTime = MyGame.constants.creeps.animation[spec.type].spriteTime;
+    that.subTextureWidth = that.image.width / that.spriteCount;
 
     // Defines other attributes
-    let center = spec.center;
-    let rotation = spec.rotation;
-    let size = MyGame.constants.gridSize;
-    let health = spec.health;
+    that.center = {
+        x: MyGame.constants.gridSize.width * (spec.center.x + 0.5),
+        y: MyGame.constants.gridSize.height * (spec.center.y + 0.5)
+    };
+    that.rotation = spec.rotation - 90;
+    that.size = MyGame.constants.gridSize;
+    that.stats = MyGame.constants.creeps.stats[that.type];
 
     // Updates the animation state
     function updateAnimation(elapsedTime) {
-        animationTime += elapsedTime;
-        if (animationTime >= spriteTime[subImageIndex]) {
-            animationTime -= spriteTime[subImageIndex];
-            subImageIndex = (subImageIndex + 1) % spriteCount;
+        that.animationTime += elapsedTime;
+        if (that.animationTime >= that.spriteTime[that.subImageIndex]) {
+            that.animationTime -= that.spriteTime[that.subImageIndex];
+            that.subImageIndex = (that.subImageIndex + 1) % that.spriteCount;
         }
     }
 
@@ -46,15 +43,15 @@ MyGame.objects.creep = function(spec) {
     return {
         get animationInfo() {
             return {
-                image,
-                subImageIndex,
-                subTextureWidth,
-                center,
-                rotation,
-                size
+                image: that.image,
+                subImageIndex: that.subImageIndex,
+                subTextureWidth: that.subTextureWidth,
+                center: that.center,
+                rotation: that.rotation,
+                size: that.size
             };
         },
-        get health() { return health; },
+        get health() { return that.stats.health; },
         update
     }
 

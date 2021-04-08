@@ -3,7 +3,10 @@ MyGame.objects.tower = function(spec) {
     that.name = "tower";
     that.level = spec.level;
     that.type = spec.type;
-    that.position = spec.position;
+    that.center = {
+        x: MyGame.constants.gridSize.width * (spec.center.x + 0.5),
+        y: MyGame.constants.gridSize.height * (spec.center.y + 0.5)
+    };
     that.showRadius = true;
     that.rotation = 0;
 
@@ -35,8 +38,8 @@ MyGame.objects.tower = function(spec) {
         get name() { return that.name },
         get radius() { return { radius: that.radius, show: that.showRadius }; },
         set showRadius(val) { that.showRadius = val; },
-        get position() { return that.position; },
-        set position(position) { that.position = position; },
+        get center() { return that.center; },
+        set center(position) { that.center = position; },
         get image() { return that.image; },
         get rotation() { return that.rotation; },
         set rotation(rot) { that.rotation = rot; }

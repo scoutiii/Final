@@ -56,10 +56,6 @@ MyGame.loader = (function() {
         message: 'fps loaded',
         onComplete: null
     }, {
-        scripts: ['objects/gameGrid'],
-        message: 'gameGrid loaded',
-        onComplete: null
-    }, {
         scripts: ['objects/border'],
         message: 'border loaded',
         onComplete: null
@@ -90,10 +86,6 @@ MyGame.loader = (function() {
     }, {
         scripts: ['systems/render/gameModel'],
         message: 'gameModel renderer loaded',
-        onComplete: null
-    }, {
-        scripts: ['systems/render/gameGrid'],
-        message: 'gameGrid renderer loaded',
         onComplete: null
     }, {
         scripts: ['systems/render/border'],
