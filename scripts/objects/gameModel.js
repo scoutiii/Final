@@ -1,4 +1,13 @@
 MyGame.objects.gameModel = function(spec) {
+
+
+    //
+    //
+    //   Variables and such
+    //
+    //
+
+
     let objects = MyGame.objects;
     let constants = MyGame.constants;
     let towerVals = MyGame.constants.towers;
@@ -23,6 +32,18 @@ MyGame.objects.gameModel = function(spec) {
 
 
 
+
+
+
+    //
+    //
+    //   Update codes
+    //
+    //
+
+
+
+
     // Manages the in game menu
     let startNextWave = true;
     let menu = objects.inGameMenu({
@@ -42,6 +63,7 @@ MyGame.objects.gameModel = function(spec) {
                     level: 0,
                     type: towerVals.ground.type,
                     center: { x: 5, y: 5 },
+                    creeps: creeps
                 }));
                 internalUpdate = waveStageUpdate;
                 startNextWave = false;
@@ -69,7 +91,7 @@ MyGame.objects.gameModel = function(spec) {
 
         // Updates towers
         for (let i = 0; i < towers.length; i++) {
-            towers[i].update(elapsedTime);
+            towers[i].update(elapsedTime, creeps);
         }
 
         // Updates projectiles
@@ -90,7 +112,30 @@ MyGame.objects.gameModel = function(spec) {
 
 
     //
+    //
+    //   Tower placement logic
+    //
+    //
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //
+    //
+    //   Set up and return
+    //
+    //
 
     // Sets up the initial stage
     internalUpdate = prepStageUpdate;

@@ -8,7 +8,12 @@ MyGame = {
     },
     constants: {},
     misc: {
-        newGame: true
+        newGame: true,
+        controls: {
+            upgrade: 'u',
+            sell: 's',
+            nextLevel: 'g'
+        }
     },
     assets: {}
 };

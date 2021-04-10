@@ -1,6 +1,7 @@
 MyGame.objects.tower = function(spec) {
     let that = {};
     that.name = "tower";
+    that.creeps = spec.creeps;
     that.level = spec.level;
     that.type = spec.type;
     that.center = {
@@ -9,6 +10,7 @@ MyGame.objects.tower = function(spec) {
     };
     that.showRadius = true;
     that.rotation = 0;
+    that.target = null;
 
     updateStats(that.level);
 
@@ -20,7 +22,10 @@ MyGame.objects.tower = function(spec) {
     }
 
     function update(elapsedTime) {
-
+        if (that.target == null) {
+            console.log("target acquired");
+            that.target = creeps[0];
+        }
     }
 
     function upgrade() {

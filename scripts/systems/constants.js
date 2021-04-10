@@ -22,6 +22,10 @@ MyGame.constants.textOptions = Object.freeze({
     }
 });
 
+// Controls
+
+MyGame.constants.controls = "MyGame.misc.controls";
+
 // size of the canvas scaling (should be like the vh in the css file)
 // and the game global size
 MyGame.constants.canvasScaleFactor = .9;

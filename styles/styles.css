@@ -266,3 +266,28 @@ footer {
 #pauseMenu div ul li {
     margin: 5vh;
 }
+
+
+/* Styling for controls menu */
+
+#controlMenu div ul {
+    list-style: none;
+    padding: 0;
+}
+
+.controlButton {
+    font-size: 5vh;
+    width: 50%;
+    background-color: black;
+    display: inline-block;
+    border: 0.16em solid yellowgreen;
+    margin: 0 0.3em 0.3em 0;
+    box-sizing: border-box;
+    text-transform: uppercase;
+    color: yellowgreen;
+    text-align: left;
+}
+
+.controlButton:active {
+    color: black;
+}
