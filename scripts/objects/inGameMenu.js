@@ -40,6 +40,7 @@ MyGame.objects.inGameMenu = function(spec) {
         "click",
         spec.onNextWave
     );
+    // Clicks for tower select
     for (let i = 0; i < towerIds.length; i++) {
         document.getElementById(towerIds[i]).addEventListener(
             "click",
@@ -48,7 +49,11 @@ MyGame.objects.inGameMenu = function(spec) {
             }
         );
     }
-
+    // grid click
+    document.getElementById("grid").addEventListener(
+        "click",
+        spec.onGridClick
+    );
 
 
 

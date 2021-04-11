@@ -1,6 +1,7 @@
 MyGame.objects.tower = function(spec) {
     let that = {};
     that.name = "tower";
+    that.id = spec.id;
     that.creeps = spec.creeps;
     that.level = spec.level;
     that.type = spec.type;
@@ -16,7 +17,7 @@ MyGame.objects.tower = function(spec) {
     if (that.showRadius == null) {
         that.showRadius = false;
     }
-
+    that.color = "rgba(150, 205, 50, .2)";
 
     that.rotation = 0;
     that.target = null;
@@ -35,6 +36,7 @@ MyGame.objects.tower = function(spec) {
             console.log("target acquired");
             that.target = that.creeps[0];
         }
+        that.rotation += 1;
     }
 
     function upgrade() {
@@ -50,6 +52,14 @@ MyGame.objects.tower = function(spec) {
             x: (pos.x - (pos.x % MyGame.constants.gridSize.width)) + (MyGame.constants.gridSize.width / 2),
             y: (pos.y - (pos.y % MyGame.constants.gridSize.height)) + (MyGame.constants.gridSize.height / 2)
         };
+        if (that.center.x < 2 * MyGame.constants.gridSize.width ||
+            that.center.x > 17 * MyGame.constants.gridSize.width ||
+            that.center.y < 2 * MyGame.constants.gridSize.height ||
+            that.center.y > 17 * MyGame.constants.gridSize.height) {
+            that.color = "rgba(255, 0, 0, .2)";
+        } else {
+            that.color = "rgba(150, 205, 50, .2)"
+        }
     }
 
     return {
@@ -57,13 +67,14 @@ MyGame.objects.tower = function(spec) {
         upgrade,
         sell,
         get name() { return that.name },
-        get radius() { return { radius: that.radius, show: that.showRadius }; },
+        get radius() { return { radius: that.radius, show: that.showRadius, color: that.color }; },
         set showRadius(val) { that.showRadius = val; },
         get center() { return that.center; },
         set center(pos) { setPosition(pos); },
         get gridPosition() { return that.gridPosition; },
         get image() { return that.image; },
         get rotation() { return that.rotation; },
-        set rotation(rot) { that.rotation = rot; }
+        set rotation(rot) { that.rotation = rot; },
+        get id() { return that.id; }
     }
 }

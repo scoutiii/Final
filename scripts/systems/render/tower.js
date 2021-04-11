@@ -5,7 +5,7 @@ MyGame.systems.render.tower = (function(graphics, constants) {
             graphics.drawCircle(
                 spec.center,
                 spec.radius.radius,
-                "rgba(150, 205, 50, .2)",
+                spec.radius.color,
                 "rgba(0, 255, 0, 1)"
             );
         }

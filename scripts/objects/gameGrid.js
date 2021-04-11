@@ -18,7 +18,35 @@ MyGame.objects.gameGrid = function(spec) {
         }
     }
 
+    // Checks to see if there is something in the placable area
+    function canPlace(x, y, grid = false) {
+        if (grid) {
+            return that.grid[y][x] == null;
+        }
+        if (x < 2 * MyGame.constants.gridSize.width ||
+            x > 17 * MyGame.constants.gridSize.width ||
+            y < 2 * MyGame.constants.gridSize.height ||
+            y > 17 * MyGame.constants.gridSize.height) {
+            return false;
+        } else {
+            let col = Math.floor(y / MyGame.constants.gridSize.height);
+            let row = Math.floor(x / MyGame.constants.gridSize.width);
+            return that.grid[col][row] == null;
+        }
+    }
+
+    function addElement(x, y, element) {
+        that.grid[y][x] = element;
+    }
+
+    function getElement(x, y) {
+        return that.grid[y][x];
+    }
+
     return {
-        get grid() { return that.grid; }
+        get grid() { return that.grid; },
+        canPlace,
+        addElement,
+        getElement
     }
 }

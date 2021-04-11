@@ -31,10 +31,12 @@ MyGame.objects.gameModel = function(spec) {
         height: constants.gridDim,
         borders: borders
     });
+    let showGrid = false;
 
     // Track enemies, towers, and projectiles
     let creeps = [];
-    let towers = [];
+    let towers = {};
+    let towersNextName = 1;
     let projectiles = [];
 
     // Tracks selected towers/ towers to place
@@ -52,17 +54,11 @@ MyGame.objects.gameModel = function(spec) {
 
     function onNextWave() {
         if (startNextWave) {
-            // creeps.push(objects.creep({
-            //     type: constants.creeps.grunt.first,
-            //     center: { x: 7, y: 7 },
-            //     rotation: 0
-            // }));
-            // towers.push(objects.tower({
-            //     level: 0,
-            //     type: towerVals.ground.type,
-            //     center: { x: 5, y: 5 },
-            //     creeps: creeps
-            // }));
+            creeps.push(objects.creep({
+                type: constants.creeps.grunt.first,
+                center: { x: 7, y: 7 },
+                rotation: 0
+            }));
             internalUpdate = waveStageUpdate;
             startNextWave = false;
             menu.setDialog("Incoming!!!");
@@ -73,19 +69,28 @@ MyGame.objects.gameModel = function(spec) {
 
     // If player has enough gold, it sets the tower to place
     function onTowerSelect(type, cost, gold) {
-        if (cost > gold) {
-            menu.setDialog("You don't have enough gold!");
+        if (towerToPlace != null) {
+            towerToPlace = null;
         } else {
-            menu.setDialog("Place tower.");
-            towerToPlace = objects.tower({
-                level: 0,
-                type: towerVals[type].type,
-                center: { x: null, y: null },
-                creeps: creeps,
-                showRadius: true
-            });
+            if (cost > gold) {
+                menu.setDialog("You don't have enough gold!");
+            } else {
+                menu.setDialog("Place tower.");
+                towerToPlace = {
+                    cost: cost,
+                    type: type
+                };
+                towerToPlace.tower = objects.tower({
+                    level: 0,
+                    type: towerVals[type].type,
+                    center: { x: NaN, y: NaN },
+                    creeps: creeps,
+                    showRadius: true
+                });
+            }
         }
     }
+
 
     // Manages the in game menu
     let startNextWave = true;
@@ -96,7 +101,10 @@ MyGame.objects.gameModel = function(spec) {
         gold: 100,
         lives: 100,
         onNextWave: onNextWave,
-        onTowerSelect: onTowerSelect
+        onTowerSelect: onTowerSelect,
+        onGridClick: function() { showGrid = !showGrid;
+                console.log("test"); } // toggles the grid lines
+
     });
 
     // Update function for the preparation stage
@@ -115,8 +123,8 @@ MyGame.objects.gameModel = function(spec) {
         }
 
         // Updates towers
-        for (let i = 0; i < towers.length; i++) {
-            towers[i].update(elapsedTime, creeps);
+        for (tower in towers) {
+            towers[tower].update(elapsedTime);
         }
 
         // Updates projectiles
@@ -126,7 +134,6 @@ MyGame.objects.gameModel = function(spec) {
         // Goes back to preparation stage
         if (creeps.length == 0) {
             creeps.length = 0;
-            towers.length = 0;
             internalUpdate = prepStageUpdate;
             startNextWave = true;
             menu.setDialog("That was intense...");
@@ -144,27 +151,74 @@ MyGame.objects.gameModel = function(spec) {
 
     let mouseInput = spec.mouse;
 
+    // Shows tower when the player has selected a tower to place
     mouseInput.registerCommand("mousemove",
         function(e, elapsedTime) {
             if (towerToPlace != null) {
-                console.log(e.clientX + " , " + e.clientY);
-                let canvas = MyGame.systems.graphics.canvas;
-                let SF = {
-                    x: canvas.width / canvas.offsetWidth,
-                    y: canvas.height / canvas.offsetHeight
+                let rect = MyGame.systems.graphics.canvas.getBoundingClientRect();
+                let canvasCoords = {
+                    x: e.clientX - rect.left,
+                    y: e.clientY - rect.top
                 };
-                towerToPlace.center = {
-                    x: (e.clientX - canvas.offsetLeft) * SF.x,
-                    y: (e.clientY - canvas.offsetTop) * SF.y
+                // console.log(canvasCoords);
+                towerToPlace.tower.center = {
+                    x: canvasCoords.x / MyGame.systems.graphics.SF,
+                    y: canvasCoords.y / MyGame.systems.graphics.SF
                 };
-                // towerToPlace.center = {
-                //     x: e.screenX,
-                //     y: e.screenY
-                // }
+                menu.setDialog("Place tower.");
             }
         });
 
-
+    // Handles when the player clicks to place
+    mouseInput.registerCommand("mousedown",
+        function(e, elapsedTime) {
+            let rect = MyGame.systems.graphics.canvas.getBoundingClientRect();
+            let canvasCoords = {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            };
+            let gameCoords = {
+                x: canvasCoords.x / MyGame.systems.graphics.SF,
+                y: canvasCoords.y / MyGame.systems.graphics.SF
+            };
+            let gridCoords = {
+                x: Math.floor(gameCoords.x / constants.gridSize.width),
+                y: Math.floor(gameCoords.y / constants.gridSize.height)
+            };
+            // trying to place a tower
+            if (towerToPlace != null) {
+                // Not enough gold
+                if (towerToPlace.cost > menu.gold) {
+                    menu.setDialog("Not enough gold!");
+                    towerToPlace = null;
+                } else {
+                    // Able to place the tower
+                    if (gameGrid.canPlace(gridCoords.x, gridCoords.y, true)) {
+                        // Adds a new tower to the towers list
+                        let tower = objects.tower({
+                            level: 0,
+                            type: towerVals[towerToPlace.type].type,
+                            center: gridCoords,
+                            creeps: creeps,
+                            showRadius: false,
+                            id: towersNextName++
+                        });
+                        towers[tower.id] = tower;
+                        // Adds the tower to the game grid
+                        gameGrid.addElement(gridCoords.x, gridCoords.y, tower);
+                        menu.gold = -towerToPlace.cost; // takes away the appropriate amount of gold
+                        if (menu.gold < towerToPlace.cost) {
+                            menu.setDialog("Not enought gold!");
+                            towerToPlace = null;
+                        }
+                    } else {
+                        menu.setDialog("Cannot place tower here!");
+                    }
+                }
+            } else { // Trying to select a tower now
+                menu.setDialog("test");
+            }
+        });
 
 
 
@@ -200,6 +254,7 @@ MyGame.objects.gameModel = function(spec) {
         get border() { return borders; },
         get projectiles() { return projectiles; },
         get towerToPlace() { return towerToPlace; },
-        processInput
+        processInput,
+        get showGrid() { return showGrid; }
     }
 }

@@ -283,3 +283,27 @@ for (let y = 0; y < MyGame.constants.gridDim; y++) {
     }
 }
 safeSpots = null;
+
+MyGame.constants.gridLines = {};
+MyGame.constants.gridLines.y = [];
+for (let y = 2; y < MyGame.constants.gridDim - 1; y++) {
+    MyGame.constants.gridLines.y.push({
+        x: 2 * MyGame.constants.gridSize.width,
+        y: y * MyGame.constants.gridSize.height
+    });
+    MyGame.constants.gridLines.y.push({
+        x: 17 * MyGame.constants.gridSize.width,
+        y: y * MyGame.constants.gridSize.height
+    });
+}
+MyGame.constants.gridLines.x = [];
+for (let x = 2; x < MyGame.constants.gridDim - 1; x++) {
+    MyGame.constants.gridLines.x.push({
+        x: x * MyGame.constants.gridSize.width,
+        y: 2 * MyGame.constants.gridSize.height
+    });
+    MyGame.constants.gridLines.x.push({
+        x: x * MyGame.constants.gridSize.width,
+        y: 17 * MyGame.constants.gridSize.height
+    });
+}
