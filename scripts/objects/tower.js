@@ -45,10 +45,6 @@ MyGame.objects.tower = function(spec) {
         updateStats(that.level + 1);
     }
 
-    function sell() {
-
-    }
-
     function setPosition(pos) {
         that.center = {
             x: (pos.x - (pos.x % MyGame.constants.gridSize.width)) + (MyGame.constants.gridSize.width / 2),
@@ -67,7 +63,6 @@ MyGame.objects.tower = function(spec) {
     return {
         update,
         upgrade,
-        sell,
         get name() { return that.name },
         get radius() { return { radius: that.radius, show: that.showRadius, color: that.color }; },
         set showRadius(val) { that.showRadius = val; },

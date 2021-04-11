@@ -254,8 +254,8 @@ MyGame.objects.gameModel = function(spec) {
         menu.setDialog(message);
     }
 
+    // Deselects tower if there is one
     function deselectTower() {
-        // Deselects tower if there is one
         if (towerSelected != null) {
             towerSelected.showRadius = false;
         }

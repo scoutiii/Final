@@ -267,10 +267,42 @@ MyGame.constants.border.vert = [
 ];
 
 MyGame.constants.border.spawnPoints = {
-    "8,0": { x: 8, y: 0 },
-    "0,8": { x: 0, y: 8 },
-    "16,8": { x: 16, y: 8 },
-    "8,16": { x: 8, y: 16 }
+    "0,8": {
+        x: 0,
+        y: 8,
+        children: [
+            { x: 0, y: 7 },
+            { x: 0, y: 8 },
+            { x: 0, y: 9 }
+        ]
+    },
+    "8,16": {
+        x: 8,
+        y: 16,
+        children: [
+            { x: 7, y: 16 },
+            { x: 8, y: 16 },
+            { x: 9, y: 16 }
+        ]
+    },
+    "16,8": {
+        x: 16,
+        y: 8,
+        children: [
+            { x: 16, y: 9 },
+            { x: 16, y: 8 },
+            { x: 16, y: 7 }
+        ]
+    },
+    "8,0": {
+        x: 8,
+        y: 0,
+        children: [
+            { x: 7, y: 0 },
+            { x: 8, y: 0 },
+            { x: 9, y: 0 }
+        ]
+    }
 };
 MyGame.constants.border.misc = [];
 for (let y = 0; y < MyGame.constants.gridDim; y++) {

@@ -35,7 +35,9 @@ MyGame.systems.render.gameModel = (function(graphics, constants, renderer) {
         // Renders tower to place
         if (spec.towerToPlace != null) {
             renderer.tower.render(spec.towerToPlace.tower);
-            drawGridLines();
+            if (!spec.showGrid) {
+                drawGridLines();
+            }
         }
 
     }
