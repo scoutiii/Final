@@ -54,13 +54,13 @@ MyGame.objects.tower = function(spec) {
             x: (pos.x - (pos.x % MyGame.constants.gridSize.width)) + (MyGame.constants.gridSize.width / 2),
             y: (pos.y - (pos.y % MyGame.constants.gridSize.height)) + (MyGame.constants.gridSize.height / 2)
         };
-        if (that.center.x < 2 * MyGame.constants.gridSize.width ||
-            that.center.x > 17 * MyGame.constants.gridSize.width ||
-            that.center.y < 2 * MyGame.constants.gridSize.height ||
-            that.center.y > 17 * MyGame.constants.gridSize.height) {
+        if (that.center.x < MyGame.constants.border.interior.lower * MyGame.constants.gridSize.width ||
+            that.center.x > MyGame.constants.border.interior.upper * MyGame.constants.gridSize.width ||
+            that.center.y < MyGame.constants.border.interior.lower * MyGame.constants.gridSize.height ||
+            that.center.y > MyGame.constants.border.interior.upper * MyGame.constants.gridSize.height) {
             that.color = "rgba(255, 0, 0, .2)";
         } else {
-            that.color = "rgba(150, 205, 50, .2)"
+            that.color = "rgba(150, 205, 50, .2)";
         }
     }
 

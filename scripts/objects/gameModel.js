@@ -14,6 +14,10 @@ MyGame.objects.gameModel = function(spec) {
     let internalUpdate = null;
 
 
+    let mouseInput = spec.mouse;
+    let keyboard = spec.keyboard;
+
+
     // Sets up the border pieces
     let borders = [];
     for (let y = 0; y < constants.gridDim; y++) {
@@ -51,7 +55,7 @@ MyGame.objects.gameModel = function(spec) {
     //
     //
 
-
+    // Is called when the next wave is supposed to start
     function onNextWave() {
         if (startNextWave) {
             creeps.push(objects.creep({
@@ -151,8 +155,6 @@ MyGame.objects.gameModel = function(spec) {
     //
     //
 
-    let mouseInput = spec.mouse;
-    let keyboard = spec.keyboard;
 
     // Shows tower when the player has selected a tower to place
     mouseInput.registerCommand("mousemove",
@@ -163,14 +165,13 @@ MyGame.objects.gameModel = function(spec) {
                     x: e.clientX - rect.left,
                     y: e.clientY - rect.top
                 };
-                // console.log(canvasCoords);
                 towerToPlace.tower.center = {
                     x: canvasCoords.x / MyGame.systems.graphics.SF,
                     y: canvasCoords.y / MyGame.systems.graphics.SF
                 };
-                // menu.setDialog("Place tower.");
             }
-        });
+        }
+    );
 
     // Handles when the player clicks to place
     mouseInput.registerCommand("mousedown",
@@ -232,7 +233,8 @@ MyGame.objects.gameModel = function(spec) {
                     menu.setDialog("");
                 }
             }
-        });
+        }
+    );
 
 
     function displayTowerInfo(tower) {

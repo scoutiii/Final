@@ -23,10 +23,10 @@ MyGame.objects.gameGrid = function(spec) {
         if (grid) {
             return that.grid[y][x] == null;
         }
-        if (x < 2 * MyGame.constants.gridSize.width ||
-            x > 17 * MyGame.constants.gridSize.width ||
-            y < 2 * MyGame.constants.gridSize.height ||
-            y > 17 * MyGame.constants.gridSize.height) {
+        if (x < MyGame.constants.border.interior.lower * MyGame.constants.gridSize.width ||
+            x > MyGame.constants.border.interior.upper * MyGame.constants.gridSize.width ||
+            y < MyGame.constants.border.interior.lower * MyGame.constants.gridSize.height ||
+            y > MyGame.constants.border.interior.upper * MyGame.constants.gridSize.height) {
             return false;
         } else {
             let col = Math.floor(y / MyGame.constants.gridSize.height);

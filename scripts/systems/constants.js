@@ -33,7 +33,7 @@ MyGame.constants.globalSize = {
     width: 1000,
     height: 1000
 };
-MyGame.constants.gridDim = 19;
+MyGame.constants.gridDim = 17;
 MyGame.constants.gridSize = {
     width: MyGame.constants.globalSize.width / MyGame.constants.gridDim,
     height: MyGame.constants.globalSize.height / MyGame.constants.gridDim
@@ -217,9 +217,9 @@ MyGame.constants.towers.mixed = {
 MyGame.constants.border = {};
 MyGame.constants.border.corners = [
     { x: 1, y: 1, rotation: 90, image: 'bkgd-corner' },
-    { x: 17, y: 1, rotation: 180, image: 'bkgd-corner' },
-    { x: 1, y: 17, rotation: 0, image: 'bkgd-corner' },
-    { x: 17, y: 17, rotation: -90, image: 'bkgd-corner' }
+    { x: 15, y: 1, rotation: 180, image: 'bkgd-corner' },
+    { x: 1, y: 15, rotation: 0, image: 'bkgd-corner' },
+    { x: 15, y: 15, rotation: -90, image: 'bkgd-corner' }
 ];
 MyGame.constants.border.horiz = [
     { x: 2, y: 1, rotation: 0, image: 'bkgd-horiz' },
@@ -227,21 +227,21 @@ MyGame.constants.border.horiz = [
     { x: 4, y: 1, rotation: 0, image: 'bkgd-horiz' },
     { x: 5, y: 1, rotation: 0, image: 'bkgd-horiz' },
     { x: 6, y: 1, rotation: 0, image: 'bkgd-horiz' },
+    { x: 10, y: 1, rotation: 0, image: 'bkgd-horiz' },
+    { x: 11, y: 1, rotation: 0, image: 'bkgd-horiz' },
     { x: 12, y: 1, rotation: 0, image: 'bkgd-horiz' },
     { x: 13, y: 1, rotation: 0, image: 'bkgd-horiz' },
     { x: 14, y: 1, rotation: 0, image: 'bkgd-horiz' },
-    { x: 15, y: 1, rotation: 0, image: 'bkgd-horiz' },
-    { x: 16, y: 1, rotation: 0, image: 'bkgd-horiz' },
-    { x: 2, y: 17, rotation: 0, image: 'bkgd-horiz' },
-    { x: 3, y: 17, rotation: 0, image: 'bkgd-horiz' },
-    { x: 4, y: 17, rotation: 0, image: 'bkgd-horiz' },
-    { x: 5, y: 17, rotation: 0, image: 'bkgd-horiz' },
-    { x: 6, y: 17, rotation: 0, image: 'bkgd-horiz' },
-    { x: 12, y: 17, rotation: 0, image: 'bkgd-horiz' },
-    { x: 13, y: 17, rotation: 0, image: 'bkgd-horiz' },
-    { x: 14, y: 17, rotation: 0, image: 'bkgd-horiz' },
-    { x: 15, y: 17, rotation: 0, image: 'bkgd-horiz' },
-    { x: 16, y: 17, rotation: 0, image: 'bkgd-horiz' }
+    { x: 2, y: 15, rotation: 0, image: 'bkgd-horiz' },
+    { x: 3, y: 15, rotation: 0, image: 'bkgd-horiz' },
+    { x: 4, y: 15, rotation: 0, image: 'bkgd-horiz' },
+    { x: 5, y: 15, rotation: 0, image: 'bkgd-horiz' },
+    { x: 6, y: 15, rotation: 0, image: 'bkgd-horiz' },
+    { x: 10, y: 15, rotation: 0, image: 'bkgd-horiz' },
+    { x: 11, y: 15, rotation: 0, image: 'bkgd-horiz' },
+    { x: 12, y: 15, rotation: 0, image: 'bkgd-horiz' },
+    { x: 13, y: 15, rotation: 0, image: 'bkgd-horiz' },
+    { x: 14, y: 15, rotation: 0, image: 'bkgd-horiz' }
 ];
 MyGame.constants.border.vert = [
     { x: 1, y: 2, rotation: 90, image: 'bkgd-horiz' },
@@ -249,50 +249,57 @@ MyGame.constants.border.vert = [
     { x: 1, y: 4, rotation: 90, image: 'bkgd-horiz' },
     { x: 1, y: 5, rotation: 90, image: 'bkgd-horiz' },
     { x: 1, y: 6, rotation: 90, image: 'bkgd-horiz' },
-    { x: 17, y: 2, rotation: 90, image: 'bkgd-horiz' },
-    { x: 17, y: 3, rotation: 90, image: 'bkgd-horiz' },
-    { x: 17, y: 4, rotation: 90, image: 'bkgd-horiz' },
-    { x: 17, y: 5, rotation: 90, image: 'bkgd-horiz' },
-    { x: 17, y: 6, rotation: 90, image: 'bkgd-horiz' },
-    { x: 1, y: 16, rotation: 90, image: 'bkgd-horiz' },
-    { x: 1, y: 15, rotation: 90, image: 'bkgd-horiz' },
-    { x: 1, y: 14, rotation: 90, image: 'bkgd-horiz' },
-    { x: 1, y: 13, rotation: 90, image: 'bkgd-horiz' },
+    { x: 15, y: 2, rotation: 90, image: 'bkgd-horiz' },
+    { x: 15, y: 3, rotation: 90, image: 'bkgd-horiz' },
+    { x: 15, y: 4, rotation: 90, image: 'bkgd-horiz' },
+    { x: 15, y: 5, rotation: 90, image: 'bkgd-horiz' },
+    { x: 15, y: 6, rotation: 90, image: 'bkgd-horiz' },
+    { x: 1, y: 10, rotation: 90, image: 'bkgd-horiz' },
+    { x: 1, y: 11, rotation: 90, image: 'bkgd-horiz' },
     { x: 1, y: 12, rotation: 90, image: 'bkgd-horiz' },
-    { x: 17, y: 16, rotation: 90, image: 'bkgd-horiz' },
-    { x: 17, y: 15, rotation: 90, image: 'bkgd-horiz' },
-    { x: 17, y: 14, rotation: 90, image: 'bkgd-horiz' },
-    { x: 17, y: 13, rotation: 90, image: 'bkgd-horiz' },
-    { x: 17, y: 12, rotation: 90, image: 'bkgd-horiz' }
+    { x: 1, y: 13, rotation: 90, image: 'bkgd-horiz' },
+    { x: 1, y: 14, rotation: 90, image: 'bkgd-horiz' },
+    { x: 15, y: 10, rotation: 90, image: 'bkgd-horiz' },
+    { x: 15, y: 11, rotation: 90, image: 'bkgd-horiz' },
+    { x: 15, y: 12, rotation: 90, image: 'bkgd-horiz' },
+    { x: 15, y: 13, rotation: 90, image: 'bkgd-horiz' },
+    { x: 15, y: 14, rotation: 90, image: 'bkgd-horiz' }
 ];
 
-let safeSpots = {
-    "9,0": { x: 9, y: 0 },
-    "0,9": { x: 0, y: 9 },
-    "18,9": { x: 18, y: 9 },
-    "9,18": { x: 9, y: 18 }
+MyGame.constants.border.spawnPoints = {
+    "8,0": { x: 8, y: 0 },
+    "0,8": { x: 0, y: 8 },
+    "16,8": { x: 16, y: 8 },
+    "8,16": { x: 8, y: 16 }
 };
 MyGame.constants.border.misc = [];
 for (let y = 0; y < MyGame.constants.gridDim; y++) {
     for (let x = 0; x < MyGame.constants.gridDim; x++) {
-        if (!(x + "," + y in safeSpots)) {
-            if (y == 0 || (y == 18) || x == 0 || x == 18) {
+        if (!(x + "," + y in MyGame.constants.border.spawnPoints)) {
+            if (y == 0 ||
+                y == MyGame.constants.gridDim - 1 ||
+                x == 0 ||
+                x == MyGame.constants.gridDim - 1) {
                 MyGame.constants.border.misc.push({ x: x, y: y });
             }
         }
     }
 }
-safeSpots = null;
+
+MyGame.constants.border.interior = {
+    lower: 2,
+    upper: MyGame.constants.gridDim - 2
+};
 
 MyGame.constants.gridLines = {};
 MyGame.constants.gridLines.y = [];
-for (let y = 2; y < MyGame.constants.gridDim - 1; y++) {
+for (let y = MyGame.constants.border.interior.lower; y < MyGame.constants.gridDim - 1; y++) {
     MyGame.constants.gridLines.y.push({
-        x: 2 * MyGame.constants.gridSize.width,
+        x: MyGame.constants.border.interior.lower * MyGame.constants.gridSize.width,
         y: y * MyGame.constants.gridSize.height
     });
     MyGame.constants.gridLines.y.push({
-        x: 17 * MyGame.constants.gridSize.width,
+        x: MyGame.constants.border.interior.upper * MyGame.constants.gridSize.width,
         y: y * MyGame.constants.gridSize.height
     });
 }
@@ -300,10 +307,10 @@ MyGame.constants.gridLines.x = [];
 for (let x = 2; x < MyGame.constants.gridDim - 1; x++) {
     MyGame.constants.gridLines.x.push({
         x: x * MyGame.constants.gridSize.width,
-        y: 2 * MyGame.constants.gridSize.height
+        y: MyGame.constants.border.interior.lower * MyGame.constants.gridSize.height
     });
     MyGame.constants.gridLines.x.push({
         x: x * MyGame.constants.gridSize.width,
-        y: 17 * MyGame.constants.gridSize.height
+        y: MyGame.constants.border.interior.upper * MyGame.constants.gridSize.height
     });
 }
