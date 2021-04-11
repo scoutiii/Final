@@ -30,6 +30,11 @@ body {
     text-align: center;
 }
 
+.backButton:hover,
+.menubutton:hover {
+    color: white;
+}
+
 
 /* For getting the back button to stay at the bottom */
 
@@ -238,12 +243,6 @@ footer {
     padding: 0;
 }
 
-.menubutton:hover {
-    color: black;
-    border-color: black;
-    background-color: yellowgreen;
-}
-
 #mainMenu div ul li {
     margin: 5vh;
 }
@@ -288,6 +287,7 @@ footer {
     text-align: left;
 }
 
-.controlButton:active {
-    color: black;
+.controlButton:hover {
+    color: white;
+    background-color: greenyellow;
 }

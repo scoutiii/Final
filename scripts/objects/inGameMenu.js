@@ -35,10 +35,22 @@ MyGame.objects.inGameMenu = function(spec) {
         onTowerHover(towers.mixed)
     };
 
+    // Sets up click behavior
     document.getElementById("nextWaveButton").addEventListener(
         "click",
         spec.onNextWave
     );
+    for (let i = 0; i < towerIds.length; i++) {
+        document.getElementById(towerIds[i]).addEventListener(
+            "click",
+            function() {
+                spec.onTowerSelect(towerIds[i], towers[towerIds[i]].cost, that.gold);
+            }
+        );
+    }
+
+
+
 
     function updateStatus() {
         document.getElementById("level").innerHTML = "level: " + that.level;

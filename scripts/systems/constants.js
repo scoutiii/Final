@@ -265,3 +265,21 @@ MyGame.constants.border.vert = [
     { x: 17, y: 13, rotation: 90, image: 'bkgd-horiz' },
     { x: 17, y: 12, rotation: 90, image: 'bkgd-horiz' }
 ];
+
+let safeSpots = {
+    "9,0": { x: 9, y: 0 },
+    "0,9": { x: 0, y: 9 },
+    "18,9": { x: 18, y: 9 },
+    "9,18": { x: 9, y: 18 }
+};
+MyGame.constants.border.misc = [];
+for (let y = 0; y < MyGame.constants.gridDim; y++) {
+    for (let x = 0; x < MyGame.constants.gridDim; x++) {
+        if (!(x + "," + y in safeSpots)) {
+            if (y == 0 || (y == 18) || x == 0 || x == 18) {
+                MyGame.constants.border.misc.push({ x: x, y: y });
+            }
+        }
+    }
+}
+safeSpots = null;

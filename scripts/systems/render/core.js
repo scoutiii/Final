@@ -153,6 +153,7 @@ MyGame.systems.graphics = (function(constants) {
 
     return {
         get canvas() { return canvas; },
+        get context() { return context; },
         clear,
         drawTexture,
         drawSubTexture,

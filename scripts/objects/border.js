@@ -1,12 +1,12 @@
 MyGame.objects.border = function(spec) {
-    let info = {
+    let that = {
         image: null,
         rotation: null,
         center: null,
         size: null
     };
 
-    let types = ["corners", "horiz", "vert"];
+    let types = ["corners", "horiz", "vert", "misc"];
     let found = false;
     for (let i = 0; i < types.length && !found; i++) {
         let filtered = MyGame.constants.border[types[i]].filter(function(cord) {
@@ -14,12 +14,16 @@ MyGame.objects.border = function(spec) {
         });
         if (filtered.length > 0) {
             found = true;
-            info.image = MyGame.assets[filtered[0].image];
-            info.rotation = filtered[0].rotation;
-            info.size = MyGame.constants.gridSize;
-            info.center = {
-                x: info.size.width * (filtered[0].x + 0.5),
-                y: info.size.height * (filtered[0].y + 0.5)
+            that.image = MyGame.assets[filtered[0].image];
+            that.rotation = filtered[0].rotation;
+            that.size = MyGame.constants.gridSize;
+            that.position = {
+                x: filtered[0].x,
+                y: filtered[0].y
+            };
+            that.center = {
+                x: that.size.width * (that.position.x + 0.5),
+                y: that.size.height * (that.position.y + 0.5)
             };
         }
     }
@@ -27,9 +31,10 @@ MyGame.objects.border = function(spec) {
 
     return {
         get name() { return "border"; },
-        get image() { return info.image },
-        get rotation() { return info.rotation },
-        get center() { return info.center },
-        get size() { return info.size }
+        get image() { return that.image },
+        get rotation() { return that.rotation },
+        get center() { return that.center },
+        get position() { return that.position; },
+        get size() { return that.size }
     }
 }

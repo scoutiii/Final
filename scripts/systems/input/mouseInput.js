@@ -50,7 +50,7 @@ MyGame.systems.input.mouse = function() {
         that.mouseMove.length = 0;
     };
 
-    that.register = function(type, handler) {
+    that.registerCommand = function(type, handler) {
         if (type === 'mousedown') {
             that.handlersDown.push(handler);
         } else if (type === 'mouseup') {
@@ -64,6 +64,8 @@ MyGame.systems.input.mouse = function() {
     canvas.addEventListener('mousedown', mouseDown);
     canvas.addEventListener('mouseup', mouseUp);
     canvas.addEventListener('mousemove', mouseMove);
+
+    that.canvas;
 
     return that;
 };

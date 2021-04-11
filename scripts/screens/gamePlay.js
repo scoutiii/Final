@@ -47,7 +47,10 @@ MyGame.screens[MyGame.constants.screens.gamePlay] = (function(screenManager, obj
         cancelNextRequest = false;
 
         if (MyGame.misc.newGame) {
-            gameModel = objects.gameModel();
+            gameModel = objects.gameModel({
+                keyboard,
+                mouse
+            });
         }
 
         // Register keyboard stuff

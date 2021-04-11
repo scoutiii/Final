@@ -77,6 +77,10 @@ MyGame.loader = (function() {
         message: 'tower loaded',
         onComplete: null
     }, {
+        scripts: ['objects/gameGrid'],
+        message: 'gameGrid loaded',
+        onComplete: null
+    }, {
         scripts: ['systems/render/core'], // Renderers
         message: 'core renderer loaded',
         onComplete: null

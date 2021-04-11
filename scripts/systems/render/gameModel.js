@@ -24,6 +24,12 @@ MyGame.systems.render.gameModel = (function(graphics, constants, renderer) {
         }
         // Renders particles
 
+
+        // Renders tower to place
+        if (spec.towerToPlace != null) {
+            renderer.tower.render(spec.towerToPlace);
+        }
+
     }
 
     return {
