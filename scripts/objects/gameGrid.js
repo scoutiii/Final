@@ -39,6 +39,10 @@ MyGame.objects.gameGrid = function(spec) {
         that.grid[y][x] = element;
     }
 
+    function removeElement(x, y) {
+        that.grid[y][x] = null;
+    }
+
     function getElement(x, y) {
         return that.grid[y][x];
     }
@@ -47,6 +51,7 @@ MyGame.objects.gameGrid = function(spec) {
         get grid() { return that.grid; },
         canPlace,
         addElement,
-        getElement
+        getElement,
+        removeElement
     }
 }

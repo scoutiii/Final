@@ -68,9 +68,10 @@ MyGame.objects.inGameMenu = function(spec) {
         for (let i = 0; i < towerIds.length; i++) {
             if (towers[towerIds[i]].cost > that.gold) {
                 document.getElementById(towerIds[i]).style.filter = "grayscale(100%)";
+            } else {
+                document.getElementById(towerIds[i]).style.filter = "grayscale(0%)";
             }
         }
-
     }
     updateStatus();
 

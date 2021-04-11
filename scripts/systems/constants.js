@@ -159,7 +159,7 @@ MyGame.constants.towers.assets[mixedName] = [
 ];
 
 MyGame.constants.towers.stats[groundName] = [
-    { range: 200, damage: 20, cost: 20 },
+    { range: 100, damage: 20, cost: 20 },
     { range: 110, damage: 25, cost: 15 },
     { range: 125, damage: 35, cost: 20 }
 ];
