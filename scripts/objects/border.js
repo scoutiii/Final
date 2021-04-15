@@ -31,10 +31,10 @@ MyGame.objects.border = function(spec) {
 
     return {
         get name() { return "border"; },
-        get image() { return that.image },
-        get rotation() { return that.rotation },
-        get center() { return that.center },
+        get image() { return that.image; },
+        get rotation() { return that.rotation; },
+        get center() { return that.center; },
         get position() { return that.position; },
-        get size() { return that.size }
+        get size() { return that.size; }
     }
 }

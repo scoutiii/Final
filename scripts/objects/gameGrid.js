@@ -19,34 +19,68 @@ MyGame.objects.gameGrid = function(spec) {
         }
     }
 
+    // Creates a graph
     that.graph = {};
-    updateGraph();
+    for (let y = 0; y < that.grid.length; y++) {
+        for (let x = 0; x < that.grid[y].length; x++) {
+            if (that.grid[y][x] == null) {
+                let name = x + "," + y;
+                that.graph[name] = {};
+                // checks up
+                if (y - 1 >= 0 && that.grid[y - 1][x] == null) {
+                    that.graph[name][x + "," + (y - 1)] = 1;
+                }
+                // check down
+                if (y + 1 < that.grid.length && that.grid[y + 1][x] == null) {
+                    that.graph[name][x + "," + (y + 1)] = 1;
+                }
+                // checks left
+                if (x - 1 >= 0 && that.grid[y][x - 1] == null) {
+                    that.graph[name][(x - 1) + "," + y] = 1;
+                }
+                // check right
+                if (x + 1 < that.grid[y].length && that.grid[y][x + 1] == null) {
+                    that.graph[name][(x + 1) + "," + y] = 1;
+                }
+            }
+        }
+    }
 
 
     // takes the grid and turns it into a graph
-    function updateGraph() {
-        for (let y = 0; y < that.grid.length; y++) {
-            for (let x = 0; x < that.grid[y].length; x++) {
-                if (that.grid[y][x] == null) {
-                    let name = x + "," + y;
-                    that.graph[name] = {};
-                    // checks up
-                    if (y - 1 >= 0 && that.grid[y - 1][x] == null) {
-                        that.graph[name][x + "," + (y - 1)] = 1;
-                    }
-                    // check down
-                    if (y + 1 < that.grid.length && that.grid[y + 1][x] == null) {
-                        that.graph[name][x + "," + (y + 1)] = 1;
-                    }
-                    // checks left
-                    if (x - 1 >= 0 && that.grid[y][x - 1] == null) {
-                        that.graph[name][(x - 1) + "," + y] = 1;
-                    }
-                    // check right
-                    if (x + 1 < that.grid[y].length && that.grid[y][x + 1] == null) {
-                        that.graph[name][(x + 1) + "," + y] = 1;
-                    }
-                }
+    function updateGraph(x, y) {
+        let name = x + "," + y;
+        let node = that.graph[name];
+
+        // Trying to delete the node
+        if (that.grid[y][x] != null) {
+            let nodes = Object.getOwnPropertyNames(node);
+            for (let i = 0; i < nodes.length; i++) {
+                delete that.graph[nodes[i]][name];
+            }
+            delete that.graph[name];
+        } else { // Trying to add a new node
+            that.graph[name] = {};
+            // checks up
+            if (y - 1 >= 0 && that.grid[y - 1][x] == null) {
+                that.graph[name][x + "," + (y - 1)] = 1;
+            }
+            // check down
+            if (y + 1 < that.grid.length && that.grid[y + 1][x] == null) {
+                that.graph[name][x + "," + (y + 1)] = 1;
+            }
+            // checks left
+            if (x - 1 >= 0 && that.grid[y][x - 1] == null) {
+                that.graph[name][(x - 1) + "," + y] = 1;
+            }
+            // check right
+            if (x + 1 < that.grid[y].length && that.grid[y][x + 1] == null) {
+                that.graph[name][(x + 1) + "," + y] = 1;
+            }
+            // links the other ones back
+            let nodes = Object.getOwnPropertyNames(that.graph[name]);
+            for (let i = 0; i < nodes.length; i++) {
+                that.graph[nodes[i]][name] = 1;
             }
         }
     }
@@ -76,12 +110,12 @@ MyGame.objects.gameGrid = function(spec) {
     function blocksExits(x, y) {
         addElement(x, y, "not null lol");
 
-        let spawnPoints = Object.getOwnPropertyNames(MyGame.constants.border.spawnPoints);
+        let spawnPoints = MyGame.constants.border.spawnPoints;
         let foundPath = true;
         for (let i = 1; i < spawnPoints.length && foundPath; i++) {
             let path = findPath(
-                MyGame.constants.border.spawnPoints[spawnPoints[0]],
-                MyGame.constants.border.spawnPoints[spawnPoints[i]]);
+                MyGame.constants.border.spawnPoints[0][1],
+                MyGame.constants.border.spawnPoints[i][1]);
             if (path.length <= 1) {
                 foundPath = false;
             }
@@ -143,6 +177,14 @@ MyGame.objects.gameGrid = function(spec) {
         }
         shortestPath.reverse();
 
+        for (let i = 0; i < shortestPath.length; i++) {
+            let split = shortestPath[i].split(",");
+            shortestPath[i] = {
+                x: parseInt(split[0]),
+                y: parseInt(split[1])
+            };
+        }
+
         return shortestPath;
     }
 
@@ -160,12 +202,12 @@ MyGame.objects.gameGrid = function(spec) {
 
     function addElement(x, y, element) {
         that.grid[y][x] = element;
-        updateGraph();
+        updateGraph(x, y);
     }
 
     function removeElement(x, y) {
         that.grid[y][x] = null;
-        updateGraph();
+        updateGraph(x, y);
     }
 
     function getElement(x, y) {
@@ -177,6 +219,7 @@ MyGame.objects.gameGrid = function(spec) {
         canPlace,
         addElement,
         getElement,
-        removeElement
+        removeElement,
+        findPath
     }
 }

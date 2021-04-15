@@ -11,8 +11,12 @@ MyGame.objects.gameModel = function(spec) {
     let objects = MyGame.objects;
     let constants = MyGame.constants;
     let towerVals = MyGame.constants.towers;
-    let internalUpdate = null;
 
+    let internalUpdate = null;
+    let updatePaths = {
+        func: null,
+        index: 0
+    };
 
     let mouseInput = spec.mouse;
     let keyboard = spec.keyboard;
@@ -59,9 +63,11 @@ MyGame.objects.gameModel = function(spec) {
     function onNextWave() {
         if (startNextWave) {
             creeps.push(objects.creep({
-                type: constants.creeps.grunt.first,
-                center: { x: 7, y: 7 },
-                rotation: 0
+                name: "grunt",
+                level: "first",
+                spawn: 0,
+                rotation: 0,
+                grid: gameGrid
             }));
             internalUpdate = waveStageUpdate;
             startNextWave = false;
@@ -121,11 +127,22 @@ MyGame.objects.gameModel = function(spec) {
     // Update function for the wave stage
     function waveStageUpdate(elapsedTime) {
         menu.time = elapsedTime;
-        menu.updateStatus();
+
+        if (updatePaths.func) {
+            updatePaths.func();
+        }
 
         // Updates creeps
         for (let i = 0; i < creeps.length; i++) {
-            creeps[i].update(elapsedTime);
+            // If a creep dies
+            if (creeps[i].update(elapsedTime)) {
+                menu.lives = -1;
+                creeps.splice(i, 1);
+                i--;
+                if (updatePaths.index > 0) {
+                    updatePaths.index--;
+                }
+            }
         }
 
         // Updates towers
@@ -146,6 +163,16 @@ MyGame.objects.gameModel = function(spec) {
         }
     }
 
+    // Facilitates updating the creeps paths 1 per frame
+    function updateCreepPaths() {
+        if (updatePaths.index < creeps.length) {
+            creeps[updatePaths.index].updatePath();
+            updatePaths.index++;
+        } else {
+            updatePaths.index = 0;
+            updatePaths.func = null;
+        }
+    }
 
 
 
@@ -218,7 +245,8 @@ MyGame.objects.gameModel = function(spec) {
                             menu.setDialog("Not enought gold!");
                             towerToPlace = null;
                         }
-                        // TODO: update creep paths
+                        updatePaths.func = updateCreepPaths();
+                        updatePaths.index = 0;
                     } else {
                         menu.setDialog("Cannot place tower here!");
                     }
@@ -299,7 +327,6 @@ MyGame.objects.gameModel = function(spec) {
                 delete towers[towerSelected.id];
                 deselectTower();
                 menu.setDialog("Tower sold.");
-                // TODO: update creep paths
             }
         }
     );
@@ -319,6 +346,7 @@ MyGame.objects.gameModel = function(spec) {
     menu.setDialog("Preparation stage.");
 
     function update(elapsedTime) {
+        elapsedTime %= 17; // If frames ever drop below 60 fps, the simulation slows down
         internalUpdate(elapsedTime);
     }
 

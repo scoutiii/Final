@@ -63,18 +63,18 @@ MyGame.constants.creeps = {
     }
 };
 MyGame.constants.creeps.stats = {
-    'creep-green-1': { speed: 10, health: 100 }, // Stats for grunts
-    'creep-blue-1': { speed: 15, health: 105 },
-    'creep-yellow-1': { speed: 20, health: 110 },
-    'creep-red-1': { speed: 25, health: 120 },
-    'creep-green-2': { speed: 5, health: 200 }, // health for hunters
-    'creep-blue-2': { speed: 6, health: 210 },
-    'creep-yellow-2': { speed: 7, health: 220 },
-    'creep-red-2': { speed: 10, health: 230 },
-    'creep-green-3': { speed: 20, health: 50 }, // health for buggers
-    'creep-blue-3': { speed: 22, health: 55 },
-    'creep-yellow-3': { speed: 25, health: 60 },
-    'creep-red-3': { speed: 30, health: 65 }
+    'creep-green-1': { speed: 100 / 1000, health: 100 }, // Stats for grunts
+    'creep-blue-1': { speed: 15 / 1000, health: 105 },
+    'creep-yellow-1': { speed: 20 / 1000, health: 110 },
+    'creep-red-1': { speed: 25 / 1000, health: 120 },
+    'creep-green-2': { speed: 5 / 1000, health: 200 }, // health for hunters
+    'creep-blue-2': { speed: 6 / 1000, health: 210 },
+    'creep-yellow-2': { speed: 7 / 1000, health: 220 },
+    'creep-red-2': { speed: 10 / 1000, health: 230 },
+    'creep-green-3': { speed: 20 / 1000, health: 50 }, // health for buggers
+    'creep-blue-3': { speed: 22 / 1000, health: 55 },
+    'creep-yellow-3': { speed: 25 / 1000, health: 60 },
+    'creep-red-3': { speed: 30 / 1000, health: 65 }
 };
 MyGame.constants.creeps.animation = {
     'creep-green-1': { // timings for grunts
@@ -266,48 +266,45 @@ MyGame.constants.border.vert = [
     { x: 15, y: 14, rotation: 90, image: 'bkgd-horiz' }
 ];
 
-MyGame.constants.border.spawnPoints = {
-    "0,8": {
-        x: 0,
-        y: 8,
-        children: [
-            { x: 0, y: 7 },
-            { x: 0, y: 8 },
-            { x: 0, y: 9 }
-        ]
-    },
-    "8,16": {
-        x: 8,
-        y: 16,
-        children: [
-            { x: 7, y: 16 },
-            { x: 8, y: 16 },
-            { x: 9, y: 16 }
-        ]
-    },
-    "16,8": {
-        x: 16,
-        y: 8,
-        children: [
-            { x: 16, y: 9 },
-            { x: 16, y: 8 },
-            { x: 16, y: 7 }
-        ]
-    },
-    "8,0": {
-        x: 8,
-        y: 0,
-        children: [
-            { x: 7, y: 0 },
-            { x: 8, y: 0 },
-            { x: 9, y: 0 }
-        ]
-    }
-};
+
+MyGame.constants.border.spawnPoints = [
+    [
+        { x: 0, y: 7 },
+        { x: 0, y: 8 },
+        { x: 0, y: 9 }
+    ],
+    [
+        { x: 7, y: 16 },
+        { x: 8, y: 16 },
+        { x: 9, y: 16 }
+    ],
+    [
+        { x: 16, y: 7 },
+        { x: 16, y: 8 },
+        { x: 16, y: 9 }
+    ],
+    [
+        { x: 7, y: 0 },
+        { x: 8, y: 0 },
+        { x: 9, y: 0 }
+    ]
+];
+
 MyGame.constants.border.misc = [];
 for (let y = 0; y < MyGame.constants.gridDim; y++) {
     for (let x = 0; x < MyGame.constants.gridDim; x++) {
-        if (!(x + "," + y in MyGame.constants.border.spawnPoints)) {
+        // Loops through each spawnpoint
+        let found = false;
+        for (let i = 0; i < MyGame.constants.border.spawnPoints.length && !found; i++) {
+            for (let j = 0; j < MyGame.constants.border.spawnPoints[i].length && !found; j++) {
+                // Checks if the piece is a spawn point
+                if (x == MyGame.constants.border.spawnPoints[i][j].x &&
+                    y == MyGame.constants.border.spawnPoints[i][j].y) {
+                    found = true;
+                }
+            }
+        }
+        if (!found) {
             if (y == 0 ||
                 y == MyGame.constants.gridDim - 1 ||
                 x == 0 ||

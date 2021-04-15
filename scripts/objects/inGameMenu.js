@@ -102,27 +102,35 @@ MyGame.objects.inGameMenu = function(spec) {
         get score() { return that.score; },
         set level(level) {
             that.level += level;
-            updateStatus();
+            document.getElementById("level").innerHTML = "level: " + that.level;
         },
         set wave(wave) {
             that.wave += wave;
-            updateStatus();
+            document.getElementById("wave").innerHTML = "wave: " + that.wave;
         },
         set time(time) {
             that.time += time;
-            updateStatus();
+            document.getElementById("time").innerHTML = "time: " + millisToMinutesAndSeconds(that.time);
         },
         set gold(gold) {
             that.gold += gold;
-            updateStatus();
+            document.getElementById("gold").innerHTML = "gold: " + that.gold;
+            // Grays out towers if they are too expensive
+            for (let i = 0; i < towerIds.length; i++) {
+                if (towers[towerIds[i]].cost > that.gold) {
+                    document.getElementById(towerIds[i]).style.filter = "grayscale(100%)";
+                } else {
+                    document.getElementById(towerIds[i]).style.filter = "grayscale(0%)";
+                }
+            }
         },
         set lives(lives) {
             that.lives += lives;
-            updateStatus();
+            document.getElementById("lives").innerHTML = "lives: " + that.lives;
         },
         set score(score) {
             that.score += score;
-            updateStatus();
+            document.getElementById("score").innerHTML = "score: " + that.score;
         },
         update,
         setDialog,
