@@ -45,6 +45,32 @@ MyGame.objects.gameGrid = function(spec) {
             }
         }
     }
+    // Graph with no obstacles for finding straight paths
+    that.simpleGraph = {};
+    for (let y = 0; y < that.grid.length; y++) {
+        for (let x = 0; x < that.grid[y].length; x++) {
+            if (that.grid[y][x] == null) {
+                let name = x + "," + y;
+                that.simpleGraph[name] = {};
+                // checks up
+                if (y - 1 >= 0 && that.grid[y - 1][x] == null) {
+                    that.simpleGraph[name][x + "," + (y - 1)] = 1;
+                }
+                // check down
+                if (y + 1 < that.grid.length && that.grid[y + 1][x] == null) {
+                    that.simpleGraph[name][x + "," + (y + 1)] = 1;
+                }
+                // checks left
+                if (x - 1 >= 0 && that.grid[y][x - 1] == null) {
+                    that.simpleGraph[name][(x - 1) + "," + y] = 1;
+                }
+                // check right
+                if (x + 1 < that.grid[y].length && that.grid[y][x + 1] == null) {
+                    that.simpleGraph[name][(x + 1) + "," + y] = 1;
+                }
+            }
+        }
+    }
 
 
     // takes the grid and turns it into a graph
@@ -113,9 +139,10 @@ MyGame.objects.gameGrid = function(spec) {
         let spawnPoints = MyGame.constants.border.spawnPoints;
         let foundPath = true;
         for (let i = 1; i < spawnPoints.length && foundPath; i++) {
-            let path = findPath(
+            let path = findPathInternal(
                 MyGame.constants.border.spawnPoints[0][1],
-                MyGame.constants.border.spawnPoints[i][1]);
+                MyGame.constants.border.spawnPoints[i][1],
+                that.graph);
             if (path.length <= 1) {
                 foundPath = false;
             }
@@ -126,18 +153,18 @@ MyGame.objects.gameGrid = function(spec) {
 
     // Find a path from start to end
     // Adapted from https://levelup.gitconnected.com/finding-the-shortest-path-in-javascript-dijkstras-algorithm-8d16451eea34
-    function findPath(start, end) {
+    function findPathInternal(start, end, graph) {
         start = start.x + "," + start.y;
         end = end.x + "," + end.y;
 
         // tracks distances from the start node
         let distances = {};
         distances[end] = Infinity;
-        distances = Object.assign(distances, that.graph[start]);
+        distances = Object.assign(distances, graph[start]);
 
         // track paths
         let parents = { end: null };
-        for (let child in that.graph[start]) {
+        for (let child in graph[start]) {
             parents[child] = start;
         }
 
@@ -150,7 +177,7 @@ MyGame.objects.gameGrid = function(spec) {
         while (node) {
             // finds distance from start to its children
             let distance = distances[node];
-            let children = that.graph[node];
+            let children = graph[node];
 
             // goes through each child
             for (let child in children) {
@@ -188,6 +215,10 @@ MyGame.objects.gameGrid = function(spec) {
         return shortestPath;
     }
 
+    function findPath(start, end) {
+        return findPathInternal(start, end, that.graph);
+    }
+
     // Helper function to find the node with the shortest distance
     function shortestDistanceNode(distances, visited) {
         let shortest = null;
@@ -200,26 +231,34 @@ MyGame.objects.gameGrid = function(spec) {
         return shortest;
     }
 
+    // Adds an element
     function addElement(x, y, element) {
         that.grid[y][x] = element;
         updateGraph(x, y);
     }
 
+    // Removes the element
     function removeElement(x, y) {
         that.grid[y][x] = null;
         updateGraph(x, y);
     }
 
+    // Returns the value at the location
     function getElement(x, y) {
         return that.grid[y][x];
     }
 
+    function findPathDirect(start, end) {
+        return findPathInternal(start, end, that.simpleGraph);
+    }
+
     return {
-        get grid() { return that.grid; },
+        // get grid() { return that.grid; },
         canPlace,
         addElement,
         getElement,
         removeElement,
-        findPath
+        findPath,
+        findPathDirect
     }
 }

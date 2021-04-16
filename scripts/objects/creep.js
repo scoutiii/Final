@@ -24,7 +24,11 @@ MyGame.objects.creep = function(spec) {
 
     // Keeps the grid and finds it's path
     that.grid = spec.grid;
-    that.path = that.grid.findPath(that.start, that.end);
+    if (spec.name != "bugger") {
+        that.path = that.grid.findPath(that.start, that.end);
+    } else {
+        that.path = that.grid.findPathDirect(that.start, that.end);
+    }
     that.target = 1;
     that.update = standardUpdate;
 
@@ -42,7 +46,11 @@ MyGame.objects.creep = function(spec) {
     // Tracks various stats about the creep
     that.size = MyGame.constants.gridSize;
     that.speed = MyGame.constants.creeps.stats[that.type].speed;
-    that.health = MyGame.constants.creeps.stats[that.type].health;
+    that.maxHealth = MyGame.constants.creeps.stats[that.type].health;
+    that.currentHealth = that.maxHealth;
+    that.value = MyGame.constants.creeps.stats[that.type].value;
+
+    that.outOfBounds = spec.outOfBounds;
 
     // Will change the rotation and direction based on the next path
     function updateDirection(target) {
@@ -57,12 +65,15 @@ MyGame.objects.creep = function(spec) {
         let magnitude = Math.sqrt(Math.pow(that.direction.x, 2) + Math.pow(that.direction.y, 2));
         that.direction.x /= magnitude;
         that.direction.y /= magnitude;
-        that.rotation = Math.atan(that.direction.y / that.direction.x);
+
+        that.rotation = Math.atan2(that.direction.y, that.direction.x) * 180 / Math.PI;
     }
 
     // Makes a new path for the creep
     function updatePath() {
-        that.update = findNewPathUpdate;
+        if (spec.name != "bugger") {
+            that.update = findNewPathUpdate;
+        }
     }
 
     // Checks if the creep is within the given x and y grid
@@ -90,6 +101,12 @@ MyGame.objects.creep = function(spec) {
 
     // Updates the state of the creep
     function update(elapsedTime) {
+        if (that.health <= 0) {
+            return MyGame.constants.creeps.status.death;
+        } else if (that.center.x < 0 || that.center.x > MyGame.constants.globalSize.width ||
+            that.center.y < 0 || that.center.y > MyGame.constants.globalSize.height) {
+            return MyGame.constants.creeps.status.outOfBounds;
+        }
         updateAnimation(elapsedTime);
         return that.update(elapsedTime);
     }
@@ -101,11 +118,11 @@ MyGame.objects.creep = function(spec) {
         if (withIn(that.path[that.target])) {
             that.target++;
             if (that.target >= that.path.length) {
-                return true;
+                return MyGame.constants.creeps.status.success;
             }
             updateDirection(that.path[that.target]);
         }
-        return false;
+        return MyGame.constants.creeps.status.normal;
     }
 
     function findNewPathUpdate(elapsedTime) {
@@ -135,7 +152,7 @@ MyGame.objects.creep = function(spec) {
         that.path = path;
         updateDirection(that.path[that.target]);
         that.update = standardUpdate;
-        return false;
+        return MyGame.constants.creeps.status.normal;
     }
 
     // All the stuff the creep returns
@@ -150,7 +167,8 @@ MyGame.objects.creep = function(spec) {
                 size: that.size
             };
         },
-        get health() { return that.health; },
+        get health() { return that.currentHealth; },
+        get value() { return that.value; },
         update,
         updatePath
     }

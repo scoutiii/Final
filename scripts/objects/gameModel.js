@@ -15,7 +15,9 @@ MyGame.objects.gameModel = function(spec) {
     let internalUpdate = null;
     let updatePaths = {
         func: null,
-        index: 0
+        index: 0,
+        timeInterval: 6,
+        elapsedTime: 0
     };
 
     let mouseInput = spec.mouse;
@@ -43,6 +45,10 @@ MyGame.objects.gameModel = function(spec) {
 
     // Track enemies, towers, and projectiles
     let creeps = [];
+    let creepStatus = constants.creeps.status.normal;
+    let creepTypes = ["grunt", "hunter", "bugger"];
+    let creepLevels = ["first", "second", "third", "fourth"];
+
     let towers = {};
     let towersNextName = 1;
     let projectiles = [];
@@ -62,13 +68,20 @@ MyGame.objects.gameModel = function(spec) {
     // Is called when the next wave is supposed to start
     function onNextWave() {
         if (startNextWave) {
-            creeps.push(objects.creep({
-                name: "grunt",
-                level: "first",
-                spawn: 0,
-                rotation: 0,
-                grid: gameGrid
-            }));
+            for (let n = 0; n < 3; n++) {
+                for (let i = 0; i < creepTypes.length; i++) {
+                    for (let j = 0; j < creepLevels.length; j++) {
+                        creeps.push(objects.creep({
+                            name: creepTypes[i],
+                            level: creepLevels[j],
+                            spawn: 0,
+                            rotation: 0,
+                            grid: gameGrid,
+                        }));
+                    }
+                }
+            }
+            console.log(creeps.length)
             internalUpdate = waveStageUpdate;
             startNextWave = false;
             menu.setDialog("Incoming!!!");
@@ -129,19 +142,26 @@ MyGame.objects.gameModel = function(spec) {
         menu.time = elapsedTime;
 
         if (updatePaths.func) {
-            updatePaths.func();
+            updatePaths.func(elapsedTime);
         }
 
         // Updates creeps
         for (let i = 0; i < creeps.length; i++) {
-            // If a creep dies
-            if (creeps[i].update(elapsedTime)) {
+            creepStatus = creeps[i].update(elapsedTime);
+            if (creepStatus == constants.creeps.status.success) {
                 menu.lives = -1;
                 creeps.splice(i, 1);
                 i--;
-                if (updatePaths.index > 0) {
-                    updatePaths.index--;
-                }
+                updatePaths.index -= updatePaths.index > 0;
+            } else if (creepStatus == constants.creeps.status.death) {
+                menu.gold = creeps[i].value;
+                creeps.splice(i, 1);
+                i--;
+                updatePaths.index -= updatePaths.index > 0;
+            } else if (creepStatus == constants.creeps.status.outOfBounds) {
+                creeps.splice(i, 1);
+                i--;
+                updatePaths.index -= updatePaths.index > 0;
             }
         }
 
@@ -164,16 +184,20 @@ MyGame.objects.gameModel = function(spec) {
     }
 
     // Facilitates updating the creeps paths 1 per frame
-    function updateCreepPaths() {
-        if (updatePaths.index < creeps.length) {
-            creeps[updatePaths.index].updatePath();
-            updatePaths.index++;
-        } else {
-            updatePaths.index = 0;
-            updatePaths.func = null;
+    function updateCreepPaths(elapsedTime) {
+        updatePaths.elapsedTime += elapsedTime;
+        if (updatePaths.elapsedTime >= updatePaths.timeInterval) {
+            updatePaths.elapsedTime %= updatePaths.timeInterval;
+
+            if (updatePaths.index < creeps.length) {
+                creeps[updatePaths.index].updatePath();
+                updatePaths.index++;
+            } else {
+                updatePaths.index = 0;
+                updatePaths.func = null;
+            }
         }
     }
-
 
 
     //
@@ -245,8 +269,11 @@ MyGame.objects.gameModel = function(spec) {
                             menu.setDialog("Not enought gold!");
                             towerToPlace = null;
                         }
-                        updatePaths.func = updateCreepPaths();
+                        // Sets up the updates for creep paths
+                        updatePaths.func = updateCreepPaths;
                         updatePaths.index = 0;
+                        updatePaths.elapsedTime = 0;
+                        updatePaths.timeInterval = 300 / creeps.length;
                     } else {
                         menu.setDialog("Cannot place tower here!");
                     }

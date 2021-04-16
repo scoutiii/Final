@@ -41,7 +41,6 @@ MyGame.constants.gridSize = {
 
 // Defines some names for the creeps
 // Note the intended color order is green, blue, yellow, red
-MyGame.constants.creeps = {};
 MyGame.constants.creeps = {
     grunt: {
         fourth: 'creep-red-1',
@@ -62,19 +61,25 @@ MyGame.constants.creeps = {
         third: 'creep-yellow-3'
     }
 };
+MyGame.constants.creeps.status = {
+    death: "death",
+    outOfBounds: "outOfBounds",
+    success: "success",
+    normal: "normal"
+};
 MyGame.constants.creeps.stats = {
-    'creep-green-1': { speed: 100 / 1000, health: 100 }, // Stats for grunts
-    'creep-blue-1': { speed: 15 / 1000, health: 105 },
-    'creep-yellow-1': { speed: 20 / 1000, health: 110 },
-    'creep-red-1': { speed: 25 / 1000, health: 120 },
-    'creep-green-2': { speed: 5 / 1000, health: 200 }, // health for hunters
-    'creep-blue-2': { speed: 6 / 1000, health: 210 },
-    'creep-yellow-2': { speed: 7 / 1000, health: 220 },
-    'creep-red-2': { speed: 10 / 1000, health: 230 },
-    'creep-green-3': { speed: 20 / 1000, health: 50 }, // health for buggers
-    'creep-blue-3': { speed: 22 / 1000, health: 55 },
-    'creep-yellow-3': { speed: 25 / 1000, health: 60 },
-    'creep-red-3': { speed: 30 / 1000, health: 65 }
+    'creep-green-1': { speed: 100 / 1000, health: 100, value: 10 }, // Stats for grunts
+    'creep-blue-1': { speed: 110 / 1000, health: 105, value: 15 },
+    'creep-yellow-1': { speed: 120 / 1000, health: 110, value: 20 },
+    'creep-red-1': { speed: 130 / 1000, health: 120, value: 25 },
+    'creep-green-2': { speed: 50 / 1000, health: 200, value: 30 }, // health for hunters
+    'creep-blue-2': { speed: 60 / 1000, health: 210, value: 35 },
+    'creep-yellow-2': { speed: 70 / 1000, health: 220, value: 40 },
+    'creep-red-2': { speed: 100 / 1000, health: 230, value: 45 },
+    'creep-green-3': { speed: 80 / 1000, health: 50, value: 50 }, // health for buggers
+    'creep-blue-3': { speed: 90 / 1000, health: 55, value: 55 },
+    'creep-yellow-3': { speed: 100 / 1000, health: 60, value: 60 },
+    'creep-red-3': { speed: 110 / 1000, health: 65, value: 65 }
 };
 MyGame.constants.creeps.animation = {
     'creep-green-1': { // timings for grunts
@@ -343,3 +348,7 @@ for (let x = 2; x < MyGame.constants.gridDim - 1; x++) {
         y: MyGame.constants.border.interior.upper * MyGame.constants.gridSize.height
     });
 }
+
+
+// Freezes the constants
+Object.freeze(MyGame.constants);
