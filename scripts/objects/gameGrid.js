@@ -222,8 +222,9 @@ MyGame.objects.gameGrid = function(spec) {
     // Helper function to find the node with the shortest distance
     function shortestDistanceNode(distances, visited) {
         let shortest = null;
+        let currentIsShortest = null;
         for (let node in distances) {
-            let currentIsShortest = shortest === null || distances[node] < distances[shortest];
+            currentIsShortest = shortest == null || distances[node] < distances[shortest];
             if (currentIsShortest && !visited.includes(node)) {
                 shortest = node;
             }

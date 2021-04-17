@@ -36,7 +36,7 @@ MyGame.objects.tower = function(spec) {
     function update(elapsedTime) {
         if (that.target == null) {
             console.log("target acquired");
-            that.target = that.creeps[0];
+            that.target = true;
         }
         that.rotation += 1;
     }

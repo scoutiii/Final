@@ -12,13 +12,41 @@ MyGame.objects.gameModel = function(spec) {
     let constants = MyGame.constants;
     let towerVals = MyGame.constants.towers;
 
+    // Sets up the creeps path update behavior
     let internalUpdate = null;
     let updatePaths = {
         func: null,
-        index: 0,
+        todo: {},
         timeInterval: 6,
-        elapsedTime: 0
+        elapsedTime: 0,
+        remove: function(id) {
+            delete updatePaths.todo[id];
+        },
+        populate: function(ids) {
+            for (let i = 0; i < ids.length; i++) {
+                updatePaths.todo[ids[i]] = ids[i];
+            }
+            updatePaths.elapsedTime = 0;
+            updatePaths.timeInterval = 300 / ids.length;
+            updatePaths.func = updateCreepPaths;
+        }
     };
+
+    // Facilitates updating the creeps paths 1 per frame
+    function updateCreepPaths(elapsedTime) {
+        updatePaths.elapsedTime += elapsedTime;
+        if (updatePaths.elapsedTime >= updatePaths.timeInterval) {
+            updatePaths.elapsedTime %= updatePaths.timeInterval;
+            let todo = Object.keys(updatePaths.todo);
+            if (todo.length > 0) {
+                creeps[todo[0]].updatePath();
+                delete updatePaths.todo[todo[0]];
+            } else {
+                updatePaths.todo = {};
+                updatePaths.func = null;
+            }
+        }
+    }
 
     let mouseInput = spec.mouse;
     let keyboard = spec.keyboard;
@@ -26,12 +54,17 @@ MyGame.objects.gameModel = function(spec) {
 
     // Sets up the border pieces
     let borders = [];
+    let attempt = null;
+    // Sets up the target matrix
+    let targetMatrix = [];
     for (let y = 0; y < constants.gridDim; y++) {
+        targetMatrix[y] = [];
         for (let x = 0; x < constants.gridDim; x++) {
-            let attempt = objects.border({ x: x, y: y });
+            attempt = objects.border({ x: x, y: y });
             if (attempt.center != null) {
                 borders.push(attempt);
             }
+            targetMatrix[y][x] = null;
         }
     }
 
@@ -44,7 +77,8 @@ MyGame.objects.gameModel = function(spec) {
     let showGrid = false;
 
     // Track enemies, towers, and projectiles
-    let creeps = [];
+    let creeps = {};
+    let creepsNextName = 1;
     let creepStatus = constants.creeps.status.normal;
     let creepTypes = ["grunt", "hunter", "bugger"];
     let creepLevels = ["first", "second", "third", "fourth"];
@@ -52,6 +86,8 @@ MyGame.objects.gameModel = function(spec) {
     let towers = {};
     let towersNextName = 1;
     let projectiles = [];
+
+
 
     // Tracks selected towers/ towers to place
     let towerToPlace = null;
@@ -68,20 +104,21 @@ MyGame.objects.gameModel = function(spec) {
     // Is called when the next wave is supposed to start
     function onNextWave() {
         if (startNextWave) {
-            for (let n = 0; n < 3; n++) {
+            for (let n = 0; n < 10; n++) {
                 for (let i = 0; i < creepTypes.length; i++) {
                     for (let j = 0; j < creepLevels.length; j++) {
-                        creeps.push(objects.creep({
+                        creeps[creepsNextName] = (objects.creep({
                             name: creepTypes[i],
                             level: creepLevels[j],
                             spawn: 0,
                             rotation: 0,
                             grid: gameGrid,
+                            id: creepsNextName++
                         }));
                     }
                 }
             }
-            console.log(creeps.length)
+            console.log(Object.keys(creeps).length);
             internalUpdate = waveStageUpdate;
             startNextWave = false;
             menu.setDialog("Incoming!!!");
@@ -146,23 +183,25 @@ MyGame.objects.gameModel = function(spec) {
         }
 
         // Updates creeps
-        for (let i = 0; i < creeps.length; i++) {
-            creepStatus = creeps[i].update(elapsedTime);
+        let creepsToDelete = [];
+        for (creep in creeps) {
+            creepStatus = creeps[creep].update(elapsedTime);
             if (creepStatus == constants.creeps.status.success) {
                 menu.lives = -1;
-                creeps.splice(i, 1);
-                i--;
-                updatePaths.index -= updatePaths.index > 0;
+                creepsToDelete.push(creeps[creep]);
+                updatePaths.remove(creeps[creep].id);
             } else if (creepStatus == constants.creeps.status.death) {
                 menu.gold = creeps[i].value;
-                creeps.splice(i, 1);
-                i--;
-                updatePaths.index -= updatePaths.index > 0;
+                creepsToDelete.push(creeps[creep]);
+                updatePaths.remove(creeps[creep].id);
             } else if (creepStatus == constants.creeps.status.outOfBounds) {
-                creeps.splice(i, 1);
-                i--;
-                updatePaths.index -= updatePaths.index > 0;
+                creepsToDelete.push(creeps[creep]);
+                updatePaths.remove(creeps[creep].id);
             }
+        }
+        // Deletes the creeps
+        for (let i = 0; i < creepsToDelete.length; i++) {
+            delete creeps[creepsToDelete[i].id];
         }
 
         // Updates towers
@@ -175,28 +214,19 @@ MyGame.objects.gameModel = function(spec) {
         // Updates particles
 
         // Goes back to preparation stage
-        if (creeps.length == 0) {
-            creeps.length = 0;
+        if (Object.keys(creeps).length == 0) {
             internalUpdate = prepStageUpdate;
             startNextWave = true;
             menu.setDialog("That was intense...");
         }
     }
 
-    // Facilitates updating the creeps paths 1 per frame
-    function updateCreepPaths(elapsedTime) {
-        updatePaths.elapsedTime += elapsedTime;
-        if (updatePaths.elapsedTime >= updatePaths.timeInterval) {
-            updatePaths.elapsedTime %= updatePaths.timeInterval;
 
-            if (updatePaths.index < creeps.length) {
-                creeps[updatePaths.index].updatePath();
-                updatePaths.index++;
-            } else {
-                updatePaths.index = 0;
-                updatePaths.func = null;
-            }
-        }
+
+    // Updates the target matrix when a creep moves
+    function updateTargetMatrix(prev, curr, name) {
+        targetMatrix[prev.y][prev.x] = null;
+        targetMatrix[curr.y][curr.x] = creeps[name];
     }
 
 
@@ -259,7 +289,8 @@ MyGame.objects.gameModel = function(spec) {
                             creeps: creeps,
                             showRadius: false,
                             id: towersNextName++,
-                            value: towerToPlace.cost
+                            value: towerToPlace.cost,
+                            targetMatrix: targetMatrix
                         });
                         towers[tower.id] = tower;
                         // Adds the tower to the game grid
@@ -270,10 +301,7 @@ MyGame.objects.gameModel = function(spec) {
                             towerToPlace = null;
                         }
                         // Sets up the updates for creep paths
-                        updatePaths.func = updateCreepPaths;
-                        updatePaths.index = 0;
-                        updatePaths.elapsedTime = 0;
-                        updatePaths.timeInterval = 300 / creeps.length;
+                        updatePaths.populate(Object.keys(creeps));
                     } else {
                         menu.setDialog("Cannot place tower here!");
                     }
@@ -358,7 +386,13 @@ MyGame.objects.gameModel = function(spec) {
         }
     );
 
-
+    // On next wave
+    keyboard.registerCommandDown(
+        MyGame.misc.controls.nextLevel,
+        function(elapsedTime) {
+            onNextWave();
+        }
+    )
 
 
 
@@ -373,7 +407,8 @@ MyGame.objects.gameModel = function(spec) {
     menu.setDialog("Preparation stage.");
 
     function update(elapsedTime) {
-        elapsedTime %= 17; // If frames ever drop below 60 fps, the simulation slows down
+        // If frames ever drop below 60 fps, the simulation slows down (to about 60 fps)
+        elapsedTime = ((elapsedTime <= 17) * elapsedTime) + ((elapsedTime > 17) * 17);
         internalUpdate(elapsedTime);
     }
 

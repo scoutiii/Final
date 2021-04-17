@@ -49,6 +49,7 @@ MyGame.objects.creep = function(spec) {
     that.maxHealth = MyGame.constants.creeps.stats[that.type].health;
     that.currentHealth = that.maxHealth;
     that.value = MyGame.constants.creeps.stats[that.type].value;
+    that.id = spec.id;
 
     that.outOfBounds = spec.outOfBounds;
 
@@ -169,6 +170,13 @@ MyGame.objects.creep = function(spec) {
         },
         get health() { return that.currentHealth; },
         get value() { return that.value; },
+        get id() { return that.id; },
+        get gridLocation() {
+            return {
+                x: Math.floor(that.center.x / MyGame.constants.gridSize.width),
+                y: Math.floor(that.center.y / MyGame.constants.gridSize.height)
+            };
+        },
         update,
         updatePath
     }

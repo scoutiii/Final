@@ -18,12 +18,12 @@ MyGame.systems.render.gameModel = (function(graphics, constants, renderer) {
         }
 
         // Draws the towers
-        for (id in spec.towers) {
+        for (let id in spec.towers) {
             renderer.tower.render(spec.towers[id]);
         }
         // Draws the creeps
-        for (let i = 0; i < spec.creeps.length; i++) {
-            renderer.creep.render(spec.creeps[i]);
+        for (let id in spec.creeps) {
+            renderer.creep.render(spec.creeps[id]);
         }
         // Draws the projectiles
         for (let i = 0; i < spec.projectiles.length; i++) {
