@@ -8,7 +8,16 @@ MyGame.systems.projectiles = function(spec) {
 
     function update(elapsedTime) {
         updateProjectiles(elapsedTime);
+        collideParticles(elapsedTime);
+    }
 
+    function collideParticles(elapsedTime) {
+
+    }
+
+    // checks how close
+    function withIn(a, b, tolerance = 5) {
+        return Math.abs(a.x - b.x) <= tolerance && Math.abs(a.y - b.y) <= tolerance;
     }
 
     function updateProjectiles(elapsedTime) {
@@ -24,6 +33,12 @@ MyGame.systems.projectiles = function(spec) {
                 let mag = Math.hypot(target.x - center.x, target.y - center.y);
                 p.direction.dx /= mag;
                 p.direction.dy /= mag;
+            }
+            if (p.type == "bomb") {
+                if (withIn(p.center, p.target)) {
+                    toDelete.push(id);
+                    p.onExplosion();
+                }
             }
             p.center.x += p.direction.dx * p.speed * elapsedTime;
             p.center.y += p.direction.dy * p.speed * elapsedTime;
@@ -60,25 +75,49 @@ MyGame.systems.projectiles = function(spec) {
             size: {
                 width: 10,
                 height: 10 * MyGame.assets['groundProj'].height / MyGame.assets['groundProj'].width
+            },
+            onCollision: function() {
+                // calculate damage
             }
         };
     }
 
-    function bombProjectile(center, target) {
+    function bombProjectile(center, target, speed) {
+        let mag = Math.hypot(target.x - center.x, target.y - center.y);
+        that.projectiles[that.nextName++] = {
+            center: JSON.parse(JSON.stringify(center)),
+            target: JSON.parse(JSON.stringify(target)),
+            direction: {
+                dx: (target.x - center.x) / mag,
+                dy: (target.y - center.y) / mag
+            },
+            image: MyGame.assets['bombProj'],
+            speed: speed,
+            type: "bomb",
+            size: {
+                width: 50,
+                height: 50 * MyGame.assets['bombProj'].height / MyGame.assets['bombProj'].width
+            },
+            onExplosion: function() {
+                // add particles, calculate damage
+            }
+        };
+    }
+
+    function airProjectile(center, target, speed) {
 
     }
 
-    function airProjectile(center, target) {
-
-    }
-
-    function mixedProjectile(center, target, side) {
+    function mixedProjectile(center, target, speed) {
 
     }
 
     return {
         update,
         groundProjectile,
+        bombProjectile,
+        airProjectile,
+        mixedProjectile,
         get projectiles() { return that.projectiles; }
     }
 }

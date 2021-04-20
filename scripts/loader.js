@@ -233,6 +233,9 @@ MyGame.loader = (function() {
     }, {
         key: 'groundProj',
         source: 'assets/images/projectiles/groundLaser.png'
+    }, {
+        key: 'bombProj',
+        source: 'assets/images/projectiles/Bomb.png'
     }];
 
     //------------------------------------------------------------------
