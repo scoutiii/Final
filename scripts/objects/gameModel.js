@@ -12,12 +12,13 @@ MyGame.objects.gameModel = function(spec) {
     let constants = MyGame.constants;
     let towerVals = MyGame.constants.towers;
 
+
     // Sets up the creeps path update behavior
     let internalUpdate = null;
     let updatePaths = {
         func: null,
         todo: {},
-        timeInterval: 6,
+        timeInterval: 3,
         elapsedTime: 0,
         remove: function(id) {
             delete updatePaths.todo[id];
@@ -85,9 +86,10 @@ MyGame.objects.gameModel = function(spec) {
 
     let towers = {};
     let towersNextName = 1;
-    let projectiles = [];
 
-
+    let projectiles = MyGame.systems.projectiles({
+        targetMatrix: targetMatrix
+    });
 
     // Tracks selected towers/ towers to place
     let towerToPlace = null;
@@ -150,7 +152,8 @@ MyGame.objects.gameModel = function(spec) {
                     type: towerVals[type].type,
                     center: { x: NaN, y: NaN },
                     creeps: creeps,
-                    showRadius: true
+                    showRadius: true,
+                    projectiles: projectiles
                 });
             }
         }
@@ -212,6 +215,7 @@ MyGame.objects.gameModel = function(spec) {
         }
 
         // Updates projectiles
+        projectiles.update(elapsedTime);
 
         // Updates particles
 
@@ -296,7 +300,8 @@ MyGame.objects.gameModel = function(spec) {
                             showRadius: false,
                             id: towersNextName++,
                             value: towerToPlace.cost,
-                            targetMatrix: targetMatrix
+                            targetMatrix: targetMatrix,
+                            projectiles: projectiles
                         });
                         towers[tower.id] = tower;
                         // Adds the tower to the game grid
@@ -430,6 +435,7 @@ MyGame.objects.gameModel = function(spec) {
         get projectiles() { return projectiles; },
         get towerToPlace() { return towerToPlace; },
         processInput,
-        get showGrid() { return showGrid; }
+        get showGrid() { return showGrid; },
+        get projectiles() { return projectiles; }
     }
 }

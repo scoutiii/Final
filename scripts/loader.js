@@ -53,6 +53,10 @@ MyGame.loader = (function() {
         message: 'particle system loaded',
         onComplete: null
     }, {
+        scripts: ['systems/particle/projectileSystem'],
+        message: 'projectile system loaded',
+        onComplete: null
+    }, {
         scripts: ['objects/gameModel'], // Objects
         message: 'gameModel loaded',
         onComplete: null
@@ -87,6 +91,10 @@ MyGame.loader = (function() {
     }, {
         scripts: ['systems/render/particleSystem'],
         message: 'particleSystem renderer loaded',
+        onComplete: null
+    }, {
+        scripts: ['systems/render/projectileSystem'],
+        message: 'projectileSystem renderer loaded',
         onComplete: null
     }, {
         scripts: ['systems/render/fps'],
@@ -222,6 +230,9 @@ MyGame.loader = (function() {
     }, {
         key: 'tower-base',
         source: 'assets/images/towers/base.png'
+    }, {
+        key: 'groundProj',
+        source: 'assets/images/projectiles/groundLaser.png'
     }];
 
     //------------------------------------------------------------------

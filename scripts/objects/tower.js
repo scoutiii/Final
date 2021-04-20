@@ -23,22 +23,35 @@ MyGame.objects.tower = function(spec) {
     that.rotation = 0;
     that.target = null;
 
+    // projectiles
+    that.projectiles = spec.projectiles;
+    that.fireTime = 0;
+
     that.targetFunction = groundTargeting;
+    that.projectileFunction = that.projectiles.groundProjectile;
     if (that.type == MyGame.constants.towers.air.type) {
         that.targetFunction = airTargeting;
+        that.projectileFunction = that.projectiles.airProjectile;
     }
     if (that.type == MyGame.constants.towers.mixed.type) {
         that.targetFunction = mixedTargeting;
+        that.projectileFunction = that.projectiles.mixedProjectile;
     }
+    if (that.type == MyGame.constants.towers.bomb.type) {
+        that.projectileFunction = that.projectiles.bombProjectile;
+    }
+
+
 
     // Updates the stats based on the level
     function updateStats(level) {
         that.level = level
         that.image = MyGame.constants.towers.assets[that.type][that.level];
         that.radius = MyGame.constants.towers.stats[that.type][that.level].range;
-        // that.radius2 = Math.pow(that.radius, 2);
         that.damage = MyGame.constants.towers.stats[that.type][that.level].damage;
         that.value += MyGame.constants.towers.stats[that.type][that.level].cost;
+        that.speed = MyGame.constants.towers.stats[that.type][that.level].speed;
+        that.fireRate = MyGame.constants.towers.stats[that.type][that.level].fireRate;
     }
 
     updateStats(that.level);
@@ -143,6 +156,11 @@ MyGame.objects.tower = function(spec) {
                     } else {
                         that.rotation -= elapsedTime * MyGame.constants.towers.rotationRate;
                     }
+                }
+                that.fireTime += elapsedTime;
+                if (that.fireTime >= that.fireRate) {
+                    that.fireTime %= that.fireRate;
+                    that.projectileFunction(that.center, that.target.center, that.speed);
                 }
             }
         }

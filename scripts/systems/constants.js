@@ -165,24 +165,24 @@ MyGame.constants.towers.assets[mixedName] = [
 ];
 
 MyGame.constants.towers.stats[groundName] = [
-    { range: 175, damage: 20, cost: 20 },
-    { range: 190, damage: 25, cost: 15 },
-    { range: 220, damage: 35, cost: 20 }
+    { range: 175, damage: 20, cost: 20, speed: .5, fireRate: 500 },
+    { range: 190, damage: 25, cost: 15, speed: 1, fireRate: 500 },
+    { range: 220, damage: 35, cost: 20, speed: 1, fireRate: 500 }
 ];
 MyGame.constants.towers.stats[bombName] = [
-    { range: 175, damage: 50, cost: 75 },
-    { range: 190, damage: 60, cost: 20 },
-    { range: 220, damage: 75, cost: 25 }
+    { range: 175, damage: 50, cost: 75, speed: 1, fireRate: 100 },
+    { range: 190, damage: 60, cost: 20, speed: 1, fireRate: 100 },
+    { range: 220, damage: 75, cost: 25, speed: 1, fireRate: 100 }
 ];
 MyGame.constants.towers.stats[airName] = [
-    { range: 175, damage: 30, cost: 90 },
-    { range: 190, damage: 40, cost: 30 },
-    { range: 220, damage: 50, cost: 35 }
+    { range: 175, damage: 30, cost: 90, speed: 1, fireRate: 100 },
+    { range: 190, damage: 40, cost: 30, speed: 1, fireRate: 100 },
+    { range: 220, damage: 50, cost: 35, speed: 1, fireRate: 100 }
 ];
 MyGame.constants.towers.stats[mixedName] = [
-    { range: 175, damage: 75, cost: 150 },
-    { range: 190, damage: 85, cost: 50 },
-    { range: 220, damage: 100, cost: 75 }
+    { range: 175, damage: 75, cost: 150, speed: 1, fireRate: 100 },
+    { range: 190, damage: 85, cost: 50, speed: 1, fireRate: 100 },
+    { range: 220, damage: 100, cost: 75, speed: 1, fireRate: 100 }
 ];
 
 MyGame.constants.towers.ground = {
