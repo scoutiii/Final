@@ -140,7 +140,8 @@ let groundName = "Ground Cannon",
 
 MyGame.constants.towers = {
     assets: {},
-    stats: {}
+    stats: {},
+    rotationRate: .005
 }
 MyGame.constants.towers.assets[groundName] = [
     MyGame.assets['tower-ground-1'],
@@ -164,19 +165,19 @@ MyGame.constants.towers.assets[mixedName] = [
 ];
 
 MyGame.constants.towers.stats[groundName] = [
-    { range: 100, damage: 20, cost: 20 },
-    { range: 110, damage: 25, cost: 15 },
-    { range: 125, damage: 35, cost: 20 }
+    { range: 175, damage: 20, cost: 20 },
+    { range: 190, damage: 25, cost: 15 },
+    { range: 220, damage: 35, cost: 20 }
 ];
 MyGame.constants.towers.stats[bombName] = [
-    { range: 75, damage: 50, cost: 75 },
-    { range: 85, damage: 60, cost: 20 },
-    { range: 100, damage: 75, cost: 25 }
+    { range: 175, damage: 50, cost: 75 },
+    { range: 190, damage: 60, cost: 20 },
+    { range: 220, damage: 75, cost: 25 }
 ];
 MyGame.constants.towers.stats[airName] = [
-    { range: 100, damage: 30, cost: 90 },
-    { range: 125, damage: 40, cost: 30 },
-    { range: 150, damage: 50, cost: 35 }
+    { range: 175, damage: 30, cost: 90 },
+    { range: 190, damage: 40, cost: 30 },
+    { range: 220, damage: 50, cost: 35 }
 ];
 MyGame.constants.towers.stats[mixedName] = [
     { range: 175, damage: 75, cost: 150 },

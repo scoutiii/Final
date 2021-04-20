@@ -23,28 +23,137 @@ MyGame.objects.tower = function(spec) {
     that.rotation = 0;
     that.target = null;
 
-    updateStats(that.level);
+    that.targetFunction = groundTargeting;
+    if (that.type == MyGame.constants.towers.air.type) {
+        that.targetFunction = airTargeting;
+    }
+    if (that.type == MyGame.constants.towers.mixed.type) {
+        that.targetFunction = mixedTargeting;
+    }
 
+    // Updates the stats based on the level
     function updateStats(level) {
         that.level = level
         that.image = MyGame.constants.towers.assets[that.type][that.level];
         that.radius = MyGame.constants.towers.stats[that.type][that.level].range;
+        // that.radius2 = Math.pow(that.radius, 2);
         that.damage = MyGame.constants.towers.stats[that.type][that.level].damage;
         that.value += MyGame.constants.towers.stats[that.type][that.level].cost;
     }
 
-    function update(elapsedTime) {
-        if (that.target == null) {
-            console.log("target acquired");
-            that.target = true;
+    updateStats(that.level);
+
+
+    // targeting related stuff
+    that.targetMatrix = spec.targetMatrix;
+    that.diff = Math.ceil((that.radius / MyGame.constants.gridSize.width) - .5);
+
+    // Checks targest based on tower type
+    function airTargeting(target) {
+        if (target.type == "bugger") {
+            return target;
         }
-        that.rotation += 1;
+        return null;
     }
 
+    // Checks targets based on ground towers
+    function groundTargeting(target) {
+        if (target.type == "grunt" || target.type == "hunter") {
+            return target;
+        }
+        return null;
+    }
+
+    function mixedTargeting(target) {
+        return target;
+    }
+
+    // Goes through the target matrix to find a target
+    function findTarget() {
+        for (let y = that.gridPosition.y - that.diff; y <= that.gridPosition.y + that.diff; y++) {
+            for (let x = that.gridPosition.x - that.diff; x <= that.gridPosition.x + that.diff; x++) {
+                if (x >= 0 && x < that.targetMatrix.length &&
+                    y >= 0 && y < that.targetMatrix.length) {
+                    // Loops through the creeps
+                    for (id in that.targetMatrix[y][x]) {
+                        that.target = that.targetMatrix[y][x][id];
+                        if (Math.hypot(that.center.x - that.target.center.x,
+                                that.center.y - that.target.center.y) <= that.radius) {
+                            if (that.targetFunction(that.target) != null) {
+                                return that.target;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    function crossProduct2d(v1, v2) {
+        return (v1.x * v2.y) - (v1.y * v2.x);
+    }
+
+    function computeAngle(rotation, ptCenter, ptTarget) {
+        let v1 = {
+                x: Math.cos(rotation),
+                y: Math.sin(rotation)
+            },
+            v2 = {
+                x: ptTarget.x - ptCenter.x,
+                y: ptTarget.y - ptCenter.y
+            },
+            dp,
+            angle;
+
+        v2.len = Math.sqrt(v2.x * v2.x + v2.y * v2.y);
+        v2.x /= v2.len;
+        v2.y /= v2.len;
+
+        dp = v1.x * v2.x + v1.y * v2.y;
+        angle = Math.acos(dp);
+
+        cp = crossProduct2d(v1, v2);
+
+        return {
+            angle: angle,
+            crossProduct: cp
+        };
+    }
+
+    function testTolerance(value, test, tolerance) {
+        return Math.abs(value - test) < tolerance
+    }
+
+    // Update function
+    function update(elapsedTime) {
+        if (that.target == null) {
+            that.target = findTarget();
+        } else {
+            // removes target if it is out of range
+            if (Math.hypot(that.center.x - that.target.center.x,
+                    that.center.y - that.target.center.y) > that.radius ||
+                that.creeps[that.target.id] == undefined) {
+                that.target = null;
+            } else { // Rotates turret
+                let result = computeAngle(that.rotation, that.center, that.target.center);
+                if (testTolerance(result.angle, 0, .01) === false) {
+                    if (result.crossProduct > 0) {
+                        that.rotation += elapsedTime * MyGame.constants.towers.rotationRate;
+                    } else {
+                        that.rotation -= elapsedTime * MyGame.constants.towers.rotationRate;
+                    }
+                }
+            }
+        }
+    }
+
+    // upgrades the tower
     function upgrade() {
         updateStats(that.level + 1);
     }
 
+    // Sets the position (mostly for placing a tower)
     function setPosition(pos) {
         that.center = {
             x: (pos.x - (pos.x % MyGame.constants.gridSize.width)) + (MyGame.constants.gridSize.width / 2),
@@ -70,7 +179,7 @@ MyGame.objects.tower = function(spec) {
         set center(pos) { setPosition(pos); },
         get gridPosition() { return that.gridPosition; },
         get image() { return that.image; },
-        get rotation() { return that.rotation; },
+        get rotation() { return (that.rotation * 180 / Math.PI) + 90; },
         set rotation(rot) { that.rotation = rot; },
         get id() { return that.id; },
         get type() { return that.type; },

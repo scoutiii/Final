@@ -2,7 +2,6 @@
 // 1. type: name of asset (creep-blue-1)
 // 2. center: {x: , y: } game coords
 // 3. rotation: degrees,
-// 4. health: what ever
 MyGame.objects.creep = function(spec) {
     // Defines stuff for animated sprite
     let that = {};
@@ -53,6 +52,26 @@ MyGame.objects.creep = function(spec) {
 
     that.outOfBounds = spec.outOfBounds;
 
+    // For updating the target matrix
+    that.targetMatrix = spec.targetMatrix;
+    that.prevGrid = getGrid();
+    that.currGrid = getGrid();
+
+    // Gets the grid location
+    function getGrid() {
+        return {
+            x: Math.floor(that.center.x / MyGame.constants.gridSize.width),
+            y: Math.floor(that.center.y / MyGame.constants.gridSize.height)
+        };
+    }
+
+    // Updates the game grid if possible
+    function updateTargetMatrix(prev, curr) {
+        if (!(prev.x == curr.x && prev.y == curr.y)) {
+            spec.updateTargetMatrix(prev, curr, that.id);
+        }
+    }
+
     // Will change the rotation and direction based on the next path
     function updateDirection(target) {
         target = {
@@ -78,7 +97,7 @@ MyGame.objects.creep = function(spec) {
     }
 
     // Checks if the creep is within the given x and y grid
-    function withIn(spot, epsilon = 1) {
+    function withIn(spot, epsilon = 2) {
         let center = {
             x: MyGame.constants.gridSize.width * (spot.x + 0.5),
             y: MyGame.constants.gridSize.height * (spot.y + 0.5)
@@ -103,9 +122,11 @@ MyGame.objects.creep = function(spec) {
     // Updates the state of the creep
     function update(elapsedTime) {
         if (that.health <= 0) {
+            spec.updateTargetMatrix(that.currGrid, null, that.id);
             return MyGame.constants.creeps.status.death;
         } else if (that.center.x < 0 || that.center.x > MyGame.constants.globalSize.width ||
             that.center.y < 0 || that.center.y > MyGame.constants.globalSize.height) {
+            spec.updateTargetMatrix(that.currGrid, null, that.id);
             return MyGame.constants.creeps.status.outOfBounds;
         }
         updateAnimation(elapsedTime);
@@ -114,11 +135,20 @@ MyGame.objects.creep = function(spec) {
 
     // Update function which follows the standard pathing
     function standardUpdate(elapsedTime) {
+        that.prevGrid = that.currGrid;
+
         that.center.x += that.direction.x * that.speed * elapsedTime;
         that.center.y += that.direction.y * that.speed * elapsedTime;
+
+        that.currGrid = getGrid();
+        // update target grid
+        updateTargetMatrix(that.prevGrid, that.currGrid);
+
+        // updates the direction when ready
         if (withIn(that.path[that.target])) {
             that.target++;
             if (that.target >= that.path.length) {
+                spec.updateTargetMatrix(that.currGrid, null, that.id);
                 return MyGame.constants.creeps.status.success;
             }
             updateDirection(that.path[that.target]);
@@ -127,6 +157,7 @@ MyGame.objects.creep = function(spec) {
     }
 
     function findNewPathUpdate(elapsedTime) {
+        spec.updateTargetMatrix(that.currGrid, null, that.id);
         // Something is in the way
         if (that.grid.getElement(that.path[that.target].x, that.path[that.target].y) != null ||
             that.grid.getElement(that.path[that.target - 1].x, that.path[that.target - 1].y) != null) {
@@ -171,12 +202,9 @@ MyGame.objects.creep = function(spec) {
         get health() { return that.currentHealth; },
         get value() { return that.value; },
         get id() { return that.id; },
-        get gridLocation() {
-            return {
-                x: Math.floor(that.center.x / MyGame.constants.gridSize.width),
-                y: Math.floor(that.center.y / MyGame.constants.gridSize.height)
-            };
-        },
+        get gridLocation() { return getGrid(); },
+        get center() { return that.center; },
+        get type() { return spec.name; },
         update,
         updatePath
     }

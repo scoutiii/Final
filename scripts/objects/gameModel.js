@@ -64,7 +64,7 @@ MyGame.objects.gameModel = function(spec) {
             if (attempt.center != null) {
                 borders.push(attempt);
             }
-            targetMatrix[y][x] = null;
+            targetMatrix[y][x] = {};
         }
     }
 
@@ -113,7 +113,9 @@ MyGame.objects.gameModel = function(spec) {
                             spawn: 0,
                             rotation: 0,
                             grid: gameGrid,
-                            id: creepsNextName++
+                            id: creepsNextName++,
+                            targetMatrix: targetMatrix,
+                            updateTargetMatrix
                         }));
                     }
                 }
@@ -225,8 +227,12 @@ MyGame.objects.gameModel = function(spec) {
 
     // Updates the target matrix when a creep moves
     function updateTargetMatrix(prev, curr, name) {
-        targetMatrix[prev.y][prev.x] = null;
-        targetMatrix[curr.y][curr.x] = creeps[name];
+        if (prev != null) {
+            delete targetMatrix[prev.y][prev.x][name];
+        }
+        if (curr != null) {
+            targetMatrix[curr.y][curr.x][name] = creeps[name];
+        }
     }
 
 
