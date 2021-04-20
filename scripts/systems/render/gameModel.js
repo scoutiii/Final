@@ -25,7 +25,7 @@ MyGame.systems.render.gameModel = (function(graphics, constants, renderer) {
         for (let id in spec.creeps) {
             renderer.creep.render(spec.creeps[id]);
         }
-        // Renders particles
+        // Renders projectiles
         renderer.projectileSystem.render(spec.projectiles);
 
         // Renders tower to place

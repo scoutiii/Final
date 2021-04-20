@@ -25,14 +25,18 @@ MyGame.systems.projectiles = function(spec) {
 
         for (let id in that.projectiles) {
             let p = that.projectiles[id];
-            if (p.type == "mixed") {
+            if (p.type == "air") {
                 p.direction = {
                     dx: p.target.x - p.center.x,
                     dy: p.target.y - p.center.y
                 };
-                let mag = Math.hypot(target.x - center.x, target.y - center.y);
+                let mag = Math.hypot(p.target.x - p.center.x, p.target.y - p.center.y);
                 p.direction.dx /= mag;
                 p.direction.dy /= mag;
+                if (withIn(p.center, p.target)) {
+                    toDelete.push(id);
+                    p.onExplosion();
+                }
             }
             if (p.type == "bomb") {
                 if (withIn(p.center, p.target)) {
@@ -60,7 +64,7 @@ MyGame.systems.projectiles = function(spec) {
 
     }
 
-    function groundProjectile(center, target, speed) {
+    function groundProjectile(center, target, speed, damage) {
         let mag = Math.hypot(target.x - center.x, target.y - center.y);
         that.projectiles[that.nextName++] = {
             center: JSON.parse(JSON.stringify(center)),
@@ -78,7 +82,8 @@ MyGame.systems.projectiles = function(spec) {
             },
             onCollision: function() {
                 // calculate damage
-            }
+            },
+            damage: damage
         };
     }
 
@@ -95,8 +100,8 @@ MyGame.systems.projectiles = function(spec) {
             speed: speed,
             type: "bomb",
             size: {
-                width: 50,
-                height: 50 * MyGame.assets['bombProj'].height / MyGame.assets['bombProj'].width
+                width: 40,
+                height: 40 * MyGame.assets['bombProj'].height / MyGame.assets['bombProj'].width
             },
             onExplosion: function() {
                 // add particles, calculate damage
@@ -104,12 +109,51 @@ MyGame.systems.projectiles = function(spec) {
         };
     }
 
-    function airProjectile(center, target, speed) {
-
+    function airProjectile(center, target, speed, damage) {
+        let mag = Math.hypot(target.x - center.x, target.y - center.y);
+        that.projectiles[that.nextName++] = {
+            center: JSON.parse(JSON.stringify(center)),
+            target: target,
+            direction: {
+                dx: (target.x - center.x) / mag,
+                dy: (target.y - center.y) / mag
+            },
+            image: MyGame.assets['missileProj'],
+            speed: speed,
+            type: "air",
+            size: {
+                width: 50,
+                height: 50 * MyGame.assets['missileProj'].height / MyGame.assets['missileProj'].width
+            },
+            onExplosion: function() {
+                // add particles, calculate damage
+            },
+            damage: damage
+        };
     }
 
-    function mixedProjectile(center, target, speed) {
-
+    function mixedProjectile(center, target, speed, damage) {
+        let mag = Math.hypot(target.x - center.x, target.y - center.y);
+        let p = {
+            center: JSON.parse(JSON.stringify(center)),
+            target: JSON.parse(JSON.stringify(target)),
+            direction: {
+                dx: (target.x - center.x) / mag,
+                dy: (target.y - center.y) / mag
+            },
+            image: MyGame.assets['mixedProj'],
+            speed: speed,
+            type: "mixed",
+            size: {
+                width: 10,
+                height: 10 * MyGame.assets['mixedProj'].height / MyGame.assets['mixedProj'].width
+            },
+            onCollision: function() {
+                // calculate damage
+            },
+            damage: damage
+        };
+        that.projectiles[that.nextName++] = p;
     }
 
     return {

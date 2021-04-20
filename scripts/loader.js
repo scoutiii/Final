@@ -236,6 +236,12 @@ MyGame.loader = (function() {
     }, {
         key: 'bombProj',
         source: 'assets/images/projectiles/Bomb.png'
+    }, {
+        key: 'missileProj',
+        source: 'assets/images/projectiles/missle.png'
+    }, {
+        key: 'mixedProj',
+        source: 'assets/images/projectiles/mixed.png'
     }];
 
     //------------------------------------------------------------------
