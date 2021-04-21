@@ -11,16 +11,16 @@ MyGame.systems.render.projectileSystem = (function(graphics, constants) {
                 p.size
             );
             // Draws the colliding box
-            graphics.drawLines(
-                [{ x: p.left, y: p.top },
-                    { x: p.right, y: p.top },
-                    { x: p.right, y: p.bottom },
-                    { x: p.left, y: p.bottom }
-                ],
-                "rgba(0, 0, 0, 0)",
-                "rgba(255, 255, 255, 1)",
-                1
-            );
+            // graphics.drawLines(
+            //     [{ x: p.left, y: p.top },
+            //         { x: p.right, y: p.top },
+            //         { x: p.right, y: p.bottom },
+            //         { x: p.left, y: p.bottom }
+            //     ],
+            //     "rgba(0, 0, 0, 0)",
+            //     "rgba(255, 255, 255, 1)",
+            //     1
+            // );
         }
     }
 

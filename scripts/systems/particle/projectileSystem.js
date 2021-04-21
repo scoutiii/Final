@@ -109,14 +109,15 @@ MyGame.systems.projectiles = function(spec) {
 
     }
 
-    function groundProjectile(center, target, speed, damage) {
-        let mag = Math.hypot(target.x - center.x, target.y - center.y);
+    function groundProjectile(center, target, speed, damage, rotation) {
+        let dx = Math.cos(rotation);
+        let dy = Math.sin(rotation);
         let p = {
             center: JSON.parse(JSON.stringify(center)),
             target: JSON.parse(JSON.stringify(target)),
             direction: {
-                dx: (target.x - center.x) / mag,
-                dy: (target.y - center.y) / mag
+                dx: dx,
+                dy: dy
             },
             image: MyGame.assets['groundProj'],
             speed: speed,
@@ -203,14 +204,15 @@ MyGame.systems.projectiles = function(spec) {
         that.projectiles[that.nextName++] = p;
     }
 
-    function mixedProjectile(center, target, speed, damage) {
-        let mag = Math.hypot(target.x - center.x, target.y - center.y);
+    function mixedProjectile(center, target, speed, damage, rotation) {
+        let dx = Math.cos(rotation);
+        let dy = Math.sin(rotation);
         let p = {
             center: JSON.parse(JSON.stringify(center)),
             target: JSON.parse(JSON.stringify(target)),
             direction: {
-                dx: (target.x - center.x) / mag,
-                dy: (target.y - center.y) / mag
+                dx: dx,
+                dy: dy
             },
             image: MyGame.assets['mixedProj'],
             speed: speed,

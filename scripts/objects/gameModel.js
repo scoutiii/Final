@@ -12,6 +12,10 @@ MyGame.objects.gameModel = function(spec) {
     let constants = MyGame.constants;
     let towerVals = MyGame.constants.towers;
 
+    let respawnRate = 500;
+    let respawnTime = 0;
+    let wave = [];
+
 
     // Sets up the creeps path update behavior
     let internalUpdate = null;
@@ -106,22 +110,6 @@ MyGame.objects.gameModel = function(spec) {
     // Is called when the next wave is supposed to start
     function onNextWave() {
         if (startNextWave) {
-            for (let n = 0; n < 1; n++) {
-                for (let i = 0; i < 1; i++) {
-                    for (let j = 0; j < 1; j++) {
-                        creeps[creepsNextName] = (objects.creep({
-                            name: creepTypes[i],
-                            level: creepLevels[j],
-                            spawn: 0,
-                            rotation: 0,
-                            grid: gameGrid,
-                            id: creepsNextName++,
-                            targetMatrix: targetMatrix,
-                            updateTargetMatrix
-                        }));
-                    }
-                }
-            }
             console.log(Object.keys(creeps).length);
             internalUpdate = waveStageUpdate;
             startNextWave = false;
@@ -176,12 +164,41 @@ MyGame.objects.gameModel = function(spec) {
 
     // Update function for the preparation stage
     function prepStageUpdate(elapsedTime) {
+        // Updates projectiles
+        projectiles.update(elapsedTime);
 
+        // Sets up wave
+        if (wave.length == 0) {
+            respawnTime = respawnRate;
+            for (let n = 0; n < 1; n++) {
+                for (let i = 0; i < creepTypes.length; i++) {
+                    for (let j = 0; j < creepLevels.length; j++) {
+                        wave.push({
+                            name: creepTypes[i],
+                            level: creepLevels[j],
+                            spawn: 0,
+                            rotation: 0,
+                            grid: gameGrid,
+                            id: creepsNextName++,
+                            targetMatrix: targetMatrix,
+                            updateTargetMatrix
+                        });
+                    }
+                }
+            }
+        }
     }
 
     // Update function for the wave stage
     function waveStageUpdate(elapsedTime) {
         menu.time = elapsedTime;
+
+        respawnTime += elapsedTime;
+        if (respawnTime >= respawnRate && wave.length > 0) {
+            respawnTime %= respawnRate;
+            let newCreep = objects.creep(wave.pop());
+            creeps[newCreep.id] = newCreep;
+        }
 
         if (updatePaths.func) {
             updatePaths.func(elapsedTime);
@@ -196,7 +213,7 @@ MyGame.objects.gameModel = function(spec) {
                 creepsToDelete.push(creeps[creep]);
                 updatePaths.remove(creeps[creep].id);
             } else if (creepStatus == constants.creeps.status.death) {
-                menu.gold = creeps[i].value;
+                menu.gold = creeps[creep].value;
                 creepsToDelete.push(creeps[creep]);
                 updatePaths.remove(creeps[creep].id);
             } else if (creepStatus == constants.creeps.status.outOfBounds) {
@@ -220,7 +237,7 @@ MyGame.objects.gameModel = function(spec) {
         // Updates particles
 
         // Goes back to preparation stage
-        if (Object.keys(creeps).length == 0) {
+        if (Object.keys(creeps).length == 0 && wave.length == 0) {
             internalUpdate = prepStageUpdate;
             startNextWave = true;
             menu.setDialog("That was intense...");

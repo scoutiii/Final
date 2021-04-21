@@ -121,7 +121,7 @@ MyGame.objects.creep = function(spec) {
 
     // Updates the state of the creep
     function update(elapsedTime) {
-        if (that.health <= 0) {
+        if (that.currentHealth <= 0) {
             spec.updateTargetMatrix(that.currGrid, null, that.id);
             return MyGame.constants.creeps.status.death;
         } else if (that.center.x < 0 || that.center.x > MyGame.constants.globalSize.width ||
@@ -211,6 +211,7 @@ MyGame.objects.creep = function(spec) {
         get bottom() { return that.center.y + (that.size.height / 2); },
         get left() { return that.center.x - (that.size.width / 2); },
         get right() { return that.center.x + (that.size.width / 2); },
+        get isAir() { return spec.type == "bugger"; },
         update,
         updatePath
     }

@@ -28,16 +28,16 @@ MyGame.systems.render.creep = (function(graphics, constants) {
                 "rgba(255, 0, 0, 1)");
 
             // Draws the colliding box
-            graphics.drawLines(
-                [{ x: spec.left, y: spec.top },
-                    { x: spec.right, y: spec.top },
-                    { x: spec.right, y: spec.bottom },
-                    { x: spec.left, y: spec.bottom }
-                ],
-                "rgba(0, 0, 0, 0)",
-                "rgba(255, 255, 255, 1)",
-                1
-            );
+            // graphics.drawLines(
+            //     [{ x: spec.left, y: spec.top },
+            //         { x: spec.right, y: spec.top },
+            //         { x: spec.right, y: spec.bottom },
+            //         { x: spec.left, y: spec.bottom }
+            //     ],
+            //     "rgba(0, 0, 0, 0)",
+            //     "rgba(255, 255, 255, 1)",
+            //     1
+            // );
         }
     }
 
