@@ -1,41 +1,44 @@
 MyGame.systems.render.particleSystem = (function(graphics, constants) {
-    // // Sets up the thrust particle image
-    // let imageThrust = new Image();
-    // let isReadyThrust = false;
-    // imageThrust.onload = function() {
-    //     isReadyThrust = true;
-    // }
-    // imageThrust.src = images.thrust;
-
-    // // Sets up the crash particle image
-    // let imageCrash = new Image();
-    // let isReadyCrash = false;
-    // imageCrash.onload = function() {
-    //     isReadyCrash = true;
-    // }
-    // imageCrash.src = images.crash;
+    let p = null;
 
     function render(spec) {
-        // if (isReadyCrash && isReadyThrust) {
-        //     let obj = Object.getOwnPropertyNames(spec.system.particles);
-        //     if (obj.length > 0) {
-        //         obj.forEach(function(value) {
-        //             let particle = system.particles[value];
-        //             let image = null;
-        //             // Check for particle type
-        //             // if (particle.type == "thrust") {
-        //             //     image = imageThrust;
-        //             // } else if (particle.type == "crash") {
-        //             //     image = imageCrash;
-        //             // }
-        //             graphics.drawTexture(image, particle.center, particle.rotation, particle.size);
-        //         });
-        //     }
+        for (let id in spec.particles) {
+            p = spec.particles[id];
+            if (p.type == "creepDeath") {
+                renderCreepDeath(p);
+            } else if (p.type == "creepScore") {
+                renderCreepScore(p);
+            }
+        }
 
-        // }
+    }
+
+    function renderCreepDeath(spec) {
+        graphics.drawTexture(
+            MyGame.assets["creepDeath"],
+            spec.center,
+            spec.rotation, { width: spec.size, height: spec.size }
+        );
+    }
+
+    function renderCreepScore(spec) {
+        graphics.drawText("+" + spec.value,
+            "12pt Arial",
+            "rgba(255, 255, 255, 1)",
+            "rgba(255, 255, 255, 0)",
+            spec.center,
+            0,
+            constants.textOptions.baseline.middle,
+            constants.textOptions.align.center);
+    }
+
+    function renderBombSmoke(spec) {
+        // graphics.drawTexture(
+        //     MyGame.assets[]
+        // )
     }
 
     return {
         render
     };
-}(MyGame.graphics, MyGame.constants));
+}(MyGame.systems.graphics, MyGame.constants));

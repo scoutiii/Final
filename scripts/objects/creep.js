@@ -126,6 +126,7 @@ MyGame.objects.creep = function(spec) {
         if (that.currentHealth <= 0) {
             that.alive = false;
             spec.updateTargetMatrix(that.currGrid, null, that.id);
+            spec.particles.onCreepDeath(that.center, that.value);
             return MyGame.constants.creeps.status.death;
         } else if (that.center.x < 0 || that.center.x > MyGame.constants.globalSize.width ||
             that.center.y < 0 || that.center.y > MyGame.constants.globalSize.height) {

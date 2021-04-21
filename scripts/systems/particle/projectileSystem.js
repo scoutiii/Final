@@ -4,7 +4,6 @@ MyGame.systems.projectiles = function(spec) {
     that.nextName = 1;
 
     that.targetMatrix = spec.targetMatrix;
-
     that.particles = spec.particles;
 
 
@@ -28,7 +27,8 @@ MyGame.systems.projectiles = function(spec) {
                     if (row >= 0 && row < that.targetMatrix.length &&
                         col >= 0 && col < that.targetMatrix.length) {
                         for (let creep in that.targetMatrix[row][col]) {
-                            if (p.type == "bomb" && withIn(p.center, p.target) &&
+                            if (p.type == "bomb" &&
+                                (withIn(p.center, p.target) || p.timeAlive >= p.timeLimit) &&
                                 !that.targetMatrix[row][col][creep].isAir) {
                                 that.targetMatrix[row][col][creep].health = p.damage;
                             } else if (p.type != "bomb") {
@@ -52,7 +52,8 @@ MyGame.systems.projectiles = function(spec) {
                     }
                 }
             }
-            if (p.type == "bomb" && withIn(p.center, p.target)) {
+            if (p.type == "bomb" &&
+                (withIn(p.center, p.target) || p.timeAlive >= p.timeLimit)) {
                 toDelete.push(id);
                 p.onExplosion();
             } else if (intersected && p.type != "bomb") {
@@ -77,7 +78,7 @@ MyGame.systems.projectiles = function(spec) {
     }
 
     // checks how close
-    function withIn(a, b, tolerance = 20) {
+    function withIn(a, b, tolerance = 50) {
         return Math.abs(a.x - b.x) <= tolerance && Math.abs(a.y - b.y) <= tolerance;
     }
 
@@ -100,7 +101,11 @@ MyGame.systems.projectiles = function(spec) {
                     toDelete.push(id);
                     p.onCollision();
                 }
+            } else if (p.type == "bomb") {
+                that.particles.bombSmoke(p.center, elapsedTime);
             }
+            p.timeAlive += elapsedTime;
+
             p.center.x += p.direction.dx * p.speed * elapsedTime;
             p.center.y += p.direction.dy * p.speed * elapsedTime;
 
@@ -148,7 +153,9 @@ MyGame.systems.projectiles = function(spec) {
             onCollision: function() {},
             damage: damage,
             damageAir: false,
-            damageGround: true
+            damageGround: true,
+            timeAlive: 0,
+            timeLimit: 5000
         };
 
         p.left = p.center.x - p.hitBox;
@@ -182,7 +189,9 @@ MyGame.systems.projectiles = function(spec) {
             hitBox: 20,
             damage: damage,
             damageAir: false,
-            damageGround: true
+            damageGround: true,
+            timeAlive: 0,
+            timeLimit: 3000
         };
 
         p.left = p.center.x - p.hitBox;
@@ -216,7 +225,9 @@ MyGame.systems.projectiles = function(spec) {
             damage: damage,
             hitBox: 20,
             damageAir: true,
-            damageGround: false
+            damageGround: false,
+            timeAlive: 0,
+            timeLimit: 3000
         };
 
         p.left = p.center.x - p.hitBox;
@@ -248,7 +259,9 @@ MyGame.systems.projectiles = function(spec) {
             damage: damage,
             hitBox: 5,
             damageAir: true,
-            damageGround: true
+            damageGround: true,
+            timeAlive: 0,
+            timeLimit: 5000
         };
 
         p.left = p.center.x - p.hitBox;

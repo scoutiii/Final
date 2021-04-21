@@ -28,6 +28,9 @@ MyGame.systems.render.gameModel = (function(graphics, constants, renderer) {
         // Renders projectiles
         renderer.projectileSystem.render(spec.projectiles);
 
+        // Render particles
+        renderer.particleSystem.render(spec.particles);
+
         // Renders tower to place
         if (spec.towerToPlace != null) {
             renderer.tower.render(spec.towerToPlace.tower);

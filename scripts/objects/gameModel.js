@@ -12,7 +12,7 @@ MyGame.objects.gameModel = function(spec) {
     let constants = MyGame.constants;
     let towerVals = MyGame.constants.towers;
 
-    let respawnRate = 1;
+    let respawnRate = 500;
     let respawnTime = 0;
     let wave = [];
 
@@ -93,9 +93,13 @@ MyGame.objects.gameModel = function(spec) {
     let towers = {};
     let towersNextName = 1;
 
+    // projectiles and particles
+    let particles = MyGame.systems.particles();
     let projectiles = MyGame.systems.projectiles({
-        targetMatrix: targetMatrix
+        targetMatrix: targetMatrix,
+        particles: particles
     });
+
 
     // Tracks selected towers/ towers to place
     let towerToPlace = null;
@@ -173,6 +177,8 @@ MyGame.objects.gameModel = function(spec) {
     function gameOverUpdate(elapsedTime) {
         // Updates projectiles
         projectiles.update(elapsedTime);
+        // Updates particles
+        particles.update(elapsedTime);
         // Updates creeps
         let creepsToDelete = [];
         for (creep in creeps) {
@@ -200,11 +206,13 @@ MyGame.objects.gameModel = function(spec) {
     function prepStageUpdate(elapsedTime) {
         // Updates projectiles
         projectiles.update(elapsedTime);
+        // Updates particles
+        particles.update(elapsedTime);
 
         // Sets up wave
         if (wave.length == 0) {
             respawnTime = respawnRate;
-            for (let n = 0; n < 10; n++) {
+            for (let n = 0; n < 5; n++) {
                 for (let i = 0; i < creepTypes.length; i++) {
                     for (let j = 0; j < creepLevels.length; j++) {
                         wave.push({
@@ -215,7 +223,8 @@ MyGame.objects.gameModel = function(spec) {
                             grid: gameGrid,
                             id: creepsNextName++,
                             targetMatrix: targetMatrix,
-                            updateTargetMatrix
+                            updateTargetMatrix,
+                            particles: particles
                         });
                     }
                 }
@@ -248,6 +257,7 @@ MyGame.objects.gameModel = function(spec) {
                 updatePaths.remove(creeps[creep].id);
             } else if (creepStatus == constants.creeps.status.death) {
                 menu.gold = creeps[creep].value;
+
                 creepsToDelete.push(creeps[creep]);
                 updatePaths.remove(creeps[creep].id);
             } else if (creepStatus == constants.creeps.status.outOfBounds) {
@@ -267,8 +277,8 @@ MyGame.objects.gameModel = function(spec) {
 
         // Updates projectiles
         projectiles.update(elapsedTime);
-
         // Updates particles
+        particles.update(elapsedTime);
 
         // Goes back to preparation stage
         if (Object.keys(creeps).length == 0 && wave.length == 0) {
@@ -484,10 +494,10 @@ MyGame.objects.gameModel = function(spec) {
         get towers() { return towers; },
         get border() { return borders; },
         get projectiles() { return projectiles; },
+        get particles() { return particles; },
         get towerToPlace() { return towerToPlace; },
         processInput,
         get showGrid() { return showGrid; },
-        get projectiles() { return projectiles; },
         get gameOver() { return gameOver; }
     }
 }

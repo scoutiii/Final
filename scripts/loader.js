@@ -242,6 +242,9 @@ MyGame.loader = (function() {
     }, {
         key: 'mixedProj',
         source: 'assets/images/projectiles/mixed.png'
+    }, {
+        key: 'creepDeath',
+        source: 'assets/images/particles/creepDeath.png'
     }];
 
     //------------------------------------------------------------------
