@@ -59,6 +59,9 @@ MyGame.systems.projectiles = function(spec) {
             } else if (intersected && p.type != "bomb") {
                 toDelete.push(id);
                 p.onCollision();
+            } else if (p.timeAlive >= p.timeLimit) {
+                toDelete.push(id);
+                p.onCollision();
             }
         }
 
@@ -90,6 +93,7 @@ MyGame.systems.projectiles = function(spec) {
             let p = that.projectiles[id];
             if (p.type == "air") {
                 if (p.creep.alive) {
+                    // updates direction
                     p.direction = {
                         dx: p.target.x - p.center.x,
                         dy: p.target.y - p.center.y
@@ -97,11 +101,24 @@ MyGame.systems.projectiles = function(spec) {
                     let mag = Math.hypot(p.target.x - p.center.x, p.target.y - p.center.y);
                     p.direction.dx /= mag;
                     p.direction.dy /= mag;
-                } else {
+                    // adds smoke
+                    p.lastSmoke += elapsedTime;
+                    if (p.lastSmoke >= p.smokeRate) {
+                        p.lastSmoke %= p.smokeRate;
+                        p.rotation = Math.atan2(p.direction.dy, p.direction.dx) * 180 / Math.PI;
+                        that.particles.rocketSmoke({
+                                x: p.center.x - (30 * p.direction.dx),
+                                y: p.center.y - (30 * p.direction.dy)
+                            },
+                            elapsedTime,
+                            p.rotation - 180);
+                    }
+                } else { // deletes if the target is gone
                     toDelete.push(id);
                     p.onCollision();
                 }
             } else if (p.type == "bomb") {
+                // adds smoke
                 p.lastSmoke += elapsedTime;
                 if (p.lastSmoke >= p.smokeRate) {
                     p.lastSmoke %= p.smokeRate;
@@ -195,7 +212,7 @@ MyGame.systems.projectiles = function(spec) {
             damageAir: false,
             damageGround: true,
             timeAlive: 0,
-            timeLimit: 3000,
+            timeLimit: 2000,
             smokeRate: 100,
             lastSmoke: 100
         };
@@ -222,18 +239,20 @@ MyGame.systems.projectiles = function(spec) {
             speed: speed,
             type: "air",
             size: {
-                width: 20,
-                height: 20 * MyGame.assets['missileProj'].height / MyGame.assets['missileProj'].width
+                width: 15,
+                height: 15 * MyGame.assets['missileProj'].height / MyGame.assets['missileProj'].width
             },
             onCollision: function() {
-                // blow up missile
+                that.particles.explosion(this.center);
             },
             damage: damage,
-            hitBox: 20,
+            hitBox: 15,
             damageAir: true,
             damageGround: false,
             timeAlive: 0,
-            timeLimit: 3000
+            timeLimit: 3000,
+            smokeRate: 50,
+            lastSmoke: 100
         };
 
         p.left = p.center.x - p.hitBox;

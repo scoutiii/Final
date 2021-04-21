@@ -154,6 +154,7 @@ MyGame.objects.creep = function(spec) {
             that.target++;
             if (that.target >= that.path.length) {
                 spec.updateTargetMatrix(that.currGrid, null, that.id);
+                that.alive = false;
                 return MyGame.constants.creeps.status.success;
             }
             updateDirection(that.path[that.target]);

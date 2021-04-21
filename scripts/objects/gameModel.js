@@ -12,7 +12,7 @@ MyGame.objects.gameModel = function(spec) {
     let constants = MyGame.constants;
     let towerVals = MyGame.constants.towers;
 
-    let respawnRate = 500;
+    let respawnRate = 100;
     let respawnTime = 0;
     let wave = [];
 
@@ -212,7 +212,7 @@ MyGame.objects.gameModel = function(spec) {
         // Sets up wave
         if (wave.length == 0) {
             respawnTime = respawnRate;
-            for (let n = 0; n < 5; n++) {
+            for (let n = 0; n < 10; n++) {
                 for (let i = 0; i < creepTypes.length; i++) {
                     for (let j = 0; j < creepLevels.length; j++) {
                         wave.push({
@@ -449,6 +449,7 @@ MyGame.objects.gameModel = function(spec) {
         MyGame.misc.controls.sell,
         function(elapsedTime) {
             if (towerSelected != null) {
+                particles.onTowerSell(towerSelected.center, towerSelected.value);
                 menu.gold = towerSelected.value;
                 gameGrid.removeElement(towerSelected.gridPosition.x, towerSelected.gridPosition.y);
                 delete towers[towerSelected.id];

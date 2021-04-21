@@ -52,6 +52,7 @@ MyGame.objects.tower = function(spec) {
         that.value += MyGame.constants.towers.stats[that.type][that.level].cost;
         that.speed = MyGame.constants.towers.stats[that.type][that.level].speed;
         that.fireRate = MyGame.constants.towers.stats[that.type][that.level].fireRate;
+        that.diff = Math.ceil((that.radius / MyGame.constants.gridSize.width) - .5);
     }
 
     updateStats(that.level);

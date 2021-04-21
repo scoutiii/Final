@@ -254,6 +254,9 @@ MyGame.loader = (function() {
     }, {
         key: 'explosionSmoke',
         source: 'assets/images/particles/explosionSmoke.png'
+    }, {
+        key: 'cashMoney',
+        source: 'assets/images/particles/cashMoney.png'
     }];
 
     //------------------------------------------------------------------

@@ -49,7 +49,7 @@ MyGame.systems.particles = function() {
 
     function onCreepDeath(center, value) {
         addParticles({
-                numParticles: 40,
+                numParticles: 20,
                 center: center,
                 size: { mean: 10, std: 5 },
                 spread: 360,
@@ -71,9 +71,9 @@ MyGame.systems.particles = function() {
             "creepScore");
     }
 
-    function bombSmoke(center, numberParticles) {
+    function bombSmoke(center, numParticles) {
         addParticles({
-                numParticles: numberParticles,
+                numParticles,
                 center,
                 size: { mean: 5, std: 1 },
                 spread: 360,
@@ -86,15 +86,41 @@ MyGame.systems.particles = function() {
 
     function explosion(center) {
         addParticles({
-                numParticles: 40,
+                numParticles: 20,
                 center: center,
                 size: { mean: 20, std: 5 },
                 spread: 360,
-                speed: { mean: 400, std: 100 },
+                speed: { mean: 300, std: 100 },
                 lifeTime: { mean: .1, std: .1 },
                 direction: 0
             },
             "explosion");
+    }
+
+    function rocketSmoke(center, numParticles, direction) {
+        addParticles({
+                numParticles,
+                center,
+                size: { mean: 20, std: 5 },
+                spread: 30,
+                speed: { mean: 50, std: 10 },
+                lifeTime: { mean: .1, std: .1 },
+                direction: direction
+            },
+            "rocketSmoke");
+    }
+
+    function onTowerSell(center, value) {
+        addParticles({
+                numParticles: value / 4,
+                center,
+                size: { mean: 20, std: 20 },
+                spread: 360,
+                speed: { mean: 50, std: 50 },
+                lifeTime: { mean: .5, std: .1 },
+                direction: 0
+            },
+            "cashMoney");
     }
 
     return {
@@ -102,6 +128,8 @@ MyGame.systems.particles = function() {
         onCreepDeath,
         bombSmoke,
         explosion,
+        rocketSmoke,
+        onTowerSell,
         get particles() { return particles; }
     }
 }
