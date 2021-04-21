@@ -47,6 +47,8 @@ MyGame.objects.creep = function(spec) {
     that.speed = MyGame.constants.creeps.stats[that.type].speed;
     that.maxHealth = MyGame.constants.creeps.stats[that.type].health;
     that.currentHealth = that.maxHealth;
+    that.alive = true;
+
     that.value = MyGame.constants.creeps.stats[that.type].value;
     that.id = spec.id;
 
@@ -122,10 +124,12 @@ MyGame.objects.creep = function(spec) {
     // Updates the state of the creep
     function update(elapsedTime) {
         if (that.currentHealth <= 0) {
+            that.alive = false;
             spec.updateTargetMatrix(that.currGrid, null, that.id);
             return MyGame.constants.creeps.status.death;
         } else if (that.center.x < 0 || that.center.x > MyGame.constants.globalSize.width ||
             that.center.y < 0 || that.center.y > MyGame.constants.globalSize.height) {
+            that.alive = false;
             spec.updateTargetMatrix(that.currGrid, null, that.id);
             return MyGame.constants.creeps.status.outOfBounds;
         }
@@ -211,7 +215,8 @@ MyGame.objects.creep = function(spec) {
         get bottom() { return that.center.y + (that.size.height / 2); },
         get left() { return that.center.x - (that.size.width / 2); },
         get right() { return that.center.x + (that.size.width / 2); },
-        get isAir() { return spec.type == "bugger"; },
+        get isAir() { return spec.name == "bugger"; },
+        get alive() { return that.alive; },
         update,
         updatePath
     }

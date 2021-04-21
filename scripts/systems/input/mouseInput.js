@@ -60,6 +60,12 @@ MyGame.systems.input.mouse = function() {
         }
     };
 
+    that.unregisterAll = function() {
+        that.handlersDown = [];
+        that.handlersMove = [];
+        that.handlersUp = [];
+    }
+
     let canvas = document.getElementById('gamePlayCanvas');
     canvas.addEventListener('mousedown', mouseDown);
     canvas.addEventListener('mouseup', mouseUp);

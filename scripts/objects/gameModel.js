@@ -12,9 +12,11 @@ MyGame.objects.gameModel = function(spec) {
     let constants = MyGame.constants;
     let towerVals = MyGame.constants.towers;
 
-    let respawnRate = 500;
+    let respawnRate = 1;
     let respawnTime = 0;
     let wave = [];
+
+    let gameOver = false;
 
 
     // Sets up the creeps path update behavior
@@ -158,9 +160,41 @@ MyGame.objects.gameModel = function(spec) {
         lives: 100,
         onNextWave: onNextWave,
         onTowerSelect: onTowerSelect,
-        onGridClick: function() { showGrid = !showGrid; } // toggles the grid lines
-
+        onGridClick: function() { showGrid = !showGrid; }, // toggles the grid lines
+        onGameOver: function() {
+            if (internalUpdate != gameOverUpdate) {
+                internalUpdate = gameOverUpdate;
+                gameOver = true;
+                mouseInput.unregisterAll();
+            }
+        }
     });
+
+    function gameOverUpdate(elapsedTime) {
+        // Updates projectiles
+        projectiles.update(elapsedTime);
+        // Updates creeps
+        let creepsToDelete = [];
+        for (creep in creeps) {
+            creepStatus = creeps[creep].update(elapsedTime);
+            if (creepStatus == constants.creeps.status.success) {
+                menu.lives = -1;
+                creepsToDelete.push(creeps[creep]);
+                updatePaths.remove(creeps[creep].id);
+            } else if (creepStatus == constants.creeps.status.death) {
+                menu.gold = creeps[creep].value;
+                creepsToDelete.push(creeps[creep]);
+                updatePaths.remove(creeps[creep].id);
+            } else if (creepStatus == constants.creeps.status.outOfBounds) {
+                creepsToDelete.push(creeps[creep]);
+                updatePaths.remove(creeps[creep].id);
+            }
+        }
+        // Deletes the creeps
+        for (let i = 0; i < creepsToDelete.length; i++) {
+            delete creeps[creepsToDelete[i].id];
+        }
+    }
 
     // Update function for the preparation stage
     function prepStageUpdate(elapsedTime) {
@@ -170,7 +204,7 @@ MyGame.objects.gameModel = function(spec) {
         // Sets up wave
         if (wave.length == 0) {
             respawnTime = respawnRate;
-            for (let n = 0; n < 1; n++) {
+            for (let n = 0; n < 10; n++) {
                 for (let i = 0; i < creepTypes.length; i++) {
                     for (let j = 0; j < creepLevels.length; j++) {
                         wave.push({
@@ -453,6 +487,7 @@ MyGame.objects.gameModel = function(spec) {
         get towerToPlace() { return towerToPlace; },
         processInput,
         get showGrid() { return showGrid; },
-        get projectiles() { return projectiles; }
+        get projectiles() { return projectiles; },
+        get gameOver() { return gameOver; }
     }
 }

@@ -36,6 +36,35 @@ MyGame.systems.render.gameModel = (function(graphics, constants, renderer) {
             }
         }
 
+        // If game is over
+        if (spec.gameOver) {
+            graphics.drawText(
+                "Game Over!",
+                "20pt Arial",
+                "rgba(0, 255, 0, 1)",
+                "rgba(0, 0, 0, 0)", {
+                    x: constants.globalSize.width * .5,
+                    y: constants.globalSize.height * .5
+                },
+                0,
+                constants.textOptions.baseline.middle,
+                constants.textOptions.align.center
+            );
+
+            graphics.drawText(
+                "Use esc to leave.",
+                "20pt Arial",
+                "rgba(0, 255, 0, 1)",
+                "rgba(0, 0, 0, 0)", {
+                    x: constants.globalSize.width * .5,
+                    y: constants.globalSize.height * .6
+                },
+                0,
+                constants.textOptions.baseline.middle,
+                constants.textOptions.align.center
+            );
+        }
+
     }
 
     function drawGridLines() {

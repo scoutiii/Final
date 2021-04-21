@@ -160,7 +160,7 @@ MyGame.objects.tower = function(spec) {
                 that.fireTime += elapsedTime;
                 if (that.fireTime >= that.fireRate) {
                     that.fireTime %= that.fireRate;
-                    that.projectileFunction(that.center, that.target.center, that.speed, that.damage, that.rotation);
+                    that.projectileFunction(that.center, that.target, that.speed, that.damage, that.rotation);
                 }
             }
         }

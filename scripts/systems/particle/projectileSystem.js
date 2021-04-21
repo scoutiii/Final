@@ -5,6 +5,8 @@ MyGame.systems.projectiles = function(spec) {
 
     that.targetMatrix = spec.targetMatrix;
 
+    that.particles = spec.particles;
+
 
     function update(elapsedTime) {
         updateProjectiles(elapsedTime);
@@ -26,13 +28,24 @@ MyGame.systems.projectiles = function(spec) {
                     if (row >= 0 && row < that.targetMatrix.length &&
                         col >= 0 && col < that.targetMatrix.length) {
                         for (let creep in that.targetMatrix[row][col]) {
-                            if (p.type == "bomb" && withIn(p.center, p.target)) {
+                            if (p.type == "bomb" && withIn(p.center, p.target) &&
+                                !that.targetMatrix[row][col][creep].isAir) {
                                 that.targetMatrix[row][col][creep].health = p.damage;
                             } else if (p.type != "bomb") {
                                 intersected = intersect(p, that.targetMatrix[row][col][creep]);
                                 if (intersected) {
-                                    that.targetMatrix[row][col][creep].health = p.damage;
-                                    break;
+                                    // Checks to see if projectile can damage the creep
+                                    if (that.targetMatrix[row][col][creep].isAir && p.damageAir) {
+                                        that.targetMatrix[row][col][creep].health = p.damage;
+                                        break;
+                                    } else if (that.targetMatrix[row][col][creep].isAir && !p.damageAir) {
+                                        intersected = false;
+                                    } else if (!that.targetMatrix[row][col][creep].isAir && !p.damageGround) {
+                                        intersected = false;
+                                    } else {
+                                        that.targetMatrix[row][col][creep].health = p.damage;
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -64,7 +77,7 @@ MyGame.systems.projectiles = function(spec) {
     }
 
     // checks how close
-    function withIn(a, b, tolerance = 5) {
+    function withIn(a, b, tolerance = 20) {
         return Math.abs(a.x - b.x) <= tolerance && Math.abs(a.y - b.y) <= tolerance;
     }
 
@@ -75,13 +88,18 @@ MyGame.systems.projectiles = function(spec) {
         for (let id in that.projectiles) {
             let p = that.projectiles[id];
             if (p.type == "air") {
-                p.direction = {
-                    dx: p.target.x - p.center.x,
-                    dy: p.target.y - p.center.y
-                };
-                let mag = Math.hypot(p.target.x - p.center.x, p.target.y - p.center.y);
-                p.direction.dx /= mag;
-                p.direction.dy /= mag;
+                if (p.creep.alive) {
+                    p.direction = {
+                        dx: p.target.x - p.center.x,
+                        dy: p.target.y - p.center.y
+                    };
+                    let mag = Math.hypot(p.target.x - p.center.x, p.target.y - p.center.y);
+                    p.direction.dx /= mag;
+                    p.direction.dy /= mag;
+                } else {
+                    toDelete.push(id);
+                    p.onCollision();
+                }
             }
             p.center.x += p.direction.dx * p.speed * elapsedTime;
             p.center.y += p.direction.dy * p.speed * elapsedTime;
@@ -114,7 +132,7 @@ MyGame.systems.projectiles = function(spec) {
         let dy = Math.sin(rotation);
         let p = {
             center: JSON.parse(JSON.stringify(center)),
-            target: JSON.parse(JSON.stringify(target)),
+            target: JSON.parse(JSON.stringify(target.center)),
             direction: {
                 dx: dx,
                 dy: dy
@@ -127,10 +145,10 @@ MyGame.systems.projectiles = function(spec) {
                 height: 10 * MyGame.assets['groundProj'].height / MyGame.assets['groundProj'].width
             },
             hitBox: 5,
-            onCollision: function() {
-                console.log("collided");
-            },
-            damage: damage
+            onCollision: function() {},
+            damage: damage,
+            damageAir: false,
+            damageGround: true
         };
 
         p.left = p.center.x - p.hitBox;
@@ -141,14 +159,15 @@ MyGame.systems.projectiles = function(spec) {
         that.projectiles[that.nextName++] = p;
     }
 
-    function bombProjectile(center, target, speed, damage) {
-        let mag = Math.hypot(target.x - center.x, target.y - center.y);
+    function bombProjectile(center, target, speed, damage, rotation) {
+        let dx = Math.cos(rotation);
+        let dy = Math.sin(rotation);
         let p = {
             center: JSON.parse(JSON.stringify(center)),
-            target: JSON.parse(JSON.stringify(target)),
+            target: JSON.parse(JSON.stringify(target.center)),
             direction: {
-                dx: (target.x - center.x) / mag,
-                dy: (target.y - center.y) / mag
+                dx: dx,
+                dy: dy
             },
             image: MyGame.assets['bombProj'],
             speed: speed,
@@ -158,10 +177,12 @@ MyGame.systems.projectiles = function(spec) {
                 height: 40 * MyGame.assets['bombProj'].height / MyGame.assets['bombProj'].width
             },
             onExplosion: function() {
-                console.log("collided");
+                // blow up bomb
             },
             hitBox: 20,
-            damage: damage
+            damage: damage,
+            damageAir: false,
+            damageGround: true
         };
 
         p.left = p.center.x - p.hitBox;
@@ -173,13 +194,14 @@ MyGame.systems.projectiles = function(spec) {
     }
 
     function airProjectile(center, target, speed, damage) {
-        let mag = Math.hypot(target.x - center.x, target.y - center.y);
+        let mag = Math.hypot(target.center.x - center.x, target.center.y - center.y);
         let p = {
             center: JSON.parse(JSON.stringify(center)),
-            target: target,
+            target: target.center,
+            creep: target,
             direction: {
-                dx: (target.x - center.x) / mag,
-                dy: (target.y - center.y) / mag
+                dx: (target.center.x - center.x) / mag,
+                dy: (target.center.y - center.y) / mag
             },
             image: MyGame.assets['missileProj'],
             speed: speed,
@@ -189,11 +211,12 @@ MyGame.systems.projectiles = function(spec) {
                 height: 50 * MyGame.assets['missileProj'].height / MyGame.assets['missileProj'].width
             },
             onCollision: function() {
-                console.log("collided");
-
+                // blow up missile
             },
             damage: damage,
-            hitBox: 25
+            hitBox: 25,
+            damageAir: true,
+            damageGround: false
         };
 
         p.left = p.center.x - p.hitBox;
@@ -209,7 +232,7 @@ MyGame.systems.projectiles = function(spec) {
         let dy = Math.sin(rotation);
         let p = {
             center: JSON.parse(JSON.stringify(center)),
-            target: JSON.parse(JSON.stringify(target)),
+            target: JSON.parse(JSON.stringify(target.center)),
             direction: {
                 dx: dx,
                 dy: dy
@@ -221,12 +244,11 @@ MyGame.systems.projectiles = function(spec) {
                 width: 10,
                 height: 10 * MyGame.assets['mixedProj'].height / MyGame.assets['mixedProj'].width
             },
-            onCollision: function() {
-                console.log("collided");
-
-            },
+            onCollision: function() {},
             damage: damage,
-            hitBox: 5
+            hitBox: 5,
+            damageAir: true,
+            damageGround: true
         };
 
         p.left = p.center.x - p.hitBox;

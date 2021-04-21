@@ -125,8 +125,11 @@ MyGame.objects.inGameMenu = function(spec) {
             }
         },
         set lives(lives) {
-            that.lives += lives;
+            that.lives += ((that.lives > 0) * lives) + ((that.lives <= 0) * 0);
             document.getElementById("lives").innerHTML = "lives: " + that.lives;
+            if (that.lives <= 0) {
+                spec.onGameOver();
+            }
         },
         set score(score) {
             that.score += score;
