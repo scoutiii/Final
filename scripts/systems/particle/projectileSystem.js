@@ -110,7 +110,7 @@ MyGame.systems.projectiles = function(spec) {
             p.top = p.center.y - p.hitBox;
             p.bottom = p.center.y + p.hitBox;
 
-            p.rotation = Math.atan2(p.direction.dy, p.direction.dx) * 180 / Math.PI - 90;
+            p.rotation = Math.atan2(p.direction.dy, p.direction.dx) * 180 / Math.PI + 90;
 
             // Removes projectile if it leaves the arena
             if (!(p.center.x < MyGame.constants.globalSize.width &&
@@ -207,14 +207,14 @@ MyGame.systems.projectiles = function(spec) {
             speed: speed,
             type: "air",
             size: {
-                width: 50,
-                height: 50 * MyGame.assets['missileProj'].height / MyGame.assets['missileProj'].width
+                width: 20,
+                height: 20 * MyGame.assets['missileProj'].height / MyGame.assets['missileProj'].width
             },
             onCollision: function() {
                 // blow up missile
             },
             damage: damage,
-            hitBox: 25,
+            hitBox: 20,
             damageAir: true,
             damageGround: false
         };

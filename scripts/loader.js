@@ -238,7 +238,7 @@ MyGame.loader = (function() {
         source: 'assets/images/projectiles/Bomb.png'
     }, {
         key: 'missileProj',
-        source: 'assets/images/projectiles/missle.png'
+        source: 'assets/images/projectiles/Rocket.png'
     }, {
         key: 'mixedProj',
         source: 'assets/images/projectiles/mixed.png'
