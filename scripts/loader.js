@@ -245,6 +245,15 @@ MyGame.loader = (function() {
     }, {
         key: 'creepDeath',
         source: 'assets/images/particles/creepDeath.png'
+    }, {
+        key: 'bombSmoke',
+        source: 'assets/images/particles/bombSmoke.png'
+    }, {
+        key: 'explosion',
+        source: 'assets/images/particles/explosion.png'
+    }, {
+        key: 'explosionSmoke',
+        source: 'assets/images/particles/explosionSmoke.png'
     }];
 
     //------------------------------------------------------------------

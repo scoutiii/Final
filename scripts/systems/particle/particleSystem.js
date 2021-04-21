@@ -73,20 +73,35 @@ MyGame.systems.particles = function() {
 
     function bombSmoke(center, numberParticles) {
         addParticles({
-            numberParticles,
-            center,
-            size: { mean: 15, std: 5 },
-            spread: 360,
-            speed: { mean: 200, std: 100 },
-            lifeTime: { mean: .5, std: .1 },
-            direction: 0
-        })
+                numParticles: numberParticles,
+                center,
+                size: { mean: 5, std: 1 },
+                spread: 360,
+                speed: { mean: 10, std: 1 },
+                lifeTime: { mean: .2, std: .1 },
+                direction: 0
+            },
+            "bombSmoke");
+    }
+
+    function explosion(center) {
+        addParticles({
+                numParticles: 40,
+                center: center,
+                size: { mean: 20, std: 5 },
+                spread: 360,
+                speed: { mean: 400, std: 100 },
+                lifeTime: { mean: .1, std: .1 },
+                direction: 0
+            },
+            "explosion");
     }
 
     return {
         update,
         onCreepDeath,
         bombSmoke,
+        explosion,
         get particles() { return particles; }
     }
 }

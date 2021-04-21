@@ -8,6 +8,10 @@ MyGame.systems.render.particleSystem = (function(graphics, constants) {
                 renderCreepDeath(p);
             } else if (p.type == "creepScore") {
                 renderCreepScore(p);
+            } else if (p.type == "bombSmoke") {
+                renderBombSmoke(p);
+            } else if (p.type == "explosion") {
+                renderExplosion(p);
             }
         }
 
@@ -33,9 +37,24 @@ MyGame.systems.render.particleSystem = (function(graphics, constants) {
     }
 
     function renderBombSmoke(spec) {
-        // graphics.drawTexture(
-        //     MyGame.assets[]
-        // )
+        graphics.drawTexture(
+            MyGame.assets["bombSmoke"],
+            spec.center,
+            spec.rotation, { width: spec.size, height: spec.size }
+        );
+    }
+
+    function renderExplosion(spec) {
+        graphics.drawTexture(
+            MyGame.assets["explosionSmoke"],
+            spec.center,
+            spec.rotation, { width: 1.5 * spec.size, height: 1.5 * spec.size }
+        );
+        graphics.drawTexture(
+            MyGame.assets["explosion"],
+            spec.center,
+            spec.rotation, { width: spec.size, height: spec.size }
+        );
     }
 
     return {

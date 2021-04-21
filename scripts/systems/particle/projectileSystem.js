@@ -102,7 +102,11 @@ MyGame.systems.projectiles = function(spec) {
                     p.onCollision();
                 }
             } else if (p.type == "bomb") {
-                that.particles.bombSmoke(p.center, elapsedTime);
+                p.lastSmoke += elapsedTime;
+                if (p.lastSmoke >= p.smokeRate) {
+                    p.lastSmoke %= p.smokeRate;
+                    that.particles.bombSmoke(p.center, 2 * elapsedTime);
+                }
             }
             p.timeAlive += elapsedTime;
 
@@ -184,14 +188,16 @@ MyGame.systems.projectiles = function(spec) {
                 height: 40 * MyGame.assets['bombProj'].height / MyGame.assets['bombProj'].width
             },
             onExplosion: function() {
-                // blow up bomb
+                that.particles.explosion(this.center);
             },
             hitBox: 20,
             damage: damage,
             damageAir: false,
             damageGround: true,
             timeAlive: 0,
-            timeLimit: 3000
+            timeLimit: 3000,
+            smokeRate: 100,
+            lastSmoke: 100
         };
 
         p.left = p.center.x - p.hitBox;
