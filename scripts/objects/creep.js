@@ -200,11 +200,17 @@ MyGame.objects.creep = function(spec) {
             };
         },
         get health() { return that.currentHealth; },
+        set health(val) { that.currentHealth -= val; },
+        get maxHealth() { return that.maxHealth; },
         get value() { return that.value; },
         get id() { return that.id; },
         get gridLocation() { return getGrid(); },
         get center() { return that.center; },
         get type() { return spec.name; },
+        get top() { return that.center.y - (that.size.height / 2); },
+        get bottom() { return that.center.y + (that.size.height / 2); },
+        get left() { return that.center.x - (that.size.width / 2); },
+        get right() { return that.center.x + (that.size.width / 2); },
         update,
         updatePath
     }

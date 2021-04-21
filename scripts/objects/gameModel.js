@@ -106,9 +106,9 @@ MyGame.objects.gameModel = function(spec) {
     // Is called when the next wave is supposed to start
     function onNextWave() {
         if (startNextWave) {
-            for (let n = 0; n < 10; n++) {
-                for (let i = 0; i < creepTypes.length; i++) {
-                    for (let j = 0; j < creepLevels.length; j++) {
+            for (let n = 0; n < 1; n++) {
+                for (let i = 0; i < 1; i++) {
+                    for (let j = 0; j < 1; j++) {
                         creeps[creepsNextName] = (objects.creep({
                             name: creepTypes[i],
                             level: creepLevels[j],
