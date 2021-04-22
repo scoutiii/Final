@@ -93,11 +93,15 @@ MyGame.objects.gameModel = function(spec) {
     let towers = {};
     let towersNextName = 1;
 
+    // aduio
+    let audio = MyGame.systems.audioSystem();
+
     // projectiles and particles
     let particles = MyGame.systems.particles();
     let projectiles = MyGame.systems.projectiles({
         targetMatrix: targetMatrix,
-        particles: particles
+        particles: particles,
+        audio: audio
     });
 
 

@@ -5,6 +5,7 @@ MyGame.systems.projectiles = function(spec) {
 
     that.targetMatrix = spec.targetMatrix;
     that.particles = spec.particles;
+    that.audio = spec.audio;
 
 
     function update(elapsedTime) {
@@ -261,6 +262,9 @@ MyGame.systems.projectiles = function(spec) {
         p.bottom = p.center.y + p.hitBox;
 
         that.projectiles[that.nextName++] = p;
+
+        // plays rocket launch
+        that.audio.rocketLaunch();
     }
 
     function mixedProjectile(center, target, speed, damage, rotation) {

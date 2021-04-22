@@ -257,6 +257,12 @@ MyGame.loader = (function() {
     }, {
         key: 'cashMoney',
         source: 'assets/images/particles/cashMoney.png'
+    }, {
+        key: 'audioRocketLaunch',
+        source: 'assets/audio/rocketLaunch.mp3'
+    }, {
+        key: 'audioRocketLaunch',
+        source: 'assets/audio/rocketLaunch.mp3'
     }];
 
     //------------------------------------------------------------------

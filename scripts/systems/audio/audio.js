@@ -1,12 +1,12 @@
 MyGame.systems.audioSystem = function() {
-    let sounds = {}
+    let sounds = {};
+    let mute = false;
 
-    function loadSound(source, label, loop, volume) {
-        let sound = new Audio();
-        sound.src = source;
-        sound.loop = loop;
-        sound.volume = volume;
+    addSound(MyGame.assets["audioRocketLaunch"], "audioRocketLaunch");
+
+    function addSound(sound, label, loop = false) {
         sounds[label] = sound;
+        sounds[label].loop = loop;
     }
 
     function playSound(label) {
@@ -23,10 +23,14 @@ MyGame.systems.audioSystem = function() {
         }
     }
 
+    function rocketLaunch() {
+        sounds["audioRocketLaunch"].cloneNode(true).play();
+    }
+
     return {
-        loadSound,
-        playSound,
-        pauseSound,
-        pauseAll
+        pauseAll,
+        rocketLaunch,
+        get mute() { return mute; },
+        set mute(val) { mute = val; }
     }
 }
