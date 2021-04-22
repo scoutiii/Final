@@ -14,7 +14,6 @@ MyGame.objects.gameModel = function(spec) {
 
     let respawnRate = 100;
     let respawnTime = 0;
-    let wave = [];
 
     let gameOver = false;
 
@@ -144,7 +143,13 @@ MyGame.objects.gameModel = function(spec) {
     let towerToPlace = null;
     let towerSelected = null;
 
-
+    // tracks level
+    let levels = MyGame.constants.levels;
+    let level = {
+        waves: []
+    };
+    let wave = [];
+    let inBetweenWaves = false;
 
     //
     //
@@ -264,27 +269,13 @@ MyGame.objects.gameModel = function(spec) {
         particles.update(elapsedTime);
 
         // Sets up wave
-        if (wave.length == 0) {
+        if (level.waves.length == 0) {
             updateScore();
-
-            respawnTime = respawnRate;
-            for (let n = 0; n < 10; n++) {
-                for (let i = 0; i < creepTypes.length; i++) {
-                    for (let j = 0; j < creepLevels.length; j++) {
-                        wave.push({
-                            name: creepTypes[i],
-                            level: creepLevels[j],
-                            spawn: 0,
-                            rotation: 0,
-                            grid: gameGrid,
-                            id: creepsNextName++,
-                            targetMatrix: targetMatrix,
-                            updateTargetMatrix,
-                            particles: particles
-                        });
-                    }
-                }
-            }
+            level = JSON.parse(JSON.stringify(levels.nextLevel(menu.level)));
+            respawnTime = level.waveDelay;
+            wave = level.waves.shift();
+            inBetweenWaves = true;
+            menu.wave = 0;
         }
     }
 
@@ -293,10 +284,39 @@ MyGame.objects.gameModel = function(spec) {
         menu.time = elapsedTime;
 
         respawnTime += elapsedTime;
-        if (respawnTime >= respawnRate && wave.length > 0) {
-            respawnTime %= respawnRate;
-            let newCreep = objects.creep(wave.pop());
-            creeps[newCreep.id] = newCreep;
+
+        // update wave if needed
+        if (wave.length == 0 && Object.keys(creeps).length == 0) {
+            if (level.waves.length > 0) {
+                wave = level.waves.shift();
+                inBetweenWaves = true;
+            }
+        }
+
+        // adds next creep when ready
+        if (inBetweenWaves) {
+            if (respawnTime >= level.waveDelay) {
+                inBetweenWaves = false;
+                respawnTime = level.respawnRate;
+                menu.wave = menu.wave + 1;
+            }
+        } else {
+            if (respawnTime >= level.respawnRate && wave.length > 0) {
+                respawnTime %= level.respawnRate;
+                let creepInfo = wave.shift();
+                let newCreep = objects.creep({
+                    name: creepInfo.name,
+                    level: creepInfo.level,
+                    spawn: level.spawnPoint,
+                    rotation: 0,
+                    grid: gameGrid,
+                    id: creepsNextName++,
+                    targetMatrix: targetMatrix,
+                    updateTargetMatrix,
+                    particles: particles
+                });
+                creeps[newCreep.id] = newCreep;
+            }
         }
 
         if (updatePaths.func) {
@@ -317,7 +337,8 @@ MyGame.objects.gameModel = function(spec) {
         particles.update(elapsedTime);
 
         // Goes back to preparation stage
-        if (Object.keys(creeps).length == 0 && wave.length == 0) {
+        if (Object.keys(creeps).length == 0 && level.waves.length == 0 && wave.length == 0) {
+            menu.level = menu.level + 1;
             internalUpdate = prepStageUpdate;
             startNextWave = true;
             menu.setDialog("That was intense...");

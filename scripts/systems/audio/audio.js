@@ -5,15 +5,15 @@ MyGame.systems.audioSystem = function() {
     let nextName = 1;
     let toDelete = [];
 
-    addSound("audioRocketLaunch", .3);
+    addSound("audioRocketLaunch", .5);
     addSound("audioRocketExplosion", .3);
     addSound("audioBombExplosion", .3);
     addSound("audioCannonShot", .25);
     addSound("audioMixedShot", .2);
     addSound("audioBombShot", .5);
-    addSound("audioCreepDeath", .4);
+    addSound("audioCreepDeath", .2);
     addSound("audioSellTower", .7);
-    addSound("audioTowerPlace", .5);
+    addSound("audioTowerPlace", .4);
     addSound("audioTowerUpgrade", .5);
 
     // Adds a sound to the possible sounds

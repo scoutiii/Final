@@ -109,11 +109,11 @@ MyGame.objects.inGameMenu = function(spec) {
         get lives() { return that.lives; },
         get score() { return that.score; },
         set level(level) {
-            that.level += level;
+            that.level = level;
             document.getElementById("level").innerHTML = "level: " + that.level;
         },
         set wave(wave) {
-            that.wave += wave;
+            that.wave = wave;
             document.getElementById("wave").innerHTML = "wave: " + that.wave;
         },
         set time(time) {

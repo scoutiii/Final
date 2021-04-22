@@ -351,6 +351,107 @@ for (let x = 2; x < MyGame.constants.gridDim - 1; x++) {
     });
 }
 
+function populateWave(nGrunts, lGrunts,
+    nBuggers, lBuggers,
+    nHunters, lHunters) {
+    let wave = [];
+    for (let i = 0; i < nGrunts; i++) {
+        wave.push({ name: "grunt", level: lGrunts });
+    }
+    for (let i = 0; i < nBuggers; i++) {
+        wave.push({ name: "bugger", level: lBuggers });
+    }
+    for (let i = 0; i < nHunters; i++) {
+        wave.push({ name: "hunter", level: lHunters });
+    }
+    return wave;
+}
+
+// levels
+MyGame.constants.levels = {
+    1: {
+        waves: [
+            populateWave(10, "first", 0, null, 0, null),
+            populateWave(10, "second", 0, null, 0, null),
+            populateWave(10, "third", 0, null, 0, null),
+            populateWave(10, "fourth", 0, null, 0, null)
+        ],
+        respawnRate: 1000,
+        waveDelay: 3000,
+        spawnPoint: 0
+    },
+    2: {
+        waves: [
+            populateWave(20, "first", 0, null, 5, "first"),
+            populateWave(20, "first", 0, null, 4, "second"),
+            populateWave(20, "first", 0, null, 3, "third"),
+            populateWave(20, "first", 0, null, 2, "fourth")
+        ],
+        respawnRate: 900,
+        waveDelay: 2000,
+        spawnPoint: 3
+    },
+    3: {
+        waves: [
+            populateWave(20, "second", 3, "first", 0, null),
+            populateWave(20, "second", 3, "second", 0, null),
+            populateWave(20, "second", 3, "third", 0, null),
+            populateWave(20, "second", 3, "fourth", 0, null)
+        ],
+        respawnRate: 500,
+        waveDelay: 1500,
+        spawnPoint: 0
+    },
+    4: {
+        waves: [
+            populateWave(30, "first", 5, "first", 10, "first"),
+            populateWave(30, "second", 5, "second", 10, "second"),
+            populateWave(30, "third", 5, "third", 10, "third"),
+            populateWave(30, "fourth", 5, "fourth", 10, "fourth")
+        ],
+        respawnRate: 100,
+        waveDelay: 1000,
+        spawnPoint: 0
+    },
+    nextLevel: function(currLevel) {
+        if (currLevel <= 4 && currLevel >= 1) {
+            return this[currLevel];
+        } else {
+            currLevel++;
+            let defaultRate = 500;
+            let level = {
+                waves: [],
+                respawnRate: defaultRate -
+                    ((defaultRate - (10 * currLevel) > 0) * (10 * currLevel)) +
+                    ((defaultRate - (10 * currLevel) <= 0) * (defaultRate - 1)),
+                waveDelay: 2 * defaultRate -
+                    ((2 * defaultRate - (10 * currLevel) > 0) * (10 * currLevel)) +
+                    ((2 * defaultRate - (10 * currLevel) <= 0) * (2 * defaultRate - 1)),
+                spawnPoint: currLevel % 4
+            };
+            level.waves.push(populateWave(
+                3 * currLevel, "first",
+                1 * currLevel, "first",
+                2 * currLevel, "first"));
+            level.waves.push(populateWave(
+                3 * currLevel, "second",
+                1 * currLevel, "second",
+                2 * currLevel, "second"));
+            level.waves.push(populateWave(
+                3 * currLevel, "third",
+                1 * currLevel, "third",
+                2 * currLevel, "third"));
+            level.waves.push(populateWave(
+                3 * currLevel, "fourth",
+                1 * currLevel, "fourth",
+                2 * currLevel, "fourth"));
+
+
+            return level;
+        }
+    }
+}
+
 
 // Freezes the constants
 Object.freeze(MyGame.constants);
