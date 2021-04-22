@@ -5,16 +5,17 @@ MyGame.systems.audioSystem = function() {
     let nextName = 1;
     let toDelete = [];
 
-    addSound(MyGame.assets["audioRocketLaunch"], "audioRocketLaunch", .3);
-    addSound(MyGame.assets["audioRocketExplosion"], "audioRocketExplosion", .3);
-    addSound(MyGame.assets["audioBombExplosion"], "audioBombExplosion", .3);
-    addSound(MyGame.assets["audioCannonShot"], "audioCannonShot", .25);
-    addSound(MyGame.assets["audioMixedShot"], "audioMixedShot", .2);
+    addSound("audioRocketLaunch", .3);
+    addSound("audioRocketExplosion", .3);
+    addSound("audioBombExplosion", .3);
+    addSound("audioCannonShot", .25);
+    addSound("audioMixedShot", .2);
+    addSound("audioBombShot", .5);
 
     // Adds a sound to the possible sounds
-    function addSound(sound, label, volume = 1) {
+    function addSound(label, volume = 1) {
         sounds[label] = {
-            sound: sound,
+            sound: MyGame.assets[label],
             maxVolume: volume
         };
     }
@@ -81,12 +82,18 @@ MyGame.systems.audioSystem = function() {
         playSound("audioMixedShot");
     }
 
+    // sound for bomb shot
+    function bombShot() {
+        playSound("audioBombShot");
+    }
+
     return {
         rocketLaunch,
         rocketExplode,
         bombExplode,
         groundShot,
         mixedShot,
+        bombShot,
         update,
         get mute() { return mute; },
         set mute(val) {

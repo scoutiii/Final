@@ -228,6 +228,8 @@ MyGame.systems.projectiles = function(spec) {
         p.bottom = p.center.y + p.hitBox;
 
         that.projectiles[that.nextName++] = p;
+        // play sound
+        that.audio.bombShot();
     }
 
     function airProjectile(center, target, speed, damage) {
