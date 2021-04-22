@@ -18,6 +18,41 @@ MyGame.objects.gameModel = function(spec) {
 
     let gameOver = false;
 
+    let scoreID = spec.scoreID;
+    let score = {
+        KC: 0,
+        get killCount() { return this.KC; },
+        TV: 0,
+        get towerValue() { return this.TV; },
+        NL: 0,
+        get numLevels() { return this.NL; },
+        NW: 0,
+        get numWaves() { return this.NW; },
+        set killCount(val) {
+            this.KC += val;
+            menu.score = this;
+        },
+        set towerValue(val) {
+            this.TV += val;
+            menu.score = this;
+        },
+        set numLevels(val) {
+            this.NL += val;
+            menu.score = this;
+        },
+        set numWaves(val) {
+            this.NW += val;
+            menu.score = this;
+        }
+
+    }
+
+    function updateScore() {
+        // adds score to local storage
+        MyGame.misc.highScores[scoreID] = menu.score;
+        localStorage["highScores"] = JSON.stringify(MyGame.misc.highScores);
+    }
+
 
     // Sets up the creeps path update behavior
     let internalUpdate = null;
@@ -120,6 +155,8 @@ MyGame.objects.gameModel = function(spec) {
     // Is called when the next wave is supposed to start
     function onNextWave() {
         if (startNextWave) {
+            updateScore();
+
             console.log(Object.keys(creeps).length);
             internalUpdate = waveStageUpdate;
             startNextWave = false;
@@ -195,6 +232,7 @@ MyGame.objects.gameModel = function(spec) {
             } else if (creepStatus == constants.creeps.status.death) {
                 audio.creepDeath();
                 menu.gold = creeps[creep].value;
+                score.killCount = 1;
                 creepsToDelete.push(creeps[creep]);
                 updatePaths.remove(creeps[creep].id);
             } else if (creepStatus == constants.creeps.status.outOfBounds) {
@@ -215,6 +253,7 @@ MyGame.objects.gameModel = function(spec) {
         particles.update(elapsedTime);
         // Updates creeps
         updateCreeps(elapsedTime);
+        updateScore();
     }
 
     // Update function for the preparation stage
@@ -226,6 +265,8 @@ MyGame.objects.gameModel = function(spec) {
 
         // Sets up wave
         if (wave.length == 0) {
+            updateScore();
+
             respawnTime = respawnRate;
             for (let n = 0; n < 10; n++) {
                 for (let i = 0; i < creepTypes.length; i++) {
@@ -363,6 +404,8 @@ MyGame.objects.gameModel = function(spec) {
                         // Adds the tower to the game grid
                         gameGrid.addElement(gridCoords.x, gridCoords.y, tower);
                         menu.gold = -towerToPlace.cost; // takes away the appropriate amount of gold
+                        score.towerValue = towerToPlace.cost;
+
                         if (menu.gold < towerToPlace.cost) {
                             menu.setDialog("Not enought gold!");
                             towerToPlace = null;
@@ -434,6 +477,7 @@ MyGame.objects.gameModel = function(spec) {
                 } else {
                     towerSelected.upgrade();
                     menu.gold = -towerVals.stats[towerSelected.type][towerSelected.level].cost;
+                    score.towerValue = towerVals.stats[towerSelected.type][towerSelected.level].cost;
                     displayTowerInfo(towerSelected);
                     audio.upgradeTower();
                 }
@@ -448,6 +492,7 @@ MyGame.objects.gameModel = function(spec) {
             if (towerSelected != null) {
                 particles.onTowerSell(towerSelected.center, towerSelected.value);
                 menu.gold = towerSelected.value;
+                score.towerValue = -(towerSelected.value / .9);
                 gameGrid.removeElement(towerSelected.gridPosition.x, towerSelected.gridPosition.y);
                 delete towers[towerSelected.id];
                 deselectTower();

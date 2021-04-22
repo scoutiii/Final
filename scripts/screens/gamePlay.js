@@ -49,7 +49,8 @@ MyGame.screens[MyGame.constants.screens.gamePlay] = (function(screenManager, obj
         if (MyGame.misc.newGame) {
             gameModel = objects.gameModel({
                 keyboard,
-                mouse
+                mouse,
+                scoreID: MyGame.misc.getSessionID()
             });
         }
 

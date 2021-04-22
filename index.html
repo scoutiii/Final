@@ -76,7 +76,11 @@
         <!-- high scores screen -->
         <div id="highScores" class="screen">
             <div class="contentWrap">
-                High Scores
+                <div>High Scores</div>
+                <ol id="highScoresList"></ol>
+                <div>
+                    Score = (10 * # creeps killed) + (total value of towers) + (1000 * level) + (50 * waves)
+                </div>
             </div>
             <footer><button id="highScoresBackButton" class="backButton">BACK</button></footer>
         </div>

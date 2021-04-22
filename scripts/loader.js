@@ -13,6 +13,10 @@ MyGame = {
             upgrade: 'u',
             sell: 's',
             nextLevel: 'g'
+        },
+        highScores: [],
+        getSessionID: function() {
+            return this.highScores.length;
         }
     },
     assets: {}

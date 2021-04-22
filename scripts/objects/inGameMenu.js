@@ -140,7 +140,9 @@ MyGame.objects.inGameMenu = function(spec) {
             }
         },
         set score(score) {
-            that.score += score;
+            that.score = Math.ceil((10 * score.killCount) +
+                (score.towerValue) +
+                (1000 * score.numLevels + 50 * score.numWaves));
             document.getElementById("score").innerHTML = "score: " + that.score;
         },
         update,
