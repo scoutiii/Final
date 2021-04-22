@@ -200,7 +200,7 @@ footer {
     background-size: cover;
 }
 
-#nextWaveButton {
+.inGameMenuButton {
     text-transform: uppercase;
     justify-content: center;
     width: 100%;
@@ -290,4 +290,17 @@ footer {
 .controlButton:hover {
     color: white;
     background-color: greenyellow;
+}
+
+
+/* Styling for start screen */
+
+#startScreen {
+    font-size: 10vh;
+    padding: 0;
+}
+
+#startScreen div ul {
+    list-style: none;
+    padding: 0;
 }

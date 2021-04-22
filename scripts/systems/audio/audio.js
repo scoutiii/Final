@@ -42,6 +42,7 @@ MyGame.systems.audioSystem = function() {
         for (let id in playing) {
             playing[id].sound.volume = 0;
         }
+        document.getElementById("backgroundMusic").volume = 0;
     }
 
     // unmutes all sounds
@@ -49,6 +50,8 @@ MyGame.systems.audioSystem = function() {
         for (let id in playing) {
             playing[id].sound.volume = sounds[playing[id].type].maxVolume;
         }
+        document.getElementById("backgroundMusic").volume = 1;
+
     }
 
     // plays/adds a sound

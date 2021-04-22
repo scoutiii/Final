@@ -5,7 +5,8 @@ MyGame.constants.screens = Object.freeze({
     credits: "credits",
     gamePlay: "gamePlay",
     highScores: "highScores",
-    pauseMenu: "pauseMenu"
+    pauseMenu: "pauseMenu",
+    startScreen: "startScreen"
 });
 
 // Options for draw text

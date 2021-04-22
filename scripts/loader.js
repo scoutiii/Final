@@ -144,6 +144,10 @@ MyGame.loader = (function() {
         scripts: ['screens/pauseMenu'],
         message: 'pauseMenu loaded',
         onComplete: null
+    }, {
+        scripts: ['screens/startScreen'],
+        message: 'startScreen loaded',
+        onComplete: null
     }];
 
     let assetOrder = [{
@@ -403,7 +407,7 @@ MyGame.loader = (function() {
     //------------------------------------------------------------------
     function mainComplete() {
         console.log('It is all loaded up');
-        MyGame.screenManager.initialize(MyGame.constants.screens.mainMenu);
+        MyGame.screenManager.initialize(MyGame.constants.screens.startScreen);
     }
 
     //
