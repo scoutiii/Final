@@ -57,7 +57,10 @@ MyGame.objects.inGameMenu = function(spec) {
     // toggle audio click
     document.getElementById("sounds").addEventListener(
         "click",
-        spec.onSoundsClick
+        function() {
+            let res = spec.onSoundsClick();
+            // change symbol
+        }
     );
 
 

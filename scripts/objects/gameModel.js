@@ -178,6 +178,7 @@ MyGame.objects.gameModel = function(spec) {
         },
         onSoundsClick: function() {
             audio.mute = !audio.mute;
+            return audio.mute;
         }
     });
 

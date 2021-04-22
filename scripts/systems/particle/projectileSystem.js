@@ -186,6 +186,9 @@ MyGame.systems.projectiles = function(spec) {
         p.bottom = p.center.y + p.hitBox;
 
         that.projectiles[that.nextName++] = p;
+
+        // plays sound
+        that.audio.groundShot();
     }
 
     function bombProjectile(center, target, speed, damage, rotation) {
@@ -207,6 +210,7 @@ MyGame.systems.projectiles = function(spec) {
             },
             onExplosion: function() {
                 that.particles.explosion(this.center);
+                that.audio.bombExplode();
             },
             hitBox: 20,
             damage: damage,
@@ -300,6 +304,8 @@ MyGame.systems.projectiles = function(spec) {
         p.bottom = p.center.y + p.hitBox;
 
         that.projectiles[that.nextName++] = p;
+        // plays sound
+        that.audio.mixedShot();
     }
 
     return {

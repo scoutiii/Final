@@ -266,6 +266,12 @@ MyGame.loader = (function() {
     }, {
         key: 'audioBombExplosion',
         source: 'assets/audio/bombExplosion.mp3'
+    }, {
+        key: 'audioCannonShot',
+        source: 'assets/audio/groundShot.mp3'
+    }, {
+        key: 'audioMixedShot',
+        source: 'assets/audio/mixedShot.mp3'
     }];
 
     //------------------------------------------------------------------

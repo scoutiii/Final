@@ -5,21 +5,25 @@ MyGame.systems.audioSystem = function() {
     let nextName = 1;
     let toDelete = [];
 
-    addSound(MyGame.assets["audioRocketLaunch"], "audioRocketLaunch");
-    addSound(MyGame.assets["audioRocketExplosion"], "audioRocketExplosion");
-    addSound(MyGame.assets["audioBombExplosion"], "audioBombExplosion");
+    addSound(MyGame.assets["audioRocketLaunch"], "audioRocketLaunch", .3);
+    addSound(MyGame.assets["audioRocketExplosion"], "audioRocketExplosion", .3);
+    addSound(MyGame.assets["audioBombExplosion"], "audioBombExplosion", .3);
+    addSound(MyGame.assets["audioCannonShot"], "audioCannonShot", .25);
+    addSound(MyGame.assets["audioMixedShot"], "audioMixedShot", .2);
 
     // Adds a sound to the possible sounds
-    function addSound(sound, label, loop = false, volume = 1) {
-        sounds[label] = sound;
-        sounds[label].loop = loop;
+    function addSound(sound, label, volume = 1) {
+        sounds[label] = {
+            sound: sound,
+            maxVolume: volume
+        };
     }
 
     // update, remove sounds when done
     function update(elapsedTime) {
         toDelete = [];
         for (let id in playing) {
-            if (playing[id].ended) {
+            if (playing[id].sound.ended) {
                 toDelete.push(id);
             }
         }
@@ -28,40 +32,61 @@ MyGame.systems.audioSystem = function() {
         }
     }
 
+    // mutes all sounds
     function muteAll() {
         for (let id in playing) {
-            playing[id].volume = 0;
+            playing[id].sound.volume = 0;
         }
     }
 
+    // unmutes all sounds
     function unmuteAll() {
         for (let id in playing) {
-            playing[id].volume = 1;
+            playing[id].sound.volume = sounds[playing[id].type].maxVolume;
         }
     }
 
+    // plays/adds a sound
+    function playSound(name) {
+        playing[nextName++] = {
+            sound: sounds[name].sound.cloneNode(true),
+            type: name
+        };
+        playing[nextName - 1].sound.volume = !mute * sounds[playing[nextName - 1].type].maxVolume;
+        playing[nextName - 1].sound.play();
+    }
+
+    // sound for rocket launch
     function rocketLaunch() {
-        playing[nextName++] = sounds["audioRocketLaunch"].cloneNode(true);
-        playing[nextName - 1].volume = 1 * !mute;
-        playing[nextName - 1].play();
+        playSound("audioRocketLaunch");
     }
 
+    // sound for rocked explode
     function rocketExplode() {
-        playing[nextName++] = sounds["audioRocketExplosion"].cloneNode(true);
-        playing[nextName - 1].volume = 1 * !mute;
-        playing[nextName - 1].play();
+        playSound("audioRocketExplosion");
     }
 
+    // sounds for bomb explode
     function bombExplode() {
-        playing[nextName++] = sounds["audioBombExplosion"].cloneNode(true);
-        playing[nextName - 1].volume = 1 * !mute;
-        playing[nextName - 1].play();
+        playSound("audioBombExplosion");
+    }
+
+    // sound for cannon shot
+    function groundShot() {
+        playSound("audioCannonShot");
+    }
+
+    // sound for mixed gun shot
+    function mixedShot() {
+        playSound("audioMixedShot");
     }
 
     return {
         rocketLaunch,
         rocketExplode,
         bombExplode,
+        groundShot,
+        mixedShot,
         update,
         get mute() { return mute; },
         set mute(val) {
