@@ -263,6 +263,9 @@ MyGame.loader = (function() {
     }, {
         key: 'audioRocketExplosion',
         source: 'assets/audio/rocketExplosion.mp3'
+    }, {
+        key: 'audioBombExplosion',
+        source: 'assets/audio/bombExplosion.mp3'
     }];
 
     //------------------------------------------------------------------

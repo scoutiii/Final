@@ -54,6 +54,11 @@ MyGame.objects.inGameMenu = function(spec) {
         "click",
         spec.onGridClick
     );
+    // toggle audio click
+    document.getElementById("sounds").addEventListener(
+        "click",
+        spec.onSoundsClick
+    );
 
 
 

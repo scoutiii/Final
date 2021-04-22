@@ -175,6 +175,9 @@ MyGame.objects.gameModel = function(spec) {
                 gameOver = true;
                 mouseInput.unregisterAll();
             }
+        },
+        onSoundsClick: function() {
+            audio.mute = !audio.mute;
         }
     });
 
@@ -484,6 +487,7 @@ MyGame.objects.gameModel = function(spec) {
     menu.setDialog("Preparation stage.");
 
     function update(elapsedTime) {
+        audio.update(elapsedTime);
         // If frames ever drop below 60 fps, the simulation slows down (to about 60 fps)
         elapsedTime = ((elapsedTime <= 17) * elapsedTime) + ((elapsedTime > 17) * 17);
         internalUpdate(elapsedTime);
