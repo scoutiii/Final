@@ -13,6 +13,8 @@ MyGame.systems.audioSystem = function() {
     addSound("audioBombShot", .5);
     addSound("audioCreepDeath", .4);
     addSound("audioSellTower", .7);
+    addSound("audioTowerPlace", .5);
+    addSound("audioTowerUpgrade", .5);
 
     // Adds a sound to the possible sounds
     function addSound(label, volume = 1) {
@@ -99,6 +101,16 @@ MyGame.systems.audioSystem = function() {
         playSound("audioSellTower");
     }
 
+    // on tower place
+    function placeTower() {
+        playSound("audioTowerPlace");
+    }
+
+    // on upgrading tower
+    function upgradeTower() {
+        playSound("audioTowerUpgrade");
+    }
+
     return {
         rocketLaunch,
         rocketExplode,
@@ -108,6 +120,8 @@ MyGame.systems.audioSystem = function() {
         bombShot,
         creepDeath,
         sellTower,
+        placeTower,
+        upgradeTower,
         update,
         get mute() { return mute; },
         set mute(val) {

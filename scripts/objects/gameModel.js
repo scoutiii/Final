@@ -369,6 +369,7 @@ MyGame.objects.gameModel = function(spec) {
                         }
                         // Sets up the updates for creep paths
                         updatePaths.populate(Object.keys(creeps));
+                        audio.placeTower();
                     } else {
                         menu.setDialog("Cannot place tower here!");
                     }
@@ -434,6 +435,7 @@ MyGame.objects.gameModel = function(spec) {
                     towerSelected.upgrade();
                     menu.gold = -towerVals.stats[towerSelected.type][towerSelected.level].cost;
                     displayTowerInfo(towerSelected);
+                    audio.upgradeTower();
                 }
             }
         }

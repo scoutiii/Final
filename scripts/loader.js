@@ -281,6 +281,12 @@ MyGame.loader = (function() {
     }, {
         key: 'audioSellTower',
         source: 'assets/audio/sellTower.mp3'
+    }, {
+        key: 'audioTowerPlace',
+        source: 'assets/audio/towerPlacement.mp3'
+    }, {
+        key: 'audioTowerUpgrade',
+        source: 'assets/audio/upgradeTower.mp3'
     }];
 
     //------------------------------------------------------------------
