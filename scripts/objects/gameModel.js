@@ -182,12 +182,9 @@ MyGame.objects.gameModel = function(spec) {
         }
     });
 
-    function gameOverUpdate(elapsedTime) {
-        // Updates projectiles
-        projectiles.update(elapsedTime);
-        // Updates particles
-        particles.update(elapsedTime);
-        // Updates creeps
+
+    // processes creeps
+    function updateCreeps(elapsedTime) {
         let creepsToDelete = [];
         for (creep in creeps) {
             creepStatus = creeps[creep].update(elapsedTime);
@@ -196,6 +193,7 @@ MyGame.objects.gameModel = function(spec) {
                 creepsToDelete.push(creeps[creep]);
                 updatePaths.remove(creeps[creep].id);
             } else if (creepStatus == constants.creeps.status.death) {
+                audio.creepDeath();
                 menu.gold = creeps[creep].value;
                 creepsToDelete.push(creeps[creep]);
                 updatePaths.remove(creeps[creep].id);
@@ -208,6 +206,15 @@ MyGame.objects.gameModel = function(spec) {
         for (let i = 0; i < creepsToDelete.length; i++) {
             delete creeps[creepsToDelete[i].id];
         }
+    }
+
+    function gameOverUpdate(elapsedTime) {
+        // Updates projectiles
+        projectiles.update(elapsedTime);
+        // Updates particles
+        particles.update(elapsedTime);
+        // Updates creeps
+        updateCreeps(elapsedTime);
     }
 
     // Update function for the preparation stage
@@ -256,27 +263,7 @@ MyGame.objects.gameModel = function(spec) {
         }
 
         // Updates creeps
-        let creepsToDelete = [];
-        for (creep in creeps) {
-            creepStatus = creeps[creep].update(elapsedTime);
-            if (creepStatus == constants.creeps.status.success) {
-                menu.lives = -1;
-                creepsToDelete.push(creeps[creep]);
-                updatePaths.remove(creeps[creep].id);
-            } else if (creepStatus == constants.creeps.status.death) {
-                menu.gold = creeps[creep].value;
-
-                creepsToDelete.push(creeps[creep]);
-                updatePaths.remove(creeps[creep].id);
-            } else if (creepStatus == constants.creeps.status.outOfBounds) {
-                creepsToDelete.push(creeps[creep]);
-                updatePaths.remove(creeps[creep].id);
-            }
-        }
-        // Deletes the creeps
-        for (let i = 0; i < creepsToDelete.length; i++) {
-            delete creeps[creepsToDelete[i].id];
-        }
+        updateCreeps(elapsedTime);
 
         // Updates towers
         for (tower in towers) {
@@ -463,6 +450,7 @@ MyGame.objects.gameModel = function(spec) {
                 delete towers[towerSelected.id];
                 deselectTower();
                 menu.setDialog("Tower sold.");
+                audio.sellTower();
             }
         }
     );

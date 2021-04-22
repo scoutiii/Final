@@ -180,9 +180,9 @@ MyGame.constants.towers.stats[airName] = [
     { range: 500, damage: 50, cost: 35, speed: .5, fireRate: 1000 }
 ];
 MyGame.constants.towers.stats[mixedName] = [
-    { range: 175, damage: 5, cost: 150, speed: 1, fireRate: 100 },
-    { range: 190, damage: 10, cost: 50, speed: 1, fireRate: 100 },
-    { range: 220, damage: 15, cost: 75, speed: 1, fireRate: 100 }
+    { range: 175, damage: 5, cost: 150, speed: 1, fireRate: 500 },
+    { range: 190, damage: 10, cost: 50, speed: 1, fireRate: 400 },
+    { range: 220, damage: 15, cost: 75, speed: 1, fireRate: 200 }
 ];
 
 MyGame.constants.towers.ground = {

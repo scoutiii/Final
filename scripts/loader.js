@@ -275,6 +275,12 @@ MyGame.loader = (function() {
     }, {
         key: 'audioBombShot',
         source: 'assets/audio/bombShot.mp3'
+    }, {
+        key: 'audioCreepDeath',
+        source: 'assets/audio/creepDeath.mp3'
+    }, {
+        key: 'audioSellTower',
+        source: 'assets/audio/sellTower.mp3'
     }];
 
     //------------------------------------------------------------------
