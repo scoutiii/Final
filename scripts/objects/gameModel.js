@@ -206,7 +206,7 @@ MyGame.objects.gameModel = function(spec) {
         level: 1,
         wave: 0,
         time: 0,
-        gold: 10000,
+        gold: 2000,
         lives: 100,
         onNextWave: onNextWave,
         onTowerSelect: onTowerSelect,

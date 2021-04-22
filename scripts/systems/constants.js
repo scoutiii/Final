@@ -69,18 +69,18 @@ MyGame.constants.creeps.status = {
     normal: "normal"
 };
 MyGame.constants.creeps.stats = {
-    'creep-green-1': { speed: 100 / 1000, health: 100, value: 10 }, // Stats for grunts
-    'creep-blue-1': { speed: 110 / 1000, health: 105, value: 15 },
-    'creep-yellow-1': { speed: 120 / 1000, health: 110, value: 20 },
-    'creep-red-1': { speed: 130 / 1000, health: 120, value: 25 },
-    'creep-green-2': { speed: 50 / 1000, health: 200, value: 30 }, // health for hunters
-    'creep-blue-2': { speed: 60 / 1000, health: 210, value: 35 },
-    'creep-yellow-2': { speed: 70 / 1000, health: 220, value: 40 },
-    'creep-red-2': { speed: 100 / 1000, health: 230, value: 45 },
-    'creep-green-3': { speed: 80 / 1000, health: 50, value: 50 }, // health for buggers
-    'creep-blue-3': { speed: 90 / 1000, health: 55, value: 55 },
-    'creep-yellow-3': { speed: 100 / 1000, health: 60, value: 60 },
-    'creep-red-3': { speed: 110 / 1000, health: 65, value: 65 }
+    'creep-green-1': { speed: 100 / 1000, health: 150, value: 5 }, // Stats for grunts
+    'creep-blue-1': { speed: 110 / 1000, health: 170, value: 10 },
+    'creep-yellow-1': { speed: 120 / 1000, health: 190, value: 15 },
+    'creep-red-1': { speed: 150 / 1000, health: 220, value: 10 },
+    'creep-green-2': { speed: 40 / 1000, health: 250, value: 15 }, // health for hunters
+    'creep-blue-2': { speed: 50 / 1000, health: 300, value: 20 },
+    'creep-yellow-2': { speed: 60 / 1000, health: 350, value: 20 },
+    'creep-red-2': { speed: 100 / 1000, health: 400, value: 25 },
+    'creep-green-3': { speed: 70 / 1000, health: 50, value: 30 }, // health for buggers
+    'creep-blue-3': { speed: 80 / 1000, health: 60, value: 20 },
+    'creep-yellow-3': { speed: 90 / 1000, health: 70, value: 25 },
+    'creep-red-3': { speed: 100 / 1000, health: 80, value: 30 }
 };
 MyGame.constants.creeps.animation = {
     'creep-green-1': { // timings for grunts
@@ -166,24 +166,24 @@ MyGame.constants.towers.assets[mixedName] = [
 ];
 
 MyGame.constants.towers.stats[groundName] = [
-    { range: 175, damage: 20, cost: 20, speed: .5, fireRate: 500 },
-    { range: 190, damage: 25, cost: 15, speed: 1, fireRate: 500 },
-    { range: 220, damage: 35, cost: 20, speed: 1, fireRate: 500 }
+    { range: 175, damage: 15, cost: 40, speed: .5, fireRate: 500 },
+    { range: 190, damage: 20, cost: 50, speed: 1, fireRate: 500 },
+    { range: 220, damage: 25, cost: 60, speed: 1, fireRate: 500 }
 ];
 MyGame.constants.towers.stats[bombName] = [
-    { range: 175, damage: 50, cost: 75, speed: .1, fireRate: 1000 },
-    { range: 190, damage: 60, cost: 20, speed: .1, fireRate: 1000 },
-    { range: 220, damage: 75, cost: 25, speed: .1, fireRate: 1000 }
+    { range: 175, damage: 45, cost: 100, speed: .1, fireRate: 1000 },
+    { range: 190, damage: 55, cost: 120, speed: .1, fireRate: 1000 },
+    { range: 220, damage: 70, cost: 150, speed: .1, fireRate: 1000 }
 ];
 MyGame.constants.towers.stats[airName] = [
-    { range: 250, damage: 30, cost: 90, speed: .5, fireRate: 2000 },
-    { range: 350, damage: 40, cost: 30, speed: .5, fireRate: 1500 },
-    { range: 500, damage: 50, cost: 35, speed: .5, fireRate: 1000 }
+    { range: 250, damage: 30, cost: 90, speed: .4, fireRate: 1500 },
+    { range: 350, damage: 40, cost: 95, speed: .5, fireRate: 1250 },
+    { range: 500, damage: 50, cost: 100, speed: .6, fireRate: 8000 }
 ];
 MyGame.constants.towers.stats[mixedName] = [
-    { range: 175, damage: 5, cost: 150, speed: 1, fireRate: 500 },
-    { range: 190, damage: 10, cost: 50, speed: 1, fireRate: 400 },
-    { range: 220, damage: 15, cost: 75, speed: 1, fireRate: 200 }
+    { range: 175, damage: 10, cost: 150, speed: 1, fireRate: 500 },
+    { range: 190, damage: 15, cost: 160, speed: 1, fireRate: 400 },
+    { range: 220, damage: 20, cost: 170, speed: 1, fireRate: 200 }
 ];
 
 MyGame.constants.towers.ground = {
@@ -201,7 +201,7 @@ MyGame.constants.towers.bomb = {
     targets: "Ground only",
     dps: MyGame.constants.towers.stats[bombName][0].damage,
     range: MyGame.constants.towers.stats[bombName][0].range,
-    notes: "Does splash damage to ground targets."
+    notes: "Not an accurate tower, but does a great deal of splash damage."
 }
 MyGame.constants.towers.air = {
     type: airName,
@@ -209,7 +209,7 @@ MyGame.constants.towers.air = {
     targets: "Air only",
     dps: MyGame.constants.towers.stats[airName][0].damage,
     range: MyGame.constants.towers.stats[airName][0].range,
-    notes: "This is an anti air weapon. Only fires at air targets."
+    notes: "Tracks down air target, but will detonate if the target is lost."
 }
 MyGame.constants.towers.mixed = {
     type: mixedName,
@@ -376,7 +376,7 @@ MyGame.constants.levels = {
             populateWave(10, "third", 0, null, 0, null),
             populateWave(10, "fourth", 0, null, 0, null)
         ],
-        respawnRate: 1000,
+        respawnRate: 800,
         waveDelay: 3000,
         spawnPoint: 0
     },
@@ -387,7 +387,7 @@ MyGame.constants.levels = {
             populateWave(20, "first", 0, null, 3, "third"),
             populateWave(20, "first", 0, null, 2, "fourth")
         ],
-        respawnRate: 900,
+        respawnRate: 500,
         waveDelay: 2000,
         spawnPoint: 3
     },
@@ -419,32 +419,37 @@ MyGame.constants.levels = {
         } else {
             currLevel++;
             let defaultRate = 500;
+            let mult = 20;
             let level = {
                 waves: [],
-                respawnRate: defaultRate -
-                    ((defaultRate - (10 * currLevel) > 0) * (10 * currLevel)) +
-                    ((defaultRate - (10 * currLevel) <= 0) * (defaultRate - 1)),
+                respawnRate:
+                    ((defaultRate - (mult * currLevel) > 0) * (defaultRate - (mult * currLevel))) +
+                    ((defaultRate - (mult * currLevel) <= 0) * 1),
                 waveDelay: 2 * defaultRate -
-                    ((2 * defaultRate - (10 * currLevel) > 0) * (10 * currLevel)) +
-                    ((2 * defaultRate - (10 * currLevel) <= 0) * (2 * defaultRate - 1)),
+                    ((2 * defaultRate - (mult * currLevel) > 0) * (mult * currLevel)) +
+                    ((2 * defaultRate - (mult * currLevel) <= 0) * (2 * defaultRate - 1)),
                 spawnPoint: currLevel % 4
             };
             level.waves.push(populateWave(
-                3 * currLevel, "first",
-                1 * currLevel, "first",
-                2 * currLevel, "first"));
+                6 * currLevel, "first",
+                2 * currLevel, "first",
+                4 * currLevel, "first"));
+            Random.shuffleArray(level.waves[0]);
             level.waves.push(populateWave(
-                3 * currLevel, "second",
-                1 * currLevel, "second",
-                2 * currLevel, "second"));
+                6 * currLevel, "second",
+                2 * currLevel, "second",
+                4 * currLevel, "second"));
+            Random.shuffleArray(level.waves[1]);
             level.waves.push(populateWave(
-                3 * currLevel, "third",
-                1 * currLevel, "third",
-                2 * currLevel, "third"));
+                6 * currLevel, "third",
+                2 * currLevel, "third",
+                4 * currLevel, "third"));
+            Random.shuffleArray(level.waves[2]);
             level.waves.push(populateWave(
-                3 * currLevel, "fourth",
-                1 * currLevel, "fourth",
-                2 * currLevel, "fourth"));
+                6 * currLevel, "fourth",
+                2 * currLevel, "fourth",
+                4 * currLevel, "fourth"));
+            Random.shuffleArray(level.waves[3]);
 
 
             return level;

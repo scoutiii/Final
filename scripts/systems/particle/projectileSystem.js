@@ -111,7 +111,7 @@ MyGame.systems.projectiles = function(spec) {
                                 x: p.center.x - (30 * p.direction.dx),
                                 y: p.center.y - (30 * p.direction.dy)
                             },
-                            elapsedTime,
+                            1,
                             p.rotation - 180);
                     }
                 } else { // deletes if the target is gone
@@ -259,7 +259,7 @@ MyGame.systems.projectiles = function(spec) {
             damageGround: false,
             timeAlive: 0,
             timeLimit: 3000,
-            smokeRate: 50,
+            smokeRate: 25,
             lastSmoke: 100
         };
 
