@@ -261,8 +261,8 @@ MyGame.loader = (function() {
         key: 'audioRocketLaunch',
         source: 'assets/audio/rocketLaunch.mp3'
     }, {
-        key: 'audioRocketLaunch',
-        source: 'assets/audio/rocketLaunch.mp3'
+        key: 'audioRocketExplosion',
+        source: 'assets/audio/rocketExplosion.mp3'
     }];
 
     //------------------------------------------------------------------

@@ -245,6 +245,7 @@ MyGame.systems.projectiles = function(spec) {
             },
             onCollision: function() {
                 that.particles.explosion(this.center);
+                that.audio.rocketExplode();
             },
             damage: damage,
             hitBox: 15,
